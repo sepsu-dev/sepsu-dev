@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { Project } from "@/types";
+import { cn, type Project } from "@/utils";
+import { Highlighter } from "./highlighter";
 
 interface ProjectCardProps {
   project: Project;
@@ -14,7 +14,8 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
   const { title, description, tags, imageUrl } = project;
 
   return (
-    <article
+    <Link
+      href={`/projects/${project.id}`}
       className={cn(
         "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30 items-stretch",
         className
@@ -41,15 +42,16 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       {/* Content */}
       <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
         <div className="flex items-start justify-between gap-4">
-          <Link href={`/projects/${project.id}`} className="group/link flex-1">
-            <h3 className="text-lg font-bold text-foreground leading-tight group-hover:text-primary transition-colors flex items-center gap-1.5">
-              {title}
-              <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-1 translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-y-0 group-hover/link:translate-x-0 transition-all duration-300 text-primary" />
-            </h3>
-          </Link>
+          <h3 className="text-lg font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
+            <span className="relative inline-flex items-center gap-1.5">
+              <span className="relative z-10">{title}</span>
+              <Highlighter variant={1} className="scale-x-110 opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+              <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-primary flex-shrink-0" />
+            </span>
+          </h3>
         </div>
 
-        <p className="text-sm text-muted-foreground/80 line-clamp-2 leading-relaxed font-medium">
+        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">
           {description}
         </p>
 
@@ -65,6 +67,6 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
           ))}
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

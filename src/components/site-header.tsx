@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Moon, Sun, Coffee } from "lucide-react";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { Highlighter } from "./highlighter";
 
 interface SiteHeaderProps {
   name: string;
@@ -42,13 +42,17 @@ export function SiteHeader({ name }: SiteHeaderProps) {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 text-foreground/90 hover:text-foreground transition-all duration-300"
+          className="flex items-center gap-2.5 transition-all duration-300"
         >
-          <div className="p-2 rounded-lg bg-primary/5 border border-primary/10 group-hover:bg-primary/10 transition-colors">
-            <Coffee className="h-4 w-4 text-primary" strokeWidth={2} />
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 transition-all duration-300">
+            <Coffee className="h-4 w-4 text-primary" strokeWidth={2.5} />
           </div>
-          <span className="text-sm font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
-            {name.toLowerCase().replace(/\s+/g, ".")}
+          <span className="relative inline-block text-base font-bold tracking-tighter transition-all duration-300">
+            <span className="relative z-10">
+              <span className="text-foreground">sepsu</span>
+              <span className="text-primary">.dev</span>
+            </span>
+            <Highlighter variant={1} className="-rotate-1 scale-y-150" />
           </span>
         </Link>
 

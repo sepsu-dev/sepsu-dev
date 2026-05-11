@@ -1,3 +1,10 @@
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -8,15 +15,4 @@ export interface Project {
   imageUrl?: string;
   images?: string[];
   href?: string;
-}
-
-export interface NavItem {
-  label: string;
-  href: string;
-}
-
-export interface SocialLink {
-  label: string;
-  href: string;
-  icon: "github" | "twitter" | "email" | "rss";
 }

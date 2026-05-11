@@ -2,44 +2,39 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { getSiteConfig } from "@/lib/api";
-import "@/styles/globals.css";
+import { TooltipProvider } from "@/components/tooltip";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import "@/app/globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const siteConfig = await getSiteConfig();
-  
+export function generateMetadata(): Metadata {
   return {
     title: {
-      default: siteConfig.title,
-      template: `%s — ${siteConfig.name}`,
+      default: "Sepsu Dev — Software Engineer",
+      template: `%s — Sepsu Dev`,
     },
-    description: siteConfig.description,
+    description: "Software Engineer specializing in backend systems, microservices, and full-stack web development.",
   };
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteConfig = await getSiteConfig();
-  
   return (
     <html lang="en" className={`${inter.variable}`} data-scroll-behavior="smooth">
       <body className="antialiased font-sans min-h-screen flex flex-col bg-background text-foreground">
         <NextTopLoader showSpinner={false} color="#6366f1" />
         <TooltipProvider>
-          <SiteHeader name={siteConfig.name} />
+          <SiteHeader name="Sepsu Dev" />
           <main className="flex-1">{children}</main>
-          <SiteFooter author={siteConfig.author} />
+          <SiteFooter author="Sepsu Dev" />
         </TooltipProvider>
         <Toaster position="top-center" richColors />
       </body>

@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ProjectCard } from "@/components/projects/project-card";
+import { ProjectCard } from "@/components/project-card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { Project } from "@/types";
+import { cn, type Project } from "@/utils";
 
 interface ProjectListProps {
   projects: Project[];
@@ -34,9 +33,9 @@ export function ProjectList({
 
       <div className="flex flex-col gap-4">
         {projects.map((project) => (
-          <ProjectCard 
-            key={project.id} 
-            project={project} 
+          <ProjectCard
+            key={project.id}
+            project={project}
           />
         ))}
       </div>
@@ -47,6 +46,7 @@ export function ProjectList({
           <div className="flex items-center gap-2">
             <Link
               href={`?page=${meta.page - 1}`}
+              aria-label="Previous page"
               className={cn(
                 "group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card hover:shadow-[0_0_15px_rgba(var(--primary),0.1)]",
                 !meta.hasPrevPage && "pointer-events-none opacity-20 grayscale"
@@ -61,6 +61,7 @@ export function ProjectList({
                 <Link
                   key={p}
                   href={`?page=${p}`}
+                  aria-label={`Go to page ${p}`}
                   className={cn(
                     "relative w-10 h-10 flex items-center justify-center rounded-lg text-xs font-mono font-bold transition-all duration-300 border overflow-hidden",
                     p === meta.page
@@ -72,13 +73,14 @@ export function ProjectList({
                   {p === meta.page && (
                     <div className="absolute inset-0 bg-primary -z-10 animate-in fade-in zoom-in duration-300" />
                   )}
-                  {p.toString().padStart(2, '0')}
+                  {p.toString().padStart(2, "0")}
                 </Link>
               ))}
             </div>
 
             <Link
               href={`?page=${meta.page + 1}`}
+              aria-label="Next page"
               className={cn(
                 "group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card hover:shadow-[0_0_15px_rgba(var(--primary),0.1)]",
                 !meta.hasNextPage && "pointer-events-none opacity-20 grayscale"

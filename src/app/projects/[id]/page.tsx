@@ -1,11 +1,112 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProjectById } from "@/lib/services/projects";
-import { getSiteConfig } from "@/lib/api";
-import { ChevronLeft, GitBranch, Globe, Terminal } from "lucide-react";
-import { ProjectImages } from "@/components/projects/project-images";
-import { cn } from "@/lib/utils";
+import { ChevronLeft, GitBranch, Globe, Terminal, Code2 } from "lucide-react";
+import { ProjectImages } from "@/components/project-images";
+import { cn, type Project } from "@/utils";
+import { Highlighter } from "@/components/highlighter";
+
+const projects: Project[] = [
+  {
+    id: "ecommerce-api-core",
+    title: "E-Commerce Core API",
+    description: "Architecting a high-performance, microservices-based API designed to handle millions of transactions. Optimized with Nest.js and Prisma for ultimate reliability.",
+    startDate: "Jan 2024",
+    endDate: "Present",
+    tags: ["Nest.js", "Prisma", "Postgre", "Rest API", "Docker", "Redis"],
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "hr-management-sys",
+    title: "HRIS Enterprise Portal",
+    description: "A sophisticated Human Resource platform streamlining payroll and attendance for large-scale enterprises. Built with Laravel to ensure maximum security.",
+    startDate: "Aug 2023",
+    endDate: "Dec 2023",
+    tags: ["Laravel", "Mysql", "Bootstrap", "VPS", "Github"],
+    imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "realtime-collab",
+    title: "Real-time Team Collaboration",
+    description: "Breaking communication barriers with a lightning-fast collaboration hub. Features real-time sync across devices using Node.js and Redis.",
+    startDate: "May 2023",
+    endDate: "Jul 2023",
+    tags: ["React.js", "Node.js", "Express.js", "Redis", "JS"],
+    imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "inventory-dashboard",
+    title: "Smart Inventory Dashboard",
+    description: "Visualizing complex warehouse data through an intuitive, high-fidelity dashboard. Crafted with React.js and Shadcn UI for a premium aesthetic.",
+    startDate: "Feb 2023",
+    endDate: "Apr 2023",
+    tags: ["React.js", "Tailwind CSS", "Shadcn UI", "PHP", "Mysql"],
+    imageUrl: "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "mobile-pos",
+    title: "Mobile Point of Sale",
+    description: "Revolutionizing retail with a powerful, cross-platform mobile POS. Built using React Native to provide a native-feel experience on all platforms.",
+    startDate: "Nov 2022",
+    endDate: "Jan 2023",
+    tags: ["React Native", "JS", "Node.js", "SQL server"],
+    imageUrl: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "log-monitoring",
+    title: "Centralized Log Analytics",
+    description: "Mastering infrastructure visibility with a specialized log aggregation system. Leverages the ELK stack to provide real-time proactive alerting.",
+    startDate: "Sep 2022",
+    endDate: "Oct 2022",
+    tags: ["Elasticsearch", "Kibana", "Docker", "VPS"],
+    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "legacy-crm",
+    title: "Legacy CRM System",
+    description: "Maintaining and scaling business-critical infrastructure for enterprise clients. Revitalizing legacy systems with modern performance optimizations.",
+    startDate: "Apr 2022",
+    endDate: "Aug 2022",
+    tags: ["Codeigniter", "PHP", "Mysql", "Bootstrap"],
+    imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "freelance-market",
+    title: "Freelance Marketplace",
+    description: "Empowering the global workforce with a feature-rich talent marketplace. Engineered to handle complex matching and secure interactions.",
+    startDate: "Jan 2022",
+    endDate: "Mar 2022",
+    tags: ["Laravel", "React.js", "Tailwind CSS", "Postgre", "Gitlab"],
+    imageUrl: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+  {
+    id: "task-api",
+    title: "Task Management Backend",
+    description: "Powering productivity with a robust, type-safe REST API. Focused on data integrity and high-speed delivery using Nest.js and SQL Server.",
+    startDate: "Oct 2021",
+    endDate: "Dec 2021",
+    tags: ["Nest.js", "Prisma", "Express.js", "Rest API", "SQL server"],
+    imageUrl: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop",
+    images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop"],
+    href: "#",
+  },
+];
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>;
@@ -14,7 +115,7 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { id } = await params;
-  const project = await getProjectById(id);
+  const project = projects.find((p) => p.id === id);
   if (!project) return { title: "Project Not Found" };
   return {
     title: `${project.title} | Portfolio`,
@@ -23,24 +124,11 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 }
 
 // Re-using highlighter components from main page
-const Highlighter1 = ({ className = "" }: { className?: string }) => (
-  <svg className={`absolute top-1/2 left-0 w-full h-full -translate-y-1/2 text-primary/20 -z-10 scale-110 ${className}`} viewBox="0 0 100 24" preserveAspectRatio="none">
-    <path d="M4,18 C25,14 55,20 96,16" stroke="currentColor" strokeWidth="8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const Highlighter2 = ({ className = "" }: { className?: string }) => (
-  <svg className={`absolute top-1/2 left-0 w-full h-full -translate-y-1/2 text-primary/20 -z-10 scale-110 ${className}`} viewBox="0 0 100 24" preserveAspectRatio="none">
-    <path d="M3,16 C30,20 70,14 97,18" stroke="currentColor" strokeWidth="8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+// Using centralized Highlighter component
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { id } = await params;
-  const [project, config] = await Promise.all([
-    getProjectById(id),
-    getSiteConfig(),
-  ]);
+  const project = projects.find((p) => p.id === id);
 
   if (!project) notFound();
 
@@ -75,7 +163,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
             <span className="relative inline-block z-10">
               {project.title}
-              <Highlighter1 className="-rotate-2" />
+              <Highlighter variant={1} className="-rotate-2" />
             </span>
           </h1>
 
@@ -101,7 +189,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <GitBranch className="w-5 h-5 text-primary" />
               <span className="relative inline-block z-10">
                 Project Overview
-                <Highlighter2 className="rotate-1" />
+                <Highlighter variant={2} className="rotate-1" />
               </span>
             </h2>
 
@@ -110,8 +198,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 This project was developed with a primary focus on high-performance data handling and seamless user experience.
                 Utilizing modern technologies to ensure scalability and reliability across all modules.
               </p>
-              <div className="rounded-xl overflow-hidden border border-border bg-card/40 backdrop-blur-sm p-6 text-sm italic">
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+              <div className="rounded-xl overflow-hidden border border-border bg-card/40 backdrop-blur-sm p-6 text-sm italic leading-relaxed">
+                "Technical excellence is not just about writing code, but about architecting systems that are sustainable, scalable, and intuitive for both users and developers alike."
               </div>
             </div>
           </section>
@@ -121,10 +209,16 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {/* Tech Stack */}
             <div className="space-y-6">
-              <h3 className="text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Technology Stack
-              </h3>
+              <div className="space-y-6">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-8 flex items-center gap-2 font-mono">
+                  <Code2 className="w-5 h-5 text-primary" />
+                  <span className="relative inline-block z-10">
+                    Tech Stack
+                    <Highlighter variant={2} className="rotate-1" />
+                  </span>
+                </h2>
+                <p className="text-sm text-muted-foreground -mt-4 mb-6 leading-relaxed">The core technologies utilized to build this specific project.</p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <div
