@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/tooltip";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CustomCursor } from "@/components/custom-cursor";
 import "@/app/globals.css";
 
 const inter = Inter({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable}`} data-scroll-behavior="smooth">
       <body className="antialiased font-sans min-h-screen flex flex-col bg-background text-foreground">
         <NextTopLoader showSpinner={false} color="#6366f1" />
+        <CustomCursor />
         <TooltipProvider>
           <SiteHeader name="Sepsu Dev" />
           <main className="flex-1">{children}</main>
