@@ -173,7 +173,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
             <div className="relative">
               <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse"></div>
               <img
-                src="https://www.svgrepo.com/show/404545/avatar-man-profile-user-3.svg"
+                src="https://media.tenor.com/Rd0jrWH5JjgAAAAM/cat-scuba.gif"
                 alt="Sepsu Dev"
                 className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-muted border border-border shadow-lg object-cover ring-4 ring-background"
               />
