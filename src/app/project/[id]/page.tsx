@@ -118,7 +118,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const project = projects.find((p) => p.id === id);
   if (!project) return { title: "Project Not Found" };
   return {
-    title: `${project.title} | Portfolio`,
+    title: `${project.title}`,
     description: project.description,
   };
 }
@@ -182,7 +182,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
         {/* Content Body */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            
+
           {/* Main Content */}
           <div className="md:col-span-2 space-y-12">
             <section>
@@ -244,7 +244,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {/* Links */}
             <div className="p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm shadow-sm hover:border-primary/30 transition-all duration-300 space-y-4">
-               <h3 className="text-sm font-bold text-foreground mb-4 font-mono uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-sm font-bold text-foreground mb-4 font-mono uppercase tracking-wider flex items-center gap-2">
                 <Globe className="w-4 h-4 text-primary" />
                 Resources
               </h3>

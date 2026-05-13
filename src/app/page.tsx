@@ -1,8 +1,7 @@
 import { ProjectList } from "@/components/project-list";
-import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, Send, MapPin, Clock } from "lucide-react";
+import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, Send, MapPin } from "lucide-react";
 import { type Project } from "@/utils";
 import { Highlighter } from "@/components/highlighter";
-import { LocalTime } from "@/components/local-time";
 
 const projects: Project[] = [
   {
@@ -112,7 +111,7 @@ interface PageProps {
 
 export function generateMetadata() {
   return {
-    title: "Sepsu Dev | Portfolio",
+    title: "Sepsu Dev",
     description: "Full-stack Engineer specializing in high-performance backends, scalable microservices, and fluid modern user interfaces.",
   };
 }
@@ -194,26 +193,16 @@ export default async function AboutPage({ searchParams }: PageProps) {
           </div>
 
           <div className="space-y-6 text-muted-foreground text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
-            <div className="inline-flex items-center gap-3 px-3.5 py-2 rounded-full border border-border bg-card/50 backdrop-blur-sm text-xs font-mono font-medium shadow-sm hover:border-primary/30 transition-colors">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-                </span>
-                <span className="text-muted-foreground">Based in <span className="text-foreground font-semibold">Jakarta</span></span>
-                {/* Indonesian Flag */}
-                <div className="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex flex-col shadow-[0_0_2px_rgba(0,0,0,0.2)] ml-0.5 border border-border/50" title="Indonesia">
-                  <div className="w-full h-1/2 bg-[#FF0000]"></div>
-                  <div className="w-full h-1/2 bg-white"></div>
-                </div>
-              </div>
-
-              <div className="w-px h-3.5 bg-border/80"></div>
-
-              {/* Local Time Highlight */}
-              <div className="flex items-center gap-1.5 text-foreground/80 hover:text-foreground transition-colors">
-                <Clock className="w-3.5 h-3.5 text-primary" />
-                <span className="font-bold tracking-tight tabular-nums"><LocalTime /></span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/50 backdrop-blur-sm text-xs font-mono font-medium shadow-sm hover:border-primary/30 transition-colors mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+              </span>
+              <span className="text-muted-foreground">Based in <span className="text-foreground font-semibold">Jakarta</span></span>
+              {/* Indonesian Flag */}
+              <div className="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex flex-col shadow-[0_0_2px_rgba(0,0,0,0.2)] ml-0.5 border border-border/50" title="Indonesia">
+                <div className="w-full h-1/2 bg-[#FF0000]"></div>
+                <div className="w-full h-1/2 bg-white"></div>
               </div>
             </div>
             <p>
