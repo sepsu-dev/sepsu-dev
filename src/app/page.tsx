@@ -171,7 +171,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
         <section className="mb-20">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
             <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse"></div>
+
               <img
                 src="https://media.tenor.com/Rd0jrWH5JjgAAAAM/cat-scuba.gif"
                 alt="Sepsu Dev"
@@ -267,7 +267,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
             {techStack.map((item, idx) => {
               const Icon = iconMap[item.icon] || Code2;
               return (
-                <div key={idx} className="group relative p-4 sm:p-5 rounded-xl border border-border bg-card/40 backdrop-blur-sm overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl hover:bg-card">
+                <div key={idx} className="group relative p-4 sm:p-5 rounded-xl border border-border bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30">
                   <div className="flex items-center gap-3 mb-2 sm:mb-3">
                     <div className="p-2 bg-primary/10 rounded-lg group-hover:scale-110 transition-transform">
                       <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />

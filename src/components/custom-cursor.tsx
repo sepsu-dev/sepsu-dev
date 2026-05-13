@@ -42,13 +42,7 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Background Spotlight */}
-      <div
-        className="fixed top-0 left-0 w-[800px] h-[800px] bg-primary/5 rounded-full pointer-events-none z-[-1] blur-[120px] transition-transform duration-1000 ease-out hidden sm:block"
-        style={{
-          transform: `translate3d(${position.x - 400}px, ${position.y - 400}px, 0)`,
-        }}
-      />
+
       {/* Main Cursor Dot */}
       <div
         className="fixed top-0 left-0 w-3 h-3 bg-primary rounded-full pointer-events-none z-[100] transition-transform duration-75 ease-out"

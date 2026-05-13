@@ -22,7 +22,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       )}
     >
       {/* Decorative background glow on hover */}
-      <div className="absolute -inset-x-20 -top-20 h-40 bg-primary/5 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
 
       {/* Image Thumbnail */}
       <div className="flex-shrink-0 w-full sm:w-48 h-52 sm:h-36 bg-muted rounded-xl overflow-hidden border border-border/20 relative z-10 shadow-sm">
