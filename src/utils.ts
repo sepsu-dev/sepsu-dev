@@ -15,4 +15,5 @@ export interface Project {
   imageUrl?: string;
   images?: string[];
   href?: string;
+  githubUrl?: string;
 }

@@ -31,11 +31,11 @@ export function ProjectImages({ images, title }: ProjectImagesProps) {
   return (
     <div className="space-y-4">
       {/* Main Image View */}
-      <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50 shadow-lg group">
+      <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50 group font-sans">
         <img
           src={images[currentIndex]}
           alt={`${title} - image ${currentIndex + 1}`}
-          className="w-full h-full object-cover transition-all duration-500"
+          className="w-full h-full object-cover object-top transition-all duration-500"
         />
 
         {/* Navigation Arrows */}

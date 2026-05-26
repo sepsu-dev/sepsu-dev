@@ -25,12 +25,12 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
 
       {/* Image Thumbnail */}
-      <div className="flex-shrink-0 w-full sm:w-48 h-52 sm:h-36 bg-muted rounded-xl overflow-hidden border border-border/20 relative z-10 shadow-sm">
+      <div className="flex-shrink-0 w-full sm:w-56 aspect-video sm:aspect-[16/10] bg-muted rounded-xl overflow-hidden border border-border/20 relative z-10">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.12]"
+            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.12]"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
