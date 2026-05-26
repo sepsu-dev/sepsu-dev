@@ -187,7 +187,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="space-y-8">
             {/* Tech Stack */}
             <div className="p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm shadow-sm hover:border-primary/30 transition-all duration-300">
-              <h3 className="text-sm font-bold text-foreground mb-4 font-mono uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-sm font-bold text-foreground mb-4 font-mono tracking-wider flex items-center gap-2">
                 <Code2 className="w-4 h-4 text-primary" />
                 Technologies
               </h3>
@@ -196,7 +196,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   <TechBadge
                     key={tag}
                     tag={tag}
-                    className="px-2.5 py-1 rounded-md bg-muted/50 text-muted-foreground border border-border/50 text-[11px] font-mono font-bold hover:border-primary/50 hover:text-primary transition-colors cursor-default uppercase tracking-wider"
+                    className="px-2.5 py-1 rounded-md bg-muted/50 text-muted-foreground border border-border/50 text-[11px] font-mono font-bold hover:border-primary/50 hover:text-primary transition-colors cursor-default tracking-wider"
                   />
                 ))}
               </div>
@@ -204,7 +204,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {/* Links */}
             <div className="p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm shadow-sm hover:border-primary/30 transition-all duration-300 space-y-4">
-              <h3 className="text-sm font-bold text-foreground mb-4 font-mono uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-sm font-bold text-foreground mb-4 font-mono tracking-wider flex items-center gap-2">
                 <Globe className="w-4 h-4 text-primary" />
                 Resources
               </h3>
