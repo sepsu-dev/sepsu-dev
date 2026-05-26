@@ -2,6 +2,7 @@ import { ProjectList } from "@/components/project-list";
 import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, Send, MapPin } from "lucide-react";
 import { type Project } from "@/utils";
 import { Highlighter } from "@/components/highlighter";
+import { TechBadge } from "@/components/tech-badge";
 
 const projects: Project[] = [
   {
@@ -237,7 +238,11 @@ export default async function AboutPage({ searchParams }: PageProps) {
                       <Highlighter variant={1} className="scale-x-125 opacity-40" />
                     </h3>
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground font-mono">{item.skills.join(", ")}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {item.skills.map((skill) => (
+                      <TechBadge key={skill} tag={skill} />
+                    ))}
+                  </div>
                 </div>
               );
             })}

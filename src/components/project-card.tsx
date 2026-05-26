@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn, type Project } from "@/utils";
 import { Highlighter } from "./highlighter";
+import { TechBadge } from "./tech-badge";
 
 interface ProjectCardProps {
   project: Project;
@@ -58,12 +59,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mt-auto pt-2">
           {tags.map((tag) => (
-            <span
-              key={tag}
-              className="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 group-hover:border-primary/20 group-hover:text-primary/80 transition-colors"
-            >
-              {tag}
-            </span>
+            <TechBadge key={tag} tag={tag} />
           ))}
         </div>
       </div>

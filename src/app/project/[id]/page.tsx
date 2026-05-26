@@ -5,6 +5,7 @@ import { ChevronLeft, GitBranch, Globe, Terminal, Code2, Database, ArrowUpRight 
 import { ProjectImages } from "@/components/project-images";
 import { cn, type Project } from "@/utils";
 import { Highlighter } from "@/components/highlighter";
+import { TechBadge } from "@/components/tech-badge";
 
 const projects: Project[] = [
   {
@@ -192,12 +193,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span
+                  <TechBadge
                     key={tag}
+                    tag={tag}
                     className="px-2.5 py-1 rounded-md bg-muted/50 text-muted-foreground border border-border/50 text-[11px] font-mono font-bold hover:border-primary/50 hover:text-primary transition-colors cursor-default uppercase tracking-wider"
-                  >
-                    {tag}
-                  </span>
+                  />
                 ))}
               </div>
             </div>
