@@ -17,7 +17,7 @@ import Cookies from "js-cookie";
 apiClient.interceptors.request.use(
     (config) => {
         if (typeof window !== "undefined") {
-            const token = Cookies.get("admin_token");
+            const token = Cookies.get("token");
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -74,7 +74,7 @@ apiClient.interceptors.response.use(
 
         if (error.response?.status === 401) {
             if (typeof window !== "undefined") {
-                Cookies.remove("admin_token");
+                Cookies.remove("token");
                 window.location.href = "/login";
             }
         }

@@ -10,7 +10,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
 
     const handleLogout = () => {
-        Cookies.remove("admin_token");
+        Cookies.remove("token");
         router.replace("/login");
     };
 

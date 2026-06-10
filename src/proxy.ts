@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export default function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
-    const adminToken = request.cookies.get('admin_token')?.value;
+    const adminToken = request.cookies.get('token')?.value;
 
     const isLoginPage = pathname === '/login';
     const isAdminRoute = pathname.startsWith('/admin');
