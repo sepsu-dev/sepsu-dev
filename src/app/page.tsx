@@ -107,7 +107,8 @@ export default async function AboutPage({ searchParams }: PageProps) {
   const groupedSkills = rawSkillsArray.reduce((acc: any, skill: any) => {
     const cat = typeof skill?.category === 'object' && skill.category !== null
       ? skill.category.name
-      : (skill?.category || 'other');
+      : skill?.category;
+    if (!cat) return acc;
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(skill);
     return acc;

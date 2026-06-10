@@ -46,6 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/admin" style={linkStyle("/admin")}>Dashboard</Link>
                     <Link href="/admin/projects" style={linkStyle("/admin/projects")}>Projects</Link>
                     <Link href="/admin/skills" style={linkStyle("/admin/skills")}>Skills</Link>
+                    <Link href="/admin/skill-categories" style={linkStyle("/admin/skill-categories")}>Categories</Link>
                     <Link href="/admin/profile" style={linkStyle("/admin/profile")}>Profile</Link>
                     <button
                         onClick={handleLogout}
