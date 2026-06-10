@@ -34,7 +34,9 @@ export function ProjectForm({ initialData = {}, onSubmit, title }: ProjectFormPr
         async function fetchSkills() {
             try {
                 const groups = await skillsService.getAll();
-                const all: Skill[] = Object.values(groups).flat();
+                const all: Skill[] = Object.values(groups)
+                .filter((val): val is Skill[] => Array.isArray(val))
+                .flat();
                 setAvailableSkills(all);
             } catch (error) {
                 console.error("Failed to fetch skills", error);

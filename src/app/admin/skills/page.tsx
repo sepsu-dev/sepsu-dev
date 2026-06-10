@@ -19,7 +19,9 @@ export default function AdminSkillsPage() {
             const data = await skillsService.getAll();
             // Response is already { category_name: Skill[], ... } grouped by category
             const source = data || {};
-            const normalized = Object.entries(source).map(([category, skills]) => ({
+            const normalized = Object.entries(source)
+            .filter(([key]) => key !== '_message')
+            .map(([category, skills]) => ({
                 category,
                 skills: Array.isArray(skills) ? skills : [],
             }));
