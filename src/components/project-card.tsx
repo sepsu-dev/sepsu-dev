@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { cn, type Project } from "@/utils";
+import { cn, type Project } from "@/lib/utils";
 import { Highlighter } from "./highlighter";
 import { TechBadge } from "./tech-badge";
 
@@ -16,15 +16,12 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
   return (
     <Link
-      href={`/project/${project.id}`}
+      href={`/project/${project.project_id}`}
       className={cn(
         "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30 items-stretch",
         className
       )}
     >
-      {/* Decorative background glow on hover */}
-
-
       {/* Image Thumbnail */}
       <div className="flex-shrink-0 w-full sm:w-56 aspect-video sm:aspect-[16/10] bg-muted rounded-xl overflow-hidden border border-border/20 relative z-10">
         {imageUrl ? (
@@ -58,7 +55,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mt-auto pt-2">
-          {tags.map((tag) => (
+          {tags.map((tag: string) => (
             <TechBadge key={tag} tag={tag} />
           ))}
         </div>

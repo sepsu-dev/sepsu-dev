@@ -6,11 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export interface Project {
-  id: string;
+  project_id: string;
   title: string;
   description: string;
-  startDate: string;
-  endDate: string | "Present";
+  startDate?: string;
+  endDate?: string | "Present";
   tags: string[];
   imageUrl?: string;
   images?: string[];

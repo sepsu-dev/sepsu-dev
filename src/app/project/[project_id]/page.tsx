@@ -1,101 +1,56 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, GitBranch, Globe, Terminal, Code2, Database, ArrowUpRight } from "lucide-react";
+import { ChevronLeft, GitBranch, Globe, Terminal, Code2, ArrowUpRight } from "lucide-react";
 import { ProjectImages } from "@/components/project-images";
-import { cn, type Project } from "@/utils";
 import { Highlighter } from "@/components/highlighter";
 import { TechBadge } from "@/components/tech-badge";
-
-const projects: Project[] = [
-  {
-    id: "hematyu",
-    title: "Hematyu",
-    description: "Personal finance ecosystem featuring 'AI Roast' financial analyzer, automatic expense tracking via WhatsApp, and OCR receipt scanning for seamless money management.",
-    startDate: "Feb 2024",
-    endDate: "Present",
-    tags: ["Next.js", "Tailwind CSS", "AI", "WhatsApp API", "OCR"],
-    imageUrl: "/projects/hematyu.png",
-    images: ["/projects/hematyu.png"],
-    href: "http://hematyu.com/",
-  },
-  {
-    id: "numpux",
-    title: "Numpux",
-    description: "A minimalist task management platform designed for deep work. Integrates Kanban workflows and calendar planning into a cohesive productivity experience.",
-    startDate: "Jan 2024",
-    endDate: "Feb 2024",
-    tags: ["Next.js", "Tailwind CSS", "Vercel", "Task Management"],
-    imageUrl: "/projects/numpux.png",
-    images: ["/projects/numpux.png"],
-    href: "https://numpux.vercel.app/",
-    githubUrl: "https://github.com/sepsu-dev/numpux",
-  },
-  {
-    id: "naha-admin",
-    title: "Naha Admin",
-    description: "Modern, clean-coded administrative dashboard template. Engineered with Bootstrap 5 and Vanilla JS for high performance and lightweight integration.",
-    startDate: "Nov 2023",
-    endDate: "Dec 2023",
-    tags: ["HTML5", "CSS3", "Bootstrap 5", "JavaScript"],
-    imageUrl: "/projects/naha-admin.png",
-    images: ["/projects/naha-admin.png"],
-    href: "https://naha-admin.vercel.app/index",
-    githubUrl: "https://github.com/sepsu-dev/naha-admin",
-  },
-  {
-    id: "cek-bmi-yu",
-    title: "Cek BMI Yu",
-    description: "High-fidelity health utility for real-time BMI calculations. Features interactive dynamic sliders and instant healthy weight classification insights.",
-    startDate: "Oct 2023",
-    endDate: "Oct 2023",
-    tags: ["React", "Tailwind CSS", "Vercel", "UI/UX"],
-    imageUrl: "/projects/cek-bmi-yu.png",
-    images: ["/projects/cek-bmi-yu.png"],
-    href: "https://cek-bmi-yu.vercel.app/",
-    githubUrl: "https://github.com/sepsu-dev/cek-bmi-yu",
-  },
-  {
-    id: "sepsu-dev",
-    title: "sepsu.dev",
-    description: "My personal portfolio website designed with a premium, technical aesthetic. Built with Next.js 15 and Tailwind CSS to showcase engineering work and experience.",
-    startDate: "May 2024",
-    endDate: "Present",
-    tags: ["Next.js 15", "React", "Tailwind CSS", "Framer Motion"],
-    imageUrl: "/projects/sepsu-dev.png",
-    images: ["/projects/sepsu-dev.png"],
-    href: "https://sepsu.dev",
-    githubUrl: "https://github.com/sepsu-dev/sepsu-dev",
-  },
-];
+import { projectsService } from "@/services";
+import { type Project } from "@/lib/utils";
 
 interface ProjectPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ project_id: string }>;
 }
-
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const project = projects.find((p) => p.id === id);
-  if (!project) return { title: "Project Not Found" };
-  return {
-    title: `${project.title}`,
-    description: project.description,
-  };
+  const { project_id } = await params;
+  try {
+    const project = await projectsService.getById(project_id);
+    if (!project) return { title: "Project Not Found" };
+    return {
+      title: `${project.title || "Project"}`,
+      description: (project as any).overview || "",
+    };
+  } catch (error) {
+    return { title: "Project Not Found" };
+  }
 }
 
-// Re-using highlighter components from main page
-// Using centralized Highlighter component
-
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
-  const { id } = await params;
-  const project = projects.find((p) => p.id === id);
+  const { project_id } = await params;
+  let apiProject;
 
-  if (!project) notFound();
+  try {
+    apiProject = await projectsService.getById(project_id);
+    if (!apiProject) notFound();
+  } catch (error) {
+    notFound();
+  }
+
+  const project: Project & { architecture?: string } = {
+    project_id: apiProject.uid,
+    title: apiProject.title,
+    description: apiProject.overview,
+    architecture: apiProject.architecture,
+    tags: apiProject.skills?.map((s: any) => s.name) || [],
+    imageUrl: apiProject.image_url,
+    images: apiProject.image_url ? [apiProject.image_url] : [],
+    href: apiProject.demo_url,
+    githubUrl: apiProject.source_url,
+  };
 
   return (
     <div className="relative min-h-screen bg-background pb-32 font-sans overflow-hidden">
-      {/* Background Ornaments from main page */}
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0"></div>
 
       <div className="fixed top-32 left-10 text-primary/5 text-8xl font-mono font-bold select-none pointer-events-none animate-float hidden md:block">
@@ -107,14 +62,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <div className="max-w-3xl mx-auto px-4 py-16 md:py-24 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-        {/* Back Button - Main style */}
+        {/* Back Button */}
         <div className="mb-10">
           <Link
             href="/#portfolio"
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-primary/10 text-primary text-xs font-mono font-semibold tracking-tight transition-all hover:bg-primary/20 group"
           >
             <Terminal className="w-3 h-3" />
-            <span>~/projects/{id}.sh</span>
+            <span>~/projects</span>
             <ChevronLeft className="w-3 h-3 ml-1 transition-transform group-hover:-translate-x-1" />
           </Link>
         </div>
@@ -133,7 +88,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </p>
         </header>
 
-        {/* Project Image Slider - Main card style */}
+        {/* Project Image Slider */}
         <div className="mb-16 rounded-2xl overflow-hidden border border-border bg-card/40 backdrop-blur-sm transition-all hover:border-primary/20">
           <ProjectImages
             images={project.images || (project.imageUrl ? [project.imageUrl] : [])}
@@ -154,36 +109,21 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   <Highlighter variant={2} className="rotate-1" />
                 </span>
               </h2>
-              <div className="space-y-6 text-muted-foreground leading-relaxed text-sm sm:text-base">
-                <p>
-                  {project.description} This initiative required a deep understanding of scalable architecture and modern engineering principles to deliver a robust, future-proof solution.
-                </p>
-                <p>
-                  The primary objective was to architect a system capable of handling high throughput while maintaining sub-second latency and an intuitive user experience. By leveraging the latest in cloud-native technologies, the platform ensures maximum uptime and seamless data synchronization.
-                </p>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2 font-mono">
-                <Database className="w-5 h-5 text-primary" />
-                <span className="relative inline-block z-10">
-                  Architecture & Approach
-                  <Highlighter variant={3} className="-rotate-1" />
-                </span>
-              </h2>
-              <div className="space-y-6 text-muted-foreground leading-relaxed text-sm sm:text-base">
-                <p>
-                  Built from the ground up with maintainability in mind, the architecture follows clean code principles and domain-driven design. The backend services are decoupled to allow independent scaling, while the frontend consumes a highly optimized API.
-                </p>
-                <div className="rounded-xl border border-border/50 bg-primary/5 p-6 text-sm font-medium leading-relaxed italic text-foreground/80 border-l-4 border-l-primary">
-                  "Engineering excellence is not just about writing code; it's about architecting sustainable, resilient systems that empower businesses to scale effortlessly."
-                </div>
+              <div className="text-muted-foreground leading-relaxed text-sm sm:text-base space-y-4">
+                <p>{project.description}</p>
+                {project.architecture && (
+                  <div className="mt-8 p-6 rounded-xl bg-muted/30 border border-border/50">
+                    <h3 className="text-foreground font-bold mb-3 flex items-center gap-2">
+                      <Code2 className="w-4 h-4 text-primary" /> Architecture & Tech Details
+                    </h3>
+                    <p className="text-sm italic opacity-80">{project.architecture}</p>
+                  </div>
+                )}
               </div>
             </section>
           </div>
 
-          {/* Sidebar (Tech Stack & Links) */}
+          {/* Sidebar */}
           <div className="space-y-8">
             {/* Tech Stack */}
             <div className="p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm shadow-sm hover:border-primary/30 transition-all duration-300">

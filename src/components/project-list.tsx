@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn, type Project } from "@/utils";
+import { cn, type Project } from "@/lib/utils";
 
 interface ProjectListProps {
   projects: Project[];
@@ -19,7 +19,7 @@ interface ProjectListProps {
 export function ProjectList({
   projects,
   meta,
-  title = "Example Projects Listing",
+  title = "",
 }: ProjectListProps) {
   return (
     <section className="mt-10">
@@ -34,7 +34,7 @@ export function ProjectList({
       <div className="flex flex-col gap-4">
         {projects.map((project) => (
           <ProjectCard
-            key={project.id}
+            key={project.project_id}
             project={project}
           />
         ))}

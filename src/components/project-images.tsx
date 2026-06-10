@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/utils";
+import { cn } from "@/lib/utils";
 
 interface ProjectImagesProps {
   images: string[];
