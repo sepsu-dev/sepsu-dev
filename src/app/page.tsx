@@ -233,7 +233,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
             </div>
             <div className="p-4 overflow-x-auto leading-relaxed flex items-start gap-4 bg-[#f6f8fa]/80 dark:bg-[#0d1117] transition-colors duration-500">
               <div className="select-none text-muted-foreground/30 dark:text-[#8b949e]/30 text-right pr-2 border-r border-border/20 dark:border-r-[#30363d]/50 space-y-0.5">
-                {focusItems.map((_, index) => (
+                {focusItems.map((_: string, index: number) => (
                   <div key={index} className="h-5 flex items-center justify-end">{index + 1}</div>
                 ))}
                 <div className="h-5 flex items-center justify-end">{focusItems.length + 1}</div>
