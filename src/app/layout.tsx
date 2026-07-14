@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
+import { MusicPlayer } from "@/components/music-player";
 import "@/app/globals.css";
 
 const inter = Inter({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="antialiased font-sans min-h-screen flex flex-col bg-background text-foreground">
         <NextTopLoader showSpinner={false} color="#6366f1" />
         <main className="flex-1">{children}</main>
+        <MusicPlayer />
         <Toaster position="top-center" richColors />
       </body>
     </html>

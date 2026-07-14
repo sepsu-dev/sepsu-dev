@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 interface TechBadgeProps {
     tag: string;
     iconSlug?: string;
@@ -60,15 +62,45 @@ const TECH_ICON_MAP: Record<string, { slug: string; color?: string }> = {
     "PWA": { slug: "pwa", color: "5A0FC8" },
     "Real-time Data": { slug: "socketdotio", color: "010101" },
     "Task Management": { slug: "notion", color: "000000" },
-};
-
+  };
+  
 export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
-    const slug = iconSlug || TECH_ICON_MAP[tag]?.slug;
+    const [isHovered, setIsHovered] = useState(false);
+    const info = TECH_ICON_MAP[tag];
+    const color = info?.color;
+    const slug = iconSlug || info?.slug;
     const isUrl = slug?.startsWith("http");
+
+    const brandColor = color ? `#${color}` : null;
+
+    // Build custom styling matching the brand color
+    // Standard state: very subtle tint
+    // Hovered state: glowing border and colorful background
+    const badgeStyle = brandColor
+        ? {
+            color: isHovered ? brandColor : "inherit",
+            borderColor: isHovered ? `${brandColor}50` : `${brandColor}18`,
+            backgroundColor: isHovered ? `${brandColor}12` : `${brandColor}05`,
+            textShadow: isHovered ? `0 0 8px ${brandColor}30` : "none",
+            boxShadow: isHovered ? `0 0 12px ${brandColor}15` : "none",
+          }
+        : {};
+
+    // Generate smart colored URLs for simple-icons (avoiding black-on-black or white-on-white)
+    const lightIconUrl = isUrl 
+        ? slug 
+        : `https://cdn.simpleicons.org/${slug}/${color === "ffffff" ? "000000" : (color || "666666")}`;
+
+    const darkIconUrl = isUrl 
+        ? slug 
+        : `https://cdn.simpleicons.org/${slug}/${color === "000000" ? "ffffff" : (color || "cccccc")}`;
 
     return (
         <span
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 group-hover:border-primary/20 group-hover:text-primary/80 transition-colors ${className}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={badgeStyle}
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 transition-all duration-300 scale-100 hover:scale-[1.03] select-none ${className}`}
         >
             {slug && (
                 <>
@@ -77,28 +109,28 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
                             src={slug}
                             alt=""
                             aria-hidden="true"
-                            className="w-4 h-4 shrink-0 object-contain"
-                            onError={(e) => (e.currentTarget.style.display = 'none')}
+                            className="w-3.5 h-3.5 shrink-0 object-contain"
+                            onError={(e) => (e.currentTarget.style.display = "none")}
                         />
                     ) : /^\p{Emoji}/u.test(slug) || slug.length <= 2 ? (
-                        <span className="text-sm shrink-0 select-none">{slug}</span>
+                        <span className="text-xs shrink-0 select-none">{slug}</span>
                     ) : (
                         <>
                             {/* Light mode icon */}
                             <img
-                                src={`https://cdn.simpleicons.org/${slug}`}
+                                src={lightIconUrl}
                                 alt=""
                                 aria-hidden="true"
-                                className="w-4 h-4 shrink-0 dark:hidden"
-                                onError={(e) => (e.currentTarget.style.display = 'none')}
+                                className="w-3.5 h-3.5 shrink-0 dark:hidden object-contain"
+                                onError={(e) => (e.currentTarget.style.display = "none")}
                             />
-                            {/* Dark mode icon – white version */}
+                            {/* Dark mode icon */}
                             <img
-                                src={`https://cdn.simpleicons.org/${slug}/white`}
+                                src={darkIconUrl}
                                 alt=""
                                 aria-hidden="true"
-                                className="w-4 h-4 shrink-0 hidden dark:block"
-                                onError={(e) => (e.currentTarget.style.display = 'none')}
+                                className="w-3.5 h-3.5 shrink-0 hidden dark:block object-contain"
+                                onError={(e) => (e.currentTarget.style.display = "none")}
                             />
                         </>
                     )}

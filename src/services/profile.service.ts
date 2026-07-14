@@ -4,7 +4,7 @@ import { Profile } from "@/types/api";
 let profile: Profile = {
     uid: "prof-001",
     name: "Sepsu Dev",
-    email: "hello@sepsu.dev",
+    email: "sepsu.dev@gmail.com",
     title: "Full-stack Engineer | Open Source Contributor",
     location: "Jakarta, Indonesia",
     bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",

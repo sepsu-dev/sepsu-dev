@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn, type Project } from "@/lib/utils";
-import { Highlighter } from "./highlighter";
 import { TechBadge } from "./tech-badge";
 
 interface ProjectCardProps {
@@ -18,21 +17,24 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
     <Link
       href={`/project/${project.project_id}`}
       className={cn(
-        "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30 items-stretch",
+        "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-lg border border-border/50 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30 items-stretch",
         className
       )}
     >
-      {/* Image Thumbnail */}
-      <div className="flex-shrink-0 w-full sm:w-56 aspect-video sm:aspect-[16/10] bg-muted rounded-xl overflow-hidden border border-border/20 relative z-10">
+      {/* Decorative gradient light that fades in on hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-purple-500/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      {/* Image Thumbnail Container */}
+      <div className="flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] bg-muted/50 rounded-lg overflow-hidden border border-border/20 relative z-10 shadow-sm transition-transform duration-500 group-hover:scale-[1.01] group-hover:border-primary/20">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.12]"
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.08]"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
-            <span className="text-[10px] font-mono tracking-widest uppercase">No Image</span>
+          <div className="w-full h-full flex items-center justify-center bg-muted/40 text-muted-foreground/50">
+            <span className="text-[9px] font-mono tracking-widest uppercase">No Preview</span>
           </div>
         )}
       </div>
@@ -40,23 +42,20 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       {/* Content */}
       <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
         <div className="flex items-start justify-between gap-4">
-          <h3 className="text-lg font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
-            <span className="relative inline-flex items-center gap-1.5">
-              <span className="relative z-10">{title}</span>
-              <Highlighter variant={1} className="scale-x-110 opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
-              <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-primary flex-shrink-0" />
-            </span>
+          <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">
+            <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">{title}</span>
+            <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-primary flex-shrink-0" />
           </h3>
         </div>
 
-        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">
           {description}
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-auto pt-2">
+        <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
           {tags.map((tag: string) => (
-            <TechBadge key={tag} tag={tag} />
+            <TechBadge key={tag} tag={tag} className="px-2 py-1 text-[10px]" />
           ))}
         </div>
       </div>

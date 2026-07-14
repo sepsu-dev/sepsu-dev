@@ -15,7 +15,7 @@ export const authService = {
             profile: {
                 uid: "prof-001",
                 name: "Sepsu Dev",
-                email: credentials.email || "hello@sepsu.dev",
+                email: credentials.email || "sepsu.dev@gmail.com",
             },
         };
     },
