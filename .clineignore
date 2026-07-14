@@ -1,0 +1,40 @@
+# Dependencies & lockfiles — never needed in context
+node_modules/
+package-lock.json
+bun.lock
+pnpm-lock.yaml
+yarn.lock
+
+# Next.js build output
+.next/
+out/
+
+# Git metadata
+.git/
+
+# Binary / media assets — take huge tokens, rarely useful
+public/projects/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# Environment & secrets — already read separately if needed
+.env.local
+.env.*.local
+
+# IDE / editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+*.log
+coverage/

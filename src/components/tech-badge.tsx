@@ -68,7 +68,7 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
 
     return (
         <span
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 group-hover:border-primary/20 group-hover:text-primary/80 transition-colors ${className}`}
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 group-hover:border-primary/20 group-hover:text-primary/80 transition-colors ${className}`}
         >
             {slug && (
                 <>
@@ -77,11 +77,11 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
                             src={slug}
                             alt=""
                             aria-hidden="true"
-                            className="w-3 h-3 shrink-0 object-contain"
+                            className="w-4 h-4 shrink-0 object-contain"
                             onError={(e) => (e.currentTarget.style.display = 'none')}
                         />
                     ) : /^\p{Emoji}/u.test(slug) || slug.length <= 2 ? (
-                        <span className="text-xs shrink-0 select-none">{slug}</span>
+                        <span className="text-sm shrink-0 select-none">{slug}</span>
                     ) : (
                         <>
                             {/* Light mode icon */}
@@ -89,7 +89,7 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
                                 src={`https://cdn.simpleicons.org/${slug}`}
                                 alt=""
                                 aria-hidden="true"
-                                className="w-3 h-3 shrink-0 dark:hidden"
+                                className="w-4 h-4 shrink-0 dark:hidden"
                                 onError={(e) => (e.currentTarget.style.display = 'none')}
                             />
                             {/* Dark mode icon – white version */}
@@ -97,7 +97,7 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
                                 src={`https://cdn.simpleicons.org/${slug}/white`}
                                 alt=""
                                 aria-hidden="true"
-                                className="w-3 h-3 shrink-0 hidden dark:block"
+                                className="w-4 h-4 shrink-0 hidden dark:block"
                                 onError={(e) => (e.currentTarget.style.display = 'none')}
                             />
                         </>

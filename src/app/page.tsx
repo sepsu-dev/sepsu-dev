@@ -1,6 +1,6 @@
 import React from "react";
 import { ProjectList } from "@/components/project-list";
-import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, type LucideIcon, Globe, Cpu } from "lucide-react";
+import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, type LucideIcon, Globe, Cpu, Puzzle, Cloud, Palette, Wrench, Smartphone } from "lucide-react";
 import { Highlighter } from "@/components/highlighter";
 import { TechBadge } from "@/components/tech-badge";
 import { projectsService, skillsService, skillCategoriesService, profileService } from "@/services";
@@ -92,12 +92,12 @@ export default async function AboutPage({ searchParams }: PageProps) {
   const iconFallbackMap: Record<string, LucideIcon> = {
     "frontend": Layout,
     "backend": Server,
-    "integration": Code2,
-    "devops": Database,
+    "integration": Puzzle,
+    "devops": Cloud,
     "database": Database,
-    "design": Globe,
-    "Tools": GitBranch,
-    "Mobile": Globe,
+    "design": Palette,
+    "Tools": Wrench,
+    "Mobile": Smartphone,
     "Hardware": Cpu,
   };
 
@@ -257,7 +257,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
                 <div key={idx} className="group relative p-4 sm:p-5 rounded-xl border border-border bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30">
                   <div className="flex items-center gap-3 mb-2 sm:mb-3">
                     <div className="p-2 bg-primary/10 rounded-lg group-hover:scale-110 transition-transform">
-                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+                      <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <h3 className="relative inline-block text-sm sm:text-base font-semibold text-foreground">
                       {item.category}

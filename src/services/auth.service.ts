@@ -1,21 +1,27 @@
-import { apiClient } from "./api-client";
 import { AuthResponse } from "@/types/api";
-
 import Cookies from "js-cookie";
 
-export const authService = {
-    login: async (credentials: any) => {
-        const data = (await apiClient.post<AuthResponse>("/auth/login", credentials)) as any as AuthResponse;
-        if (data.token) {
-            Cookies.set("token", data.token, { expires: 7 }); // Expires in 7 days
-        }
-        return data;
-    },
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
+export const authService = {
+    login: async (credentials: any): Promise<AuthResponse> => {
+        await sleep(200);
+        // Accept any credentials for dummy mode
+        const token = "dummy-jwt-token-" + Date.now();
+        Cookies.set("token", token, { expires: 7 });
+
+        return {
+            token,
+            profile: {
+                uid: "prof-001",
+                name: "Sepsu Dev",
+                email: credentials.email || "hello@sepsu.dev",
+            },
+        };
+    },
     logout: () => {
         Cookies.remove("token");
     },
-
     isAuthenticated: () => {
         if (typeof window === "undefined") return false;
         return !!Cookies.get("token");
