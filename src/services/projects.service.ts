@@ -4,6 +4,25 @@ import { skillsService } from "./skills.service";
 // ── Dummy data (real projects) ──────────────────────────────
 let projects: Project[] = [
     {
+        uid: "qris-dinamis",
+        title: "QRIS Dinamis",
+        subtitle: "Static to Dynamic QRIS Converter",
+        overview: "Konversi QRIS statis menjadi dinamis secara instan. Upload, scan kamera, atau paste string QRIS — dapatkan QR code dinamis dengan nominal dan biaya layanan.",
+        architecture: "Next.js → Tailwind CSS → Canvas API → Web Share API. Deployed on Vercel.",
+        demo_url: "https://qris-static-to-dynamic-generator.vercel.app",
+        source_url: "https://github.com/sepsu-dev/qris-static-to-dynamic-generator",
+        image_url: "/projects/qris-dinamis.png",
+        is_public: true,
+        skills: [
+            { uid: "nextjs", name: "Next.js", icon: "▲" },
+            { uid: "typescript", name: "TypeScript", icon: "💎" },
+            { uid: "tailwindcss", name: "Tailwind CSS", icon: "🎨" },
+            { uid: "react", name: "React", icon: "⚛️" },
+        ],
+        created_at: "2026-07-15T08:00:00Z",
+        updated_at: "2026-07-15T08:00:00Z",
+    },
+    {
         uid: "kritqr",
         title: "KritQR",
         subtitle: "Instant QR Code Generator",
