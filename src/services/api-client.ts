@@ -11,23 +11,7 @@ export const apiClient = axios.create({
     },
 });
 
-import Cookies from "js-cookie";
 
-// Interceptor for Auth Token
-apiClient.interceptors.request.use(
-    (config) => {
-        if (typeof window !== "undefined") {
-            const token = Cookies.get("token");
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
 
 /**
  * Stores the last API message for cases where data is null/primitive
@@ -72,12 +56,7 @@ apiClient.interceptors.response.use(
             url: error.config?.url,
         });
 
-        if (error.response?.status === 401) {
-            if (typeof window !== "undefined") {
-                Cookies.remove("token");
-                window.location.href = "/login";
-            }
-        }
+
         return Promise.reject(error);
     }
 );

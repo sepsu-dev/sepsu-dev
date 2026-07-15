@@ -78,7 +78,7 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
             {/* Copy Email CTA */}
             <button
               onClick={handleCopyEmail}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-border bg-background hover:bg-muted text-sm font-bold transition-all"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-border bg-background hover:bg-muted text-sm font-bold transition-all cursor-pointer"
             >
               {copied ? (
                 <>

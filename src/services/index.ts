@@ -1,4 +1,3 @@
-export * from "./auth.service";
 export * from "./skills.service";
 export * from "./skill-categories.service";
 export * from "./projects.service";

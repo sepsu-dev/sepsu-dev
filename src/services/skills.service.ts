@@ -2,23 +2,23 @@ import { Skill, SkillGroup } from "@/types/api";
 
 // ── Dummy data ──────────────────────────────────────────────
 let skills: Skill[] = [
-    // frontend (cat-001)
-    { uid: "sk-001", name: "React", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "⚛️", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-002", name: "Next.js", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "▲", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-003", name: "TypeScript", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "💎", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-004", name: "Tailwind CSS", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "🎨", created_at: "2025-02-01T10:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-006", name: "React Native", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "📱", created_at: "2025-01-20T09:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-008", name: "Flutter", category_uid: "cat-001", category: { uid: "cat-001", name: "frontend" }, icon: "🦋", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    // backend (cat-002)
-    { uid: "sk-005", name: "Node.js", category_uid: "cat-002", category: { uid: "cat-002", name: "backend" }, icon: "🟢", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "sk-007", name: "Go", category_uid: "cat-002", category: { uid: "cat-002", name: "backend" }, icon: "🐹", created_at: "2025-02-10T11:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
-    // devops (cat-003) — only Docker & CI/CD
-    { uid: "sk-009", name: "Docker", category_uid: "cat-003", category: { uid: "cat-003", name: "devops" }, icon: "🐳", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
-    { uid: "sk-011", name: "CI/CD", category_uid: "cat-003", category: { uid: "cat-003", name: "devops" }, icon: "🔄", created_at: "2025-03-01T10:00:00Z", updated_at: "2025-04-10T08:00:00Z" },
-    // database (cat-004)
-    { uid: "sk-012", name: "PostgreSQL", category_uid: "cat-004", category: { uid: "cat-004", name: "database" }, icon: "🐘", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
-    { uid: "sk-013", name: "MongoDB", category_uid: "cat-004", category: { uid: "cat-004", name: "database" }, icon: "🍃", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
-    { uid: "sk-014", name: "Redis", category_uid: "cat-004", category: { uid: "cat-004", name: "database" }, icon: "🔴", created_at: "2025-03-05T13:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    // frontend
+    { uid: "react", name: "React", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "⚛️", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "nextjs", name: "Next.js", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "▲", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "typescript", name: "TypeScript", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "💎", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "tailwindcss", name: "Tailwind CSS", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "🎨", created_at: "2025-02-01T10:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "react-native", name: "React Native", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "📱", created_at: "2025-01-20T09:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "flutter", name: "Flutter", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "🦋", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    // backend
+    { uid: "nodejs", name: "Node.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "🟢", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "go", name: "Go", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "🐹", created_at: "2025-02-10T11:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
+    // devops
+    { uid: "docker", name: "Docker", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "🐳", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
+    { uid: "cicd", name: "CI/CD", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "🔄", created_at: "2025-03-01T10:00:00Z", updated_at: "2025-04-10T08:00:00Z" },
+    // database
+    { uid: "postgresql", name: "PostgreSQL", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🐘", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "mongodb", name: "MongoDB", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🍃", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "redis", name: "Redis", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🔴", created_at: "2025-03-05T13:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
 ];
 
 let nextUid = (): string => `sk-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;

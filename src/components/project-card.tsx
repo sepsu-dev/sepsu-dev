@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Terminal } from "lucide-react";
 import { cn, type Project } from "@/lib/utils";
 import { TechBadge } from "./tech-badge";
 
@@ -33,8 +33,9 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.08]"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-muted/40 text-muted-foreground/50">
-            <span className="text-[9px] font-mono tracking-widest uppercase">No Preview</span>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-muted/30 border border-dashed border-border/40 text-muted-foreground/45 gap-1.5">
+            <Terminal className="w-5 h-5 opacity-60 text-primary animate-pulse-soft" />
+            <span className="text-[8px] font-mono tracking-widest uppercase font-bold">No Preview</span>
           </div>
         )}
       </div>

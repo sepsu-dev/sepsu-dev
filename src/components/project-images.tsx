@@ -56,8 +56,7 @@ export function ProjectImages({ images, title }: ProjectImagesProps) {
               <ChevronRight className="w-5 h-5" />
             </button>
 
-            {/* Index Indicator Badge */}
-            <div className="absolute bottom-4 right-4 px-3 py-1 rounded-full bg-background/80 backdrop-blur-md border border-border text-[10px] font-mono font-bold">
+            <div className="absolute bottom-4 right-4 px-3 py-1 rounded-lg bg-background/80 backdrop-blur-md border border-border text-[10px] font-mono font-bold select-none">
               {currentIndex + 1} / {images.length}
             </div>
           </>

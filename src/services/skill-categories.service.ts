@@ -8,10 +8,10 @@ export interface SkillCategory {
 
 // ── Dummy data ──────────────────────────────────────────────
 let categories: SkillCategory[] = [
-    { uid: "cat-001", name: "frontend", icon: "🎨", created_at: "2025-01-10T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "cat-002", name: "backend", icon: "⚙️", created_at: "2025-01-10T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "cat-003", name: "devops", icon: "🚀", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
-    { uid: "cat-004", name: "database", icon: "🗄️", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "frontend", name: "frontend", icon: "🎨", created_at: "2025-01-10T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "backend", name: "backend", icon: "⚙️", created_at: "2025-01-10T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "devops", name: "devops", icon: "🚀", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
+    { uid: "database", name: "database", icon: "🗄️", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
 ];
 
 let nextUid = (): string => `cat-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;

@@ -8,7 +8,7 @@ let profile: Profile = {
     title: "Full-stack Engineer | Open Source Contributor",
     location: "Jakarta, Indonesia",
     bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
-    image_url: "https://media.tenor.com/Rd0jrWH5JjgAAAAM/cat-scuba.gif",
+    image_url: "/profile-sketch.png",
     github_url: "https://github.com/sepsu-dev",
     focus: [
         "⚡ Building performant APIs and backend services with Go and Node.js",

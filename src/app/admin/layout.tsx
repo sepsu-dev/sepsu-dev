@@ -1,18 +1,10 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Cookies from "js-cookie";
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const router = useRouter();
-
-    const handleLogout = () => {
-        Cookies.remove("token");
-        router.replace("/login");
-    };
 
     const linkStyle = (href: string) => ({
         textDecoration: "none",
@@ -48,20 +40,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/admin/skills" style={linkStyle("/admin/skills")}>Skills</Link>
                     <Link href="/admin/skill-categories" style={linkStyle("/admin/skill-categories")}>Categories</Link>
                     <Link href="/admin/profile" style={linkStyle("/admin/profile")}>Profile</Link>
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            marginLeft: "10px",
-                            cursor: "pointer",
-                            padding: "4px 12px",
-                            background: "#f0f0f0",
-                            border: "1px solid #ccc",
-                            borderRadius: "4px",
-                            fontSize: "13px"
-                        }}
-                    >
-                        Logout
-                    </button>
                 </nav>
             </header>
 

@@ -51,11 +51,4 @@ export interface Profile {
     focus?: string[];
 }
 
-export interface AuthResponse {
-    token: string;
-    profile: {
-        uid: string;
-        name: string;
-        email: string;
-    };
-}
+

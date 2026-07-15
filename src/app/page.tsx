@@ -170,14 +170,13 @@ export default async function AboutPage({ searchParams }: PageProps) {
         {/* Intro Section */}
         <section id="about" className="mb-24 scroll-mt-28">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-            {/* Avatar with spinning gradient ring */}
+            {/* Profile Avatar Container */}
             <div className="relative group flex-shrink-0">
-              <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary via-purple-500 to-pink-500 opacity-60 blur-sm transition duration-700 group-hover:opacity-100 animate-spin-slow"></div>
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-card border border-border/30 overflow-hidden ring-4 ring-background">
                 <img
-                  src={profile?.image_url || "https://media.tenor.com/Rd0jrWH5JjgAAAAM/cat-scuba.gif"}
+                  src={profile?.image_url || "/profile-sketch.png"}
                   alt={profile?.name || "Profile"}
-                  className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-105"
                 />
               </div>
             </div>
