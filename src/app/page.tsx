@@ -6,6 +6,7 @@ import { ContactSection } from "@/components/contact-section";
 import { Terminal, Code2, Database, Layout, Server, GitBranch, Mail, type LucideIcon, Globe, Cpu, Puzzle, Cloud, Palette, Wrench, Smartphone, Sparkles } from "lucide-react";
 import { Highlighter } from "@/components/highlighter";
 import { TechBadge } from "@/components/tech-badge";
+import { SectionHeader } from "@/components/section-header";
 import { projectsService, skillsService, skillCategoriesService, profileService } from "@/services";
 import { type Project } from "@/lib/utils";
 
@@ -147,20 +148,12 @@ export default async function AboutPage({ searchParams }: PageProps) {
 
   return (
     <div className="relative min-h-screen bg-background overflow-hidden font-sans pt-12">
-      {/* Dynamic Background Grid Pattern */}
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0"></div>
+      {/* Premium Micro-dot Grid Background */}
+      <div className="fixed inset-0 bg-[radial-gradient(#8080800d_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none z-0"></div>
 
-      {/* Floating Decorative Coding Symbols */}
-      <div className="fixed top-32 left-10 text-primary/3 text-8xl font-mono font-bold select-none pointer-events-none animate-float hidden md:block z-0">
-        {`{ }`}
-      </div>
-      <div className="fixed bottom-40 right-10 text-primary/3 text-8xl font-mono font-bold select-none pointer-events-none animate-float-reverse hidden md:block z-0">
-        {`< />`}
-      </div>
-
-      {/* Aurora Ambient Glow Orbs */}
-      <div className="absolute top-20 left-10 w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] rounded-full bg-primary/5 blur-[90px] sm:blur-[130px] pointer-events-none animate-orb-1 -z-10"></div>
-      <div className="absolute top-1/2 right-10 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] rounded-full bg-purple-500/5 blur-[80px] sm:blur-[120px] pointer-events-none animate-orb-2 -z-10"></div>
+      {/* Elegant Radial Light Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/4 blur-[130px] pointer-events-none -z-10 animate-pulse-slow"></div>
+      <div className="absolute bottom-[20%] right-[-10%] w-[450px] h-[450px] rounded-full bg-purple-500/3 blur-[120px] pointer-events-none -z-10 animate-pulse-slow"></div>
 
       {/* Floating Glassmorphic Navbar */}
       <Navbar />
@@ -172,119 +165,85 @@ export default async function AboutPage({ searchParams }: PageProps) {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
             {/* Profile Avatar Container */}
             <div className="relative group flex-shrink-0">
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-card border border-border/30 overflow-hidden ring-4 ring-background">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-card border border-border/40 overflow-hidden shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
                 <img
                   src={profile?.image_url || "/profile-sketch.png"}
                   alt={profile?.name || "Profile"}
-                  className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-[1.015]"
                 />
               </div>
             </div>
 
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-primary/10 text-primary text-[10px] sm:text-xs font-mono font-semibold tracking-tight mb-2">
-                <Terminal className="w-3 h-3 animate-pulse" />
-                <span>~/portfolio/about_me.sh</span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/8 text-primary text-[10px] sm:text-xs font-mono font-semibold tracking-tight mb-2 border border-primary/10">
+                <Terminal className="w-3 h-3" />
+                <span>portfolio.sh</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">
-                <span className="relative inline-block z-10 text-foreground">
-                  {profile?.name ? profile.name.split(' ')[0] : "Sepsu"} <span className="text-primary">{profile?.name ? profile.name.split(' ').slice(1).join(' ') : "Dev"}</span>
-                  <Highlighter variant={1} className="-rotate-2 scale-x-110 opacity-30" />
-                </span>
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 text-foreground">
+                {profile?.name ? profile.name.split(' ')[0] : "Sepsu"}{" "}
+                <span className="text-primary">{profile?.name ? profile.name.split(' ').slice(1).join(' ') : "Dev"}</span>
               </h1>
             </div>
           </div>
 
           <div className="space-y-6 text-muted-foreground text-sm sm:text-base leading-relaxed max-w-2xl">
             {/* Location Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur-sm text-xs font-mono font-medium shadow-sm hover:border-primary/20 transition-colors mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-card/40 backdrop-blur-sm text-xs font-mono font-medium shadow-sm hover:border-primary/20 transition-colors mb-4">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
               <span className="text-muted-foreground">Based in <span className="text-foreground font-semibold">{profile?.location || "Jakarta"}</span></span>
-              <div className="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex flex-col shadow-[0_0_2px_rgba(0,0,0,0.2)] ml-0.5 border border-border/50" title={profile?.location || "Indonesia"}>
+              <div className="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex flex-col shadow-[0_0_2px_rgba(0,0,0,0.15)] ml-0.5 border border-border/30" title={profile?.location || "Indonesia"}>
                 <div className="w-full h-1/2 bg-[#FF0000]"></div>
                 <div className="w-full h-1/2 bg-white"></div>
               </div>
             </div>
 
-            <p className="text-foreground/90 font-medium">
+            <p className="text-foreground/80 font-medium">
               {profile?.bio || "Full-stack Engineer specializing in high-performance backends and fluid modern user interfaces."}
             </p>
           </div>
 
-          {/* macOS Editor/Terminal mockup for Focus Areas */}
-          <div className="rounded-lg overflow-hidden border border-border dark:border-[#30363d] bg-card dark:bg-[#0d1117] text-foreground dark:text-zinc-100 shadow-md hover:shadow-xl transition-all duration-500 mt-8 font-mono text-xs sm:text-sm">
-            <div className="flex items-center justify-between px-4 py-2.5 bg-muted/80 dark:bg-[#161b22] border-b border-border/40 dark:border-b-[#30363d]">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E]/20"></div>
-                <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]/20"></div>
-                <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]/20"></div>
-                <span className="text-[11px] text-muted-foreground/80 dark:text-[#8b949e] ml-3 font-semibold tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-yellow-500 animate-spin-slow" />
-                  active_session.js
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-background/50 dark:bg-zinc-800/80 border border-border/40 dark:border-zinc-700 text-muted-foreground dark:text-zinc-300">JS</div>
-              </div>
-            </div>
-            <div className="p-4 overflow-x-auto leading-relaxed flex items-start gap-4 bg-[#f6f8fa]/80 dark:bg-[#0d1117] transition-colors duration-500">
-              <div className="select-none text-muted-foreground/30 dark:text-[#8b949e]/30 text-right pr-2 border-r border-border/20 dark:border-r-[#30363d]/50 space-y-0.5">
-                {focusItems.map((_: string, index: number) => (
-                  <div key={index} className="h-5 flex items-center justify-end">{index + 1}</div>
-                ))}
-                <div className="h-5 flex items-center justify-end">{focusItems.length + 1}</div>
-              </div>
-              <div className="flex-1 whitespace-nowrap min-w-0 font-medium space-y-0.5">
-                <div className="h-5 flex items-center">
-                  <span className="text-[#d73a49] dark:text-[#ff7b72]">const</span>&nbsp;
-                  <span className="text-[#005cc5] dark:text-[#79c0ff]">currentFocus</span>&nbsp;
-                  <span className="text-[#d73a49] dark:text-[#ff7b72]">=</span>&nbsp;
-                  <span className="text-foreground dark:text-zinc-300">[</span>
+          {/* Focus Areas list */}
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {focusItems.map((item: string, index: number) => {
+              const emojiMatch = item.match(/^([^\s]+)\s+(.+)$/);
+              const emoji = emojiMatch ? emojiMatch[1] : "▪";
+              const text = emojiMatch ? emojiMatch[2] : item;
+              return (
+                <div key={index} className="flex items-start gap-3 p-4 rounded-xl border border-border/40 bg-card/20 hover:border-primary/20 transition-all duration-300">
+                  <span className="text-base shrink-0 select-none">{emoji}</span>
+                  <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-medium">
+                    {text}
+                  </p>
                 </div>
-                {focusItems.map((item: string, i: number) => (
-                  <div key={i} className="h-5 flex items-center">
-                    &nbsp;&nbsp;<span className="text-[#22863a] dark:text-[#a5d6ff]">"{item}"</span>
-                    <span className="text-foreground dark:text-zinc-300">{i < focusItems.length - 1 ? "," : ""}</span>
-                  </div>
-                ))}
-                <div className="h-5 flex items-center">
-                  <span className="text-foreground dark:text-zinc-300">]</span>
-                  <span className="text-[#d73a49] dark:text-[#ff7b72]">;</span>
-                  <span className="inline-block w-1.5 h-4 bg-primary ml-1 cursor-blink align-middle"></span>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </section>
 
         {/* Tech Stack Section */}
         <section id="tech-stack" className="mb-24 scroll-mt-28 relative">
-          <div className="mb-8">
-            <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono">
-              <GitBranch className="w-5 h-5 text-primary animate-pulse" />
-              <span className="relative inline-block z-10">
-                Tech Stack
-                <Highlighter variant={2} className="rotate-2 scale-x-110" />
-              </span>
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono shrink-0">
+              <GitBranch className="w-5 h-5 text-primary" />
+              <span>Tech Stack</span>
             </h2>
-            <p className="text-sm text-muted-foreground mt-1">A curated selection of modern technologies and frameworks I leverage to engineer enterprise-grade applications.</p>
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-border/60 to-transparent"></div>
           </div>
+          <p className="text-sm text-muted-foreground -mt-4 mb-8 max-w-xl">A curated selection of modern technologies and frameworks I leverage to engineer enterprise-grade applications.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {techStack.map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div key={idx} className="group relative p-4 sm:p-5 rounded-lg border border-border/60 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_15px_30px_-15px_rgba(0,0,0,0.3)] hover:bg-card hover:border-primary/30">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/2 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div key={idx} className="group relative p-5 rounded-xl border border-border/50 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-primary/30 hover:bg-card/50">
                   <div className="flex items-center gap-3 mb-3 relative z-10">
-                    <div className="p-2 bg-primary/10 rounded-lg group-hover:scale-105 transition-transform text-primary">
-                      <Icon className="w-4.5 h-4.5" />
+                    <div className="p-2 bg-primary/8 rounded-lg text-primary">
+                      <Icon className="w-4 h-4" />
                     </div>
-                    <h3 className="relative inline-block text-sm sm:text-base font-bold text-foreground">
+                    <h3 className="text-sm sm:text-base font-bold text-foreground">
                       {item.category}
-                      <Highlighter variant={1} className="scale-x-125 opacity-10" />
                     </h3>
                   </div>
                   <div className="flex flex-wrap gap-1.5 mt-1 relative z-10">
@@ -301,17 +260,16 @@ export default async function AboutPage({ searchParams }: PageProps) {
         {/* Projects Section */}
         <section id="projects" className="mb-24 scroll-mt-28">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
-            <div>
-              <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono relative">
-                <Code2 className="w-5 h-5 text-primary" />
-                <span className="relative inline-block z-10">
-                  Projects
-                  <Highlighter variant={3} className="-rotate-2 scale-y-125" />
-                </span>
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">A showcase of my recent engineering work, highlighting expertise in performance optimization and scalable architecture.</p>
+            <div className="flex-1">
+              <div className="flex items-center gap-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono shrink-0">
+                  <Code2 className="w-5 h-5 text-primary" />
+                  <span>Projects</span>
+                </h2>
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-border/60 to-transparent"></div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-2 max-w-xl">A showcase of my recent engineering work, highlighting expertise in performance optimization and scalable architecture.</p>
             </div>
-            <div className="h-px flex-1 bg-border/40 ml-6 hidden sm:block"></div>
           </div>
           <ProjectList projects={paginatedProjects} meta={meta} title="" />
         </section>

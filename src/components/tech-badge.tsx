@@ -86,10 +86,8 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
     const badgeStyle = brandColor
         ? {
             color: isHovered ? brandColor : "inherit",
-            borderColor: isHovered ? `${brandColor}50` : `${brandColor}18`,
-            backgroundColor: isHovered ? `${brandColor}12` : `${brandColor}05`,
-            textShadow: isHovered ? `0 0 8px ${brandColor}30` : "none",
-            boxShadow: isHovered ? `0 0 12px ${brandColor}15` : "none",
+            borderColor: isHovered ? `${brandColor}35` : `${brandColor}12`,
+            backgroundColor: isHovered ? `${brandColor}08` : `${brandColor}03`,
           }
         : {};
 
@@ -107,7 +105,7 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={badgeStyle}
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-bold border border-border/40 text-muted-foreground bg-muted/20 transition-all duration-300 scale-100 hover:scale-[1.03] select-none ${className}`}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-mono font-medium border border-border/40 text-muted-foreground bg-muted/10 transition-colors duration-200 select-none ${className}`}
         >
             {slug && (
                 <>
