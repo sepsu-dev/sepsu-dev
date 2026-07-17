@@ -4,7 +4,7 @@ import { Skill, SkillGroup } from "@/types/api";
 let skills: Skill[] = [
     // frontend
     { uid: "js", name: "JavaScript", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "javascript", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "react", name: "React", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "react", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "react", name: "React.js", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "react", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "vuejs", name: "Vue.js", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "vuedotjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "reactnative", name: "React Native", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "react", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "bootstrap", name: "Bootstrap", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "bootstrap", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
@@ -13,8 +13,8 @@ let skills: Skill[] = [
     { uid: "php", name: "PHP", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "php", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "laravel", name: "Laravel", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "laravel", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "codeigniter", name: "CodeIgniter", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "codeigniter", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "expressjs", name: "Express", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "express", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "nestjs", name: "NestJS", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "nestjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "expressjs", name: "Express.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "express", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "nestjs", name: "Nest.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "nestjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     { uid: "nodejs", name: "Node.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "nodedotjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     // devops
     { uid: "cicd", name: "CI/CD", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "githubactions", created_at: "2025-03-01T10:00:00Z", updated_at: "2025-04-10T08:00:00Z" },

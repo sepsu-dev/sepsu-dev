@@ -11,8 +11,8 @@ let profile: Profile = {
     image_url: "/profile-sketch.png",
     github_url: "https://github.com/sepsu-dev",
     focus: [
-        "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express, and NestJS",
-        "⚛️ Crafting highly interactive user interfaces with React, Vue.js, and React Native",
+        "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
+        "⚛️ Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
         "🐳 Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
         "🗢 Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
     ],

@@ -126,21 +126,21 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav Items */}
-        <nav className="hidden md:flex items-center gap-1 bg-muted/30 border border-border/30 rounded-lg p-1 backdrop-blur-sm">
+        <nav className="hidden md:flex items-center gap-1 bg-muted/30 border border-border/30 rounded-xl p-1 backdrop-blur-sm">
           {navItems.map((item) => (
             <a
               key={item.id}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.id)}
               className={cn(
-                "px-4 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 relative",
+                "px-4 py-1.5 rounded-xl text-xs font-sans font-medium transition-all duration-300 relative",
                 activeSection === item.id
                   ? "text-primary-foreground font-bold"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
               {activeSection === item.id && (
-                <div className="absolute inset-0 bg-primary rounded-lg -z-10 shadow-md shadow-primary/20 animate-in fade-in zoom-in duration-300" />
+                <div className="absolute inset-0 bg-primary rounded-xl -z-10 shadow-md shadow-primary/20 animate-in fade-in zoom-in duration-300" />
               )}
               {item.label}
             </a>
@@ -181,7 +181,7 @@ export function Navbar() {
         {/* Mobile menu trigger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-1.5 rounded-lg border border-border/50 md:hidden bg-card/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+          className="p-1.5 rounded-xl border border-border/50 md:hidden bg-card/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
           aria-label="Toggle Menu"
         >
           {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -202,7 +202,7 @@ export function Navbar() {
               href={item.href}
               onClick={(e) => handleNavClick(e, item.id)}
               className={cn(
-                "py-2.5 px-4 rounded-lg text-sm font-mono font-medium border transition-all",
+                "py-2.5 px-4 rounded-xl text-sm font-mono font-medium border transition-all",
                 activeSection === item.id
                   ? "bg-primary/10 border-primary/20 text-primary font-bold shadow-sm"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/30"
@@ -214,14 +214,14 @@ export function Navbar() {
           <div className="h-px bg-border/50 my-2" />
 
           {/* Mobile Theme Toggle */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-card/50">
+          <div className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-card/50">
             <span className="text-xs font-mono text-muted-foreground">Dark Appearance</span>
             {!mounted ? (
-              <div className="w-8 h-8 rounded-lg bg-muted/40 animate-pulse"></div>
+              <div className="w-8 h-8 rounded-xl bg-muted/40 animate-pulse"></div>
             ) : (
               <button
                 onClick={toggleTheme}
-                className="p-1.5 rounded-lg border border-border/50 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center size-8"
+                className="p-1.5 rounded-xl border border-border/50 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center size-8"
                 aria-label="Toggle Theme"
               >
                 {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-500" /> : <Moon className="w-4 h-4 text-primary" />}
@@ -234,7 +234,7 @@ export function Navbar() {
             href="https://github.com/sepsu-dev"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-muted/30 text-xs font-mono font-semibold"
+            className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/30 text-xs font-mono font-semibold"
           >
             <span>View GitHub Portfolio</span>
             <ArrowUpRight className="w-4 h-4 text-primary" />

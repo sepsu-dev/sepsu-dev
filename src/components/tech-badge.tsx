@@ -105,7 +105,7 @@ export function TechBadge({ tag, iconSlug, className = "" }: TechBadgeProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={badgeStyle}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-mono font-medium border border-border/40 text-muted-foreground bg-muted/10 transition-colors duration-200 select-none ${className}`}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-mono font-medium border border-border/40 text-muted-foreground bg-muted/10 transition-colors duration-200 select-none ${className}`}
         >
             {slug && (
                 <>

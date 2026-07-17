@@ -25,7 +25,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
 
       {/* Image Thumbnail Container */}
-      <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-lg overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
+      <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
         {/* Glow backdrop overlay */}
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/6 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
         {/* Sleek dark gradient vignette */}

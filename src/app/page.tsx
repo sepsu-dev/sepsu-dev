@@ -226,11 +226,13 @@ export default async function AboutPage({ searchParams }: PageProps) {
         {/* Tech Stack Section */}
         <section id="tech-stack" className="mb-24 scroll-mt-28 relative">
           <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono shrink-0">
-              <GitBranch className="w-5 h-5 text-primary" />
+            <h2 className="text-base sm:text-lg font-semibold tracking-tight text-foreground flex items-center gap-2 shrink-0">
+              <GitBranch className="w-4 h-4 text-primary" />
               <span>Tech Stack</span>
             </h2>
-            <div className="h-[1px] flex-1 bg-gradient-to-r from-border/60 to-transparent"></div>
+            <div className="h-[1px] flex-1 bg-border/40 relative">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary"></div>
+            </div>
           </div>
           <p className="text-sm text-muted-foreground -mt-4 mb-8 max-w-xl">A curated selection of modern technologies and frameworks I leverage to engineer enterprise-grade applications.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -262,11 +264,13 @@ export default async function AboutPage({ searchParams }: PageProps) {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
             <div className="flex-1">
               <div className="flex items-center gap-4">
-                <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono shrink-0">
-                  <Code2 className="w-5 h-5 text-primary" />
+                <h2 className="text-base sm:text-lg font-semibold tracking-tight text-foreground flex items-center gap-2 shrink-0">
+                  <Code2 className="w-4 h-4 text-primary" />
                   <span>Projects</span>
                 </h2>
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-border/60 to-transparent"></div>
+                <div className="h-[1px] flex-1 bg-border/40 relative">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary"></div>
+                </div>
               </div>
               <p className="text-sm text-muted-foreground mt-2 max-w-xl">A showcase of my recent engineering work, highlighting expertise in performance optimization and scalable architecture.</p>
             </div>

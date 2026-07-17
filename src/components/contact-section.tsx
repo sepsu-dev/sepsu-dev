@@ -33,18 +33,18 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
         <div className="w-[300px] h-[300px] bg-primary/10 rounded-full blur-[90px] opacity-70 animate-pulse-soft"></div>
       </div>
 
-      <div className="mb-8">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2 font-mono">
-          <MessageSquare className="w-5 h-5 text-primary" />
-          <span className="relative">
-            Get In Touch
-            <span className="absolute bottom-0 left-0 w-full h-[3px] bg-primary/20 -z-10 scale-x-110"></span>
-          </span>
+      <div className="flex items-center gap-4 mb-8">
+        <h2 className="text-base sm:text-lg font-semibold tracking-tight text-foreground flex items-center gap-2 shrink-0 font-sans">
+          <MessageSquare className="w-4 h-4 text-primary" />
+          <span>Get In Touch</span>
         </h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Have an exciting project, a job opportunity, or just want to chat about development? Feel free to reach out!
-        </p>
+        <div className="h-[1px] flex-1 bg-border/40 relative">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary"></div>
+        </div>
       </div>
+      <p className="text-sm text-muted-foreground mt-1 mb-8 max-w-xl">
+        Have an exciting project, a job opportunity, or just want to chat about development? Feel free to reach out!
+      </p>
 
       <div className="relative group p-6 sm:p-8 rounded-lg border border-border bg-card/40 backdrop-blur-md overflow-hidden transition-all duration-500 hover:border-primary/20 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.3)]">
         {/* Background Gradients */}
