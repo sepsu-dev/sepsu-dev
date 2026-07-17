@@ -11,9 +11,10 @@ let profile: Profile = {
     image_url: "/profile-sketch.png",
     github_url: "https://github.com/sepsu-dev",
     focus: [
-        "⚡ Building performant APIs and backend services with Go and Node.js",
-        "⚛️ Developing interactive web applications with React and Next.js",
-        "🐳 Deploying and managing applications with Docker and CI/CD pipelines",
+        "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express, and NestJS",
+        "⚛️ Crafting highly interactive user interfaces with React, Vue.js, and React Native",
+        "🐳 Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
+        "🗢 Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
     ],
 };
 

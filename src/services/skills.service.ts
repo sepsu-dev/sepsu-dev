@@ -3,22 +3,31 @@ import { Skill, SkillGroup } from "@/types/api";
 // ── Dummy data ──────────────────────────────────────────────
 let skills: Skill[] = [
     // frontend
-    { uid: "react", name: "React", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "⚛️", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "nextjs", name: "Next.js", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "▲", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "typescript", name: "TypeScript", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "💎", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "tailwindcss", name: "Tailwind CSS", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "🎨", created_at: "2025-02-01T10:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "react-native", name: "React Native", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "📱", created_at: "2025-01-20T09:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "flutter", name: "Flutter", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "🦋", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "js", name: "JavaScript", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "javascript", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "react", name: "React", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "react", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "vuejs", name: "Vue.js", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "vuedotjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "reactnative", name: "React Native", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "react", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "bootstrap", name: "Bootstrap", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "bootstrap", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "tailwind", name: "Tailwind CSS", category_uid: "frontend", category: { uid: "frontend", name: "frontend" }, icon: "tailwindcss", created_at: "2025-02-01T10:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     // backend
-    { uid: "nodejs", name: "Node.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "🟢", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
-    { uid: "go", name: "Go", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "🐹", created_at: "2025-02-10T11:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
+    { uid: "php", name: "PHP", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "php", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "laravel", name: "Laravel", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "laravel", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "codeigniter", name: "CodeIgniter", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "codeigniter", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "expressjs", name: "Express", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "express", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "nestjs", name: "NestJS", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "nestjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "nodejs", name: "Node.js", category_uid: "backend", category: { uid: "backend", name: "backend" }, icon: "nodedotjs", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
     // devops
-    { uid: "docker", name: "Docker", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "🐳", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
-    { uid: "cicd", name: "CI/CD", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "🔄", created_at: "2025-03-01T10:00:00Z", updated_at: "2025-04-10T08:00:00Z" },
+    { uid: "cicd", name: "CI/CD", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "githubactions", created_at: "2025-03-01T10:00:00Z", updated_at: "2025-04-10T08:00:00Z" },
+    { uid: "gitlab", name: "GitLab", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "gitlab", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "github", name: "GitHub", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "github", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "ubuntu", name: "Ubuntu", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "ubuntu", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "docker", name: "Docker", category_uid: "devops", category: { uid: "devops", name: "devops" }, icon: "docker", created_at: "2025-02-15T12:00:00Z", updated_at: "2025-04-01T09:00:00Z" },
     // database
-    { uid: "postgresql", name: "PostgreSQL", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🐘", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
-    { uid: "mongodb", name: "MongoDB", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🍃", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
-    { uid: "redis", name: "Redis", category_uid: "database", category: { uid: "database", name: "database" }, icon: "🔴", created_at: "2025-03-05T13:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "postgresql", name: "PostgreSQL", category_uid: "database", category: { uid: "database", name: "database" }, icon: "postgresql", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "mysql", name: "MySQL", category_uid: "database", category: { uid: "database", name: "database" }, icon: "mysql", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "sqlserver", name: "SQL Server", category_uid: "database", category: { uid: "database", name: "database" }, icon: "microsoftsqlserver", created_at: "2025-01-15T08:00:00Z", updated_at: "2025-03-01T10:00:00Z" },
+    { uid: "redis", name: "Redis", category_uid: "database", category: { uid: "database", name: "database" }, icon: "redis", created_at: "2025-03-05T13:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
+    { uid: "mongodb", name: "MongoDB", category_uid: "database", category: { uid: "database", name: "database" }, icon: "mongodb", created_at: "2025-02-20T14:00:00Z", updated_at: "2025-04-05T11:00:00Z" },
 ];
 
 let nextUid = (): string => `sk-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
