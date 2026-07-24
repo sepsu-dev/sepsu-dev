@@ -46,7 +46,7 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
         Have an exciting project, a job opportunity, or just want to chat about development? Feel free to reach out!
       </p>
 
-      <div className="relative group p-6 sm:p-8 rounded-lg border border-border bg-card/40 backdrop-blur-md overflow-hidden transition-all duration-500 hover:border-primary/20 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.3)]">
+      <div className="relative group p-6 sm:p-8 rounded-xl border border-primary/20 bg-card/40 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-0.5 hover:shadow-md hover:bg-card/60">
         {/* Background Gradients */}
         <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-gradient-to-br from-primary/10 to-purple-500/5 rounded-full blur-[60px] pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-60"></div>
         <div className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-gradient-to-tr from-blue-500/5 to-primary/5 rounded-full blur-[40px] pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-40"></div>

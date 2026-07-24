@@ -17,7 +17,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
     <Link
       href={`/project/${project.project_id}`}
       className={cn(
-        "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-border/40 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] hover:bg-card hover:border-primary/25 items-stretch",
+        "group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch",
         className
       )}
     >

@@ -212,7 +212,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
               const emoji = emojiMatch ? emojiMatch[1] : "▪";
               const text = emojiMatch ? emojiMatch[2] : item;
               return (
-                <div key={index} className="flex items-start gap-3 p-4 rounded-xl border border-border/40 bg-card/20 hover:border-primary/20 transition-all duration-300">
+                <div key={index} className="flex items-start gap-3 p-4 rounded-xl border border-primary/20 bg-card/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                   <span className="text-base shrink-0 select-none">{emoji}</span>
                   <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-medium">
                     {text}
@@ -239,7 +239,7 @@ export default async function AboutPage({ searchParams }: PageProps) {
             {techStack.map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div key={idx} className="group relative p-5 rounded-xl border border-border/50 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-primary/30 hover:bg-card/50">
+                <div key={idx} className="group relative p-5 rounded-xl border border-primary/20 bg-card/30 backdrop-blur-md overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:bg-card/50">
                   <div className="flex items-center gap-3 mb-3 relative z-10">
                     <div className="p-2 bg-primary/8 rounded-lg text-primary">
                       <Icon className="w-4 h-4" />
