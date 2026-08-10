@@ -1,0 +1,16 @@
+# Sepsu Dev — Software Engineer Portfolio
+
+> Software Engineer specializing in high-performance backends, modern web architectures, and fluid responsive user interfaces.
+
+## Overview
+Sepsu Dev is a portfolio application showcasing developer projects, technical stack skills, focus areas, and credentials.
+
+## Primary Resources
+- [Home](https://sepsu.dev/): Overview of profile, technical skills, and project showcase.
+- [Robots](https://sepsu.dev/robots.txt): Search engine crawler directive file.
+
+## Technical Architecture & Stack
+- **Framework**: Next.js 16 (App Router & Turbopack)
+- **Language**: TypeScript & React
+- **Styling**: Tailwind CSS & Glassmorphism design system
+- **Backend Tech**: Go, Node.js, PostgreSQL, Docker

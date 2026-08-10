@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,14 +26,26 @@ export function ProjectImages({ images, title }: ProjectImagesProps) {
     );
   }
 
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <div className="space-y-4">
       {/* Main Image View */}
-      <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50 group font-sans">
+      <div className="relative aspect-video rounded-xl overflow-hidden border border-border/50 group font-sans bg-muted/20">
+        {isLoading && (
+          <div className="absolute inset-0 bg-muted/40 animate-pulse z-20 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-primary animate-spin"></div>
+          </div>
+        )}
+
         <img
           src={images[currentIndex]}
           alt={`${title} - image ${currentIndex + 1}`}
-          className="w-full h-full object-cover object-top transition-all duration-500"
+          onLoad={() => setIsLoading(false)}
+          className={cn(
+            "w-full h-full object-cover object-top transition-all duration-500",
+            isLoading ? "opacity-0 scale-98" : "opacity-100 scale-100"
+          )}
         />
 
         {/* Navigation Arrows */}

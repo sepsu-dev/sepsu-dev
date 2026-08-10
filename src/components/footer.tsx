@@ -1,6 +1,4 @@
-"use client";
-
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Terminal } from "lucide-react";
 
 export function Footer() {
@@ -9,7 +7,7 @@ export function Footer() {
       <div className="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
         {/* Left Column: Branding matching the Navbar brand logo */}
         <Link
-          href="/"
+          to="/"
           className="group flex items-center gap-1.5 font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
           <div className="p-1 bg-primary/10 rounded-md text-primary group-hover:scale-105 transition-transform">
@@ -20,8 +18,8 @@ export function Footer() {
           </span>
         </Link>
 
-        {/* Right Column: Clean Copyright */}
-        <p className="text-[11px] opacity-80 font-medium">
+        {/* Right Column: Clean High-Contrast Copyright */}
+        <p className="text-xs text-muted-foreground font-medium">
           © {new Date().getFullYear()} Sepsu Dev. All rights reserved.
         </p>
       </div>

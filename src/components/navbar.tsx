@@ -1,9 +1,7 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { Menu, X, Terminal, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocation, Link } from "react-router-dom";
 
 interface NavItem {
   label: string;
@@ -19,7 +17,9 @@ const navItems: NavItem[] = [
 ];
 
 export function Navbar() {
-  const [activeSection, setActiveSection] = useState("about");
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const [activeSection, setActiveSection] = useState(isHomePage ? "about" : "");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -66,8 +66,25 @@ export function Navbar() {
     }
   };
 
-  // Intersection Observer for scroll spy
+  // Intersection Observer for scroll spy & hash auto-scroll on mount
   useEffect(() => {
+    if (!isHomePage) {
+      setActiveSection("");
+      return;
+    }
+
+    // Handle initial hash in URL (e.g. #projects or #tech-stack)
+    const hash = window.location.hash.replace("#", "");
+    if (hash) {
+      setTimeout(() => {
+        const targetEl = document.getElementById(hash);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+          setActiveSection(hash);
+        }
+      }, 100);
+    }
+
     const observers = navItems.map((item) => {
       const el = document.getElementById(item.id);
       if (!el) return null;
@@ -89,16 +106,20 @@ export function Navbar() {
         if (obs) obs.observer.unobserve(obs.el);
       });
     };
-  }, []);
+  }, [isHomePage]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      e.preventDefault();
+    if (isHomePage) {
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        setIsOpen(false);
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", `#${id}`);
+        setActiveSection(id);
+      }
+    } else {
       setIsOpen(false);
-      el.scrollIntoView({ behavior: "smooth" });
-      window.history.pushState(null, "", `#${id}`);
-      setActiveSection(id);
     }
   };
 
@@ -114,7 +135,7 @@ export function Navbar() {
       <div className="max-w-3xl mx-auto px-4 flex items-center justify-between">
         {/* Brand Logo */}
         <Link
-          href="/"
+          to="/"
           className="group flex items-center gap-1.5 font-mono text-sm font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
           <div className="p-1 bg-primary/10 rounded-md text-primary group-hover:scale-105 transition-transform">
@@ -188,59 +209,62 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Drawer */}
-      <div
-        className={cn(
-          "fixed inset-x-0 top-[57px] bg-background/95 backdrop-blur-lg border-b border-border/50 transition-all duration-300 md:hidden shadow-lg overflow-hidden flex flex-col z-40",
-          isOpen ? "max-h-screen opacity-100 py-6 px-6" : "max-h-0 opacity-0 py-0 px-6 pointer-events-none"
-        )}
-      >
-        <div className="flex flex-col gap-4">
-          {navItems.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.id)}
-              className={cn(
-                "py-2.5 px-4 rounded-xl text-sm font-mono font-medium border transition-all",
-                activeSection === item.id
-                  ? "bg-primary/10 border-primary/20 text-primary font-bold shadow-sm"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/30"
-              )}
-            >
-              {item.label}
-            </a>
-          ))}
-          <div className="h-px bg-border/50 my-2" />
-
-          {/* Mobile Theme Toggle */}
-          <div className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-card/50">
-            <span className="text-xs font-mono text-muted-foreground">Dark Appearance</span>
-            {!mounted ? (
-              <div className="w-8 h-8 rounded-xl bg-muted/40 animate-pulse"></div>
-            ) : (
-              <button
-                onClick={toggleTheme}
-                className="p-1.5 rounded-xl border border-border/50 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center size-8"
-                aria-label="Toggle Theme"
+      {/* Mobile Menu Dropdown Card */}
+      {isOpen && (
+        <div className="fixed inset-x-4 top-16 bg-background border border-border/60 rounded-2xl shadow-2xl md:hidden z-[100] p-5 animate-in fade-in zoom-in-95 duration-200 space-y-4">
+          {/* Nav items */}
+          <div className="flex flex-col gap-1.5">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={cn(
+                  "py-3 px-4 rounded-xl text-sm font-mono font-medium transition-all flex items-center justify-between",
+                  activeSection === item.id
+                    ? "bg-primary/10 border border-primary/25 text-primary font-bold shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/40 border border-transparent"
+                )}
               >
-                {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-500" /> : <Moon className="w-4 h-4 text-primary" />}
-              </button>
-            )}
+                <span>{item.label}</span>
+                {activeSection === item.id && (
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                )}
+              </a>
+            ))}
           </div>
 
-          {/* Mobile GitHub link */}
-          <a
-            href="https://github.com/sepsu-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-muted/30 text-xs font-mono font-semibold"
-          >
-            <span>View GitHub Portfolio</span>
-            <ArrowUpRight className="w-4 h-4 text-primary" />
-          </a>
+          <div className="h-px bg-border/50" />
+
+          {/* Theme Switcher & Actions */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-card/50">
+              <span className="text-xs font-mono font-medium text-muted-foreground">Dark Mode</span>
+              {!mounted ? (
+                <div className="w-8 h-8 rounded-xl bg-muted/40 animate-pulse"></div>
+              ) : (
+                <button
+                  onClick={toggleTheme}
+                  className="p-1.5 rounded-xl border border-border/50 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center size-8 cursor-pointer"
+                  aria-label="Toggle Theme"
+                >
+                  {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-500" /> : <Moon className="w-4 h-4 text-primary" />}
+                </button>
+              )}
+            </div>
+
+            <a
+              href="https://github.com/sepsu-dev"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-between p-3 rounded-xl border border-border bg-card/60 text-xs font-mono font-semibold text-foreground hover:border-primary/40 transition-colors"
+            >
+              <span>View GitHub Portfolio</span>
+              <ArrowUpRight className="w-4 h-4 text-primary" />
+            </a>
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

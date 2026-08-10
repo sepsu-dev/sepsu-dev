@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { Mail, Check, Copy, ArrowUpRight, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
@@ -14,7 +12,18 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
 
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(email);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = email;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
       setCopied(true);
       toast.success("Email copied to clipboard!", {
         description: `You can now paste ${email} anywhere.`,
