@@ -168,7 +168,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
             <div className="relative group flex-shrink-0">
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-card border border-border/40 overflow-hidden shadow-sm transition-all duration-300 group-hover:border-primary/30">
-                <img src="/profile-sketch.png" alt="Sepsu Dev" width={96} height={96} className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-[1.015]" />
+                <img src="/profile-sketch.png" alt="Sepsu Dev" width={96} height={96} decoding="async" className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-[1.015]" />
               </div>
             </div>
             <div>
@@ -334,7 +334,7 @@ export default function HomePage() {
               <Link to={`/project/${p1.uid}`} className="group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch animate-in fade-in duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
-                  <img src={p1.imageUrl} alt={p1.title} className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
+                  <img src={p1.imageUrl} alt={p1.title} loading="lazy" decoding="async" className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
                 </div>
                 <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
                   <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">
@@ -359,7 +359,7 @@ export default function HomePage() {
               <Link to={`/project/${p2.uid}`} className="group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch animate-in fade-in duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
-                  <img src={p2.imageUrl} alt={p2.title} className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
+                  <img src={p2.imageUrl} alt={p2.title} loading="lazy" decoding="async" className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
                 </div>
                 <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
                   <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">
@@ -384,7 +384,7 @@ export default function HomePage() {
               <Link to={`/project/${p3.uid}`} className="group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch animate-in fade-in duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
-                  <img src={p3.imageUrl} alt={p3.title} className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
+                  <img src={p3.imageUrl} alt={p3.title} loading="lazy" decoding="async" className="w-full h-full object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
                 </div>
                 <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
                   <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">

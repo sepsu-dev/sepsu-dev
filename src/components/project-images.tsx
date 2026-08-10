@@ -42,6 +42,7 @@ export function ProjectImages({ images, title }: ProjectImagesProps) {
           src={images[currentIndex]}
           alt={`${title} - image ${currentIndex + 1}`}
           onLoad={() => setIsLoading(false)}
+          decoding="async"
           className={cn(
             "w-full h-full object-cover object-top transition-all duration-500",
             isLoading ? "opacity-0 scale-98" : "opacity-100 scale-100"
