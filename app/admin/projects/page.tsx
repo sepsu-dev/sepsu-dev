@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
+export const dynamic = "force-dynamic";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, X, Save, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";

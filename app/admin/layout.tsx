@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth-check";
+
+export const dynamic = "force-dynamic";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
