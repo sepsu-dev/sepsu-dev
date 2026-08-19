@@ -3,6 +3,8 @@ import { FolderKanban, Layers, ArrowUpRight, Settings2, Sparkles } from "lucide-
 import { getProjects, getTechStack, getSettings } from "@/lib/repo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   const [projects, techStack, settings] = await Promise.all([
     getProjects(),
