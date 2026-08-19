@@ -9,7 +9,7 @@ export default function RootLoading() {
         <Loader2 className="h-8 w-8 animate-spin text-primary relative z-10" />
       </div>
       <div className="flex flex-col items-center gap-1 text-center">
-        <h3 className="text-sm font-semibold tracking-tight text-foreground font-sans">Loading sepsu.dev...</h3>
+        <h3 className="text-sm font-semibold tracking-tight text-foreground font-sans">Loading...</h3>
         <p className="text-xs text-muted-foreground font-mono">Please wait</p>
       </div>
     </div>

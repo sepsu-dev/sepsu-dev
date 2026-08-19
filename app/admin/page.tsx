@@ -12,8 +12,8 @@ export default async function AdminDashboardPage() {
     getSettings(),
   ]);
 
-  const techCount = Object.values(techStack).reduce((acc, items) => acc + items.length, 0);
-  const categoryCount = Object.keys(techStack).length;
+  const techCount = techStack.items.length;
+  const categoryCount = techStack.categories.length;
 
   const stats = [
     { 
