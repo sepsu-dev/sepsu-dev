@@ -10,12 +10,22 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { IconSelect } from "@/components/ui/icon-select";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Table,
@@ -62,6 +72,7 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
   const [itemName, setItemName] = useState("");
   const [itemCategoryName, setItemCategoryName] = useState("");
   const [itemIcon, setItemIcon] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<TechItem | null>(null);
 
   const startAdd = () => {
     if (categories.length === 0) {
@@ -84,8 +95,6 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
   };
 
   const removeItem = async (targetItem: TechItem) => {
-    if (!confirm(`Delete technology "${targetItem.name}" from category "${targetItem.category_name}"?`)) return;
-    
     const updatedItems = items.filter(
       (i) => !(i.name === targetItem.name && i.category_name === targetItem.category_name)
     );
@@ -100,6 +109,7 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
       toast.error((err as Error).message);
     } finally {
       setSaving(false);
+      setDeleteTarget(null);
     }
   };
 
@@ -243,7 +253,7 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 rounded-lg text-destructive/80 hover:text-destructive hover:bg-destructive/10"
-                              onClick={() => removeItem(item)}
+                              onClick={() => setDeleteTarget(item)}
                               title="Delete Technology"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -296,18 +306,18 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
         </CardContent>
       </Card>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent className="sm:max-w-md w-full flex flex-col h-full overflow-y-auto p-6">
-          <SheetHeader className="p-0">
-            <SheetTitle>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="p-0">
+            <DialogTitle>
               {editingItem ? "Edit Technology" : "Add Technology"}
-            </SheetTitle>
-            <SheetDescription>
+            </DialogTitle>
+            <DialogDescription>
               {editingItem
                 ? "Modify the name, category, or icon slug for this technology."
                 : "Add a new technology stack item with its category and icon."}
-            </SheetDescription>
-          </SheetHeader>
+            </DialogDescription>
+          </DialogHeader>
           <form onSubmit={handleSave} className="flex-1 space-y-5 py-2 pb-6">
             <FieldGroup className="space-y-4">
               <Field>
@@ -377,8 +387,29 @@ export function TechClient({ initialCategories, initialItems }: TechClientProps)
               </div>
             </FieldGroup>
           </form>
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this technology?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="font-semibold text-foreground">{deleteTarget?.name}</span> from category{" "}
+              <span className="font-semibold text-foreground capitalize">{deleteTarget?.category_name}</span> will be permanently removed. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteTarget === null}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              onClick={() => deleteTarget && removeItem(deleteTarget)}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

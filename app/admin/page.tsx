@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { FolderKanban, Layers, ArrowUpRight, Settings2, Sparkles } from "lucide-react";
-import { getProjects, getTechStack, getSettings } from "@/lib/repo";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { FolderKanban, Layers, Sparkles } from "lucide-react";
+import { getProjects, getTechStack } from "@/lib/repo";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const [projects, techStack, settings] = await Promise.all([
+  const [projects, techStack] = await Promise.all([
     getProjects(),
     getTechStack(),
-    getSettings(),
   ]);
 
   const techCount = techStack.items.length;
@@ -47,12 +46,8 @@ export default async function AdminDashboardPage() {
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-r from-card to-muted/30 p-6 md:p-8">
         <div className="relative z-10 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary">
-            <Sparkles className="h-3.5 w-3.5" />
-            Console Management System
-          </div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-            Welcome to {settings.site_name ?? "Sepsu Dev"}
+            Welcome
           </h1>
           <p className="text-sm md:text-base text-muted-foreground max-w-xl">
             Manage your portfolio content, tech stack lists, skill categories, and system settings in real-time.
@@ -84,46 +79,6 @@ export default async function AdminDashboardPage() {
           </Link>
         ))}
       </div>
-
-      {/* Quick Actions Card */}
-      <Card className="border-border/60">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-bold">Quick Actions</CardTitle>
-          <CardDescription>Shortcut menu for managing system content.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-3 pt-2">
-          <Link 
-            href="/admin/projects" 
-            className="flex items-center justify-between rounded-xl border border-border/80 bg-card p-4 text-sm font-medium hover:border-primary/40 hover:bg-muted/40 transition-all duration-200 group"
-          >
-            <span className="flex items-center gap-2.5">
-              <FolderKanban className="h-4 w-4 text-blue-500" />
-              Manage Projects
-            </span>
-            <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-          <Link 
-            href="/admin/tech" 
-            className="flex items-center justify-between rounded-xl border border-border/80 bg-card p-4 text-sm font-medium hover:border-primary/40 hover:bg-muted/40 transition-all duration-200 group"
-          >
-            <span className="flex items-center gap-2.5">
-              <Layers className="h-4 w-4 text-emerald-500" />
-              Manage Tech Stack
-            </span>
-            <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-          <Link 
-            href="/admin/settings" 
-            className="flex items-center justify-between rounded-xl border border-border/80 bg-card p-4 text-sm font-medium hover:border-primary/40 hover:bg-muted/40 transition-all duration-200 group"
-          >
-            <span className="flex items-center gap-2.5">
-              <Settings2 className="h-4 w-4 text-purple-500" />
-              Edit Settings
-            </span>
-            <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-        </CardContent>
-      </Card>
     </div>
   );
 }

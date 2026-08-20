@@ -2,9 +2,18 @@ import { getIronSession, type IronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { verifyAdmin } from "@/lib/repo";
 
-export const SESSION_PASSWORD =
-  process.env.SESSION_PASSWORD ??
-  "sepsu-dev-cms-session-secret-change-this-in-production-1234567890";
+function getSessionPassword(): string {
+  const password = process.env.SESSION_PASSWORD;
+  if (!password) {
+    throw new Error(
+      "SESSION_PASSWORD environment variable wajib dikonfigurasi. " +
+        "Jalankan: openssl rand -base64 32"
+    );
+  }
+  return password;
+}
+
+const SESSION_PASSWORD = getSessionPassword();
 
 export interface SessionData {
   email?: string;

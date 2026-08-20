@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireAdmin } from "@/lib/auth-check";
+import { isAdmin } from "@/lib/auth-check";
 import {
   getSettings,
   updateSettings,
@@ -27,7 +27,7 @@ const ALLOWED_KEYS = [
 ];
 
 export async function saveSettingsAction(values: Record<string, string>) {
-  const ok = await requireAdmin();
+  const ok = await isAdmin();
   if (!ok) throw new Error("Unauthorized");
 
   const sanitized: Record<string, string> = {};
@@ -45,7 +45,7 @@ export async function saveSettingsAction(values: Record<string, string>) {
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/settings");
-  
+
   const settings = await getSettings();
   return { settings };
 }
@@ -55,10 +55,12 @@ export async function upsertProjectAction(p: {
   title: string;
   description: string;
   image_url: string;
+  demo_url: string;
+  github_url: string;
   tags: string[];
   sort_order: number;
 }) {
-  const ok = await requireAdmin();
+  const ok = await isAdmin();
   if (!ok) throw new Error("Unauthorized");
 
   const uid = String(p.uid ?? "").trim();
@@ -72,6 +74,8 @@ export async function upsertProjectAction(p: {
     title,
     description: String(p.description ?? ""),
     image_url: String(p.image_url ?? ""),
+    demo_url: String(p.demo_url ?? ""),
+    github_url: String(p.github_url ?? ""),
     tags: Array.isArray(p.tags) ? p.tags.map(String) : [],
     sort_order: Number(p.sort_order ?? 0),
   });
@@ -79,13 +83,14 @@ export async function upsertProjectAction(p: {
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/projects");
+  revalidatePath(`/project/${uid}`);
 
   const projects = await getProjects();
   return { projects };
 }
 
 export async function deleteProjectAction(uid: string) {
-  const ok = await requireAdmin();
+  const ok = await isAdmin();
   if (!ok) throw new Error("Unauthorized");
 
   await deleteProject(uid);
@@ -93,13 +98,14 @@ export async function deleteProjectAction(uid: string) {
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/projects");
+  revalidatePath(`/project/${uid}`);
 
   const projects = await getProjects();
   return { projects };
 }
 
 export async function saveTechStackAction(categories: any[], items: any[]) {
-  const ok = await requireAdmin();
+  const ok = await isAdmin();
   if (!ok) throw new Error("Unauthorized");
 
   if (!Array.isArray(categories) || !Array.isArray(items)) {

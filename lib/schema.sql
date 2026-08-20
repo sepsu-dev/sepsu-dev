@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS projects (
   title TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   image_url TEXT NOT NULL DEFAULT '',
+  demo_url TEXT NOT NULL DEFAULT '',
+  github_url TEXT NOT NULL DEFAULT '',
   tags TEXT[] NOT NULL DEFAULT '{}',
   sort_order INT NOT NULL DEFAULT 0
 );
@@ -36,6 +38,10 @@ CREATE TABLE IF NOT EXISTS admins (
   password_hash TEXT NOT NULL,
   name TEXT NOT NULL DEFAULT ''
 );
+
+-- Migrasi: tambah kolom link bila tabel sudah ada
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS demo_url TEXT NOT NULL DEFAULT '';
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS github_url TEXT NOT NULL DEFAULT '';
 
 -- Seed settings (khusus yang bisa diedit via admin)
 INSERT INTO settings (key, value) VALUES
@@ -96,8 +102,5 @@ INSERT INTO tech_items (category_id, name) VALUES
   ((SELECT id FROM tech_categories WHERE name='devops'), 'Docker')
 ON CONFLICT DO NOTHING;
 
--- Admin default: admin@sepsu.dev / admin123
--- Password hash (SHA-256 dari "admin123")
-INSERT INTO admins (email, password_hash, name) VALUES
-  ('admin@sepsu.dev', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Sepsu Admin')
-ON CONFLICT (email) DO NOTHING;
+-- Admin default dibuat via lib/seed.ts (pakai scrypt runtime, bukan hash statis).
+-- Jalankan: bun run lib/seed.ts

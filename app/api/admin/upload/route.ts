@@ -1,10 +1,25 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth-check";
+import { isAdmin } from "@/lib/auth-check";
 import { r2Client } from "@/lib/r2";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
+const ALLOWED_FOLDERS = new Set(["uploads", "projects", "tech"]);
+const BLOCKED_TYPES = [
+  "text/html",
+  "application/xhtml+xml",
+  "application/xml",
+  "application/javascript",
+  "text/javascript",
+  "image/svg+xml",
+  "font/woff",
+  "font/woff2",
+  "font/ttf",
+  "font/otf",
+];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
 export async function POST(req: Request) {
-  const ok = await requireAdmin();
+  const ok = await isAdmin();
   if (!ok) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -16,6 +31,18 @@ export async function POST(req: Request) {
 
     if (!file) {
       return NextResponse.json({ error: "Tidak ada file yang diunggah" }, { status: 400 });
+    }
+
+    if (!ALLOWED_FOLDERS.has(folder)) {
+      return NextResponse.json({ error: "Folder tidak diizinkan" }, { status: 400 });
+    }
+
+    if (BLOCKED_TYPES.includes(file.type)) {
+      return NextResponse.json({ error: "Tipe file tidak diizinkan" }, { status: 400 });
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: "Ukuran file melebihi 10 MB" }, { status: 400 });
     }
 
     const bytes = await file.arrayBuffer();
@@ -40,9 +67,8 @@ export async function POST(req: Request) {
       }
     }
 
-    // Buat nama file unik dengan prefix folder
-    const sanitizedFolder = folder.replace(/\/+$/, ""); // Bersihkan trailing slash
-    const uniqueFilename = `${sanitizedFolder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExtension}`;
+    // Buat nama file unik dengan prefix folder (folder sudah di-whitelist, aman)
+    const uniqueFilename = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExtension}`;
 
     const bucketName = process.env.R2_BUCKET_NAME;
     if (!bucketName) {

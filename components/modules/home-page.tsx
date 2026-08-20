@@ -81,6 +81,11 @@ export function HomePage({ content }: { content: HomeContent }) {
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 text-foreground">
                 {settings.site_name ?? "Sepsu Dev"}
               </h1>
+              {settings.role && (
+                <p className="text-sm sm:text-base font-medium text-primary">
+                  {settings.role}
+                </p>
+              )}
             </div>
           </div>
 

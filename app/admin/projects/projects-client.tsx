@@ -27,12 +27,22 @@ import {
   AttachmentAction,
 } from "@/components/ui/attachment";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Table,
@@ -49,6 +59,8 @@ interface Project {
   title: string;
   description: string;
   image_url: string;
+  demo_url: string;
+  github_url: string;
   tags: string[];
   sort_order: number;
 }
@@ -58,6 +70,8 @@ const emptyForm = {
   title: "",
   description: "",
   image_url: "",
+  demo_url: "",
+  github_url: "",
   tags: "",
   sort_order: 0,
 };
@@ -71,6 +85,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
   const [editing, setEditing] = useState<Project | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [open, setOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Project | null>(null);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,13 +141,14 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
   };
 
   const handleDelete = async (uid: string) => {
-    if (!confirm("Delete this project?")) return;
     try {
       const data = await deleteProjectAction(uid);
       setProjects(data.projects);
       toast.success("Project deleted successfully");
     } catch (err) {
       toast.error((err as Error).message);
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -143,6 +159,8 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
       title: p.title,
       description: p.description,
       image_url: p.image_url,
+      demo_url: p.demo_url,
+      github_url: p.github_url,
       tags: p.tags.join(", "),
       sort_order: p.sort_order,
     });
@@ -176,18 +194,18 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
         </Button>
       </div>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent className="sm:max-w-md w-full flex flex-col h-full overflow-y-auto p-6">
-          <SheetHeader className="p-0">
-            <SheetTitle>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="p-0">
+            <DialogTitle>
               {editing ? "Edit Project" : "Add Project"}
-            </SheetTitle>
-            <SheetDescription>
+            </DialogTitle>
+            <DialogDescription>
               {editing
                 ? "Update existing project information."
                 : "Fill in the form to add a new project."}
-            </SheetDescription>
-          </SheetHeader>
+            </DialogDescription>
+          </DialogHeader>
           <form onSubmit={handleSubmit} className="flex-1 space-y-4 py-2 pb-6">
             <FieldGroup className="space-y-4">
               <Field>
@@ -264,6 +282,14 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                 </div>
               </Field>
               <Field>
+                <FieldLabel htmlFor="demo_url">Live Demo URL</FieldLabel>
+                <Input id="demo_url" type="url" placeholder="https://demo.example.com" value={form.demo_url} onChange={(e) => setForm({ ...form, demo_url: e.target.value })} />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="github_url">Source Code URL</FieldLabel>
+                <Input id="github_url" type="url" placeholder="https://github.com/user/repo" value={form.github_url} onChange={(e) => setForm({ ...form, github_url: e.target.value })} />
+              </Field>
+              <Field>
                 <FieldLabel htmlFor="tags">Tags (comma-separated)</FieldLabel>
                 <Input
                   id="tags"
@@ -304,8 +330,28 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
               </div>
             </FieldGroup>
           </form>
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this project?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="font-semibold text-foreground">{deleteTarget?.title}</span> will be permanently removed from your portfolio. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteTarget === null}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              onClick={() => deleteTarget && handleDelete(deleteTarget.uid)}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Card className="border-border/60 shadow-none">
         <CardHeader className="pb-3">
@@ -383,7 +429,7 @@ export function ProjectsClient({ initialProjects }: ProjectsClientProps) {
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 rounded-lg text-destructive/80 hover:text-destructive hover:bg-destructive/10"
-                              onClick={() => handleDelete(p.uid)}
+                              onClick={() => setDeleteTarget(p)}
                               title="Delete"
                             >
                               <Trash2 className="h-4 w-4" />

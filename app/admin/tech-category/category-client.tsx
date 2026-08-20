@@ -10,12 +10,22 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { IconSelect } from "@/components/ui/icon-select";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Table,
@@ -62,6 +72,7 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
   const [categoryName, setCategoryName] = useState("");
   const [categoryIcon, setCategoryIcon] = useState("");
   const [categorySortOrder, setCategorySortOrder] = useState(1);
+  const [deleteTarget, setDeleteTarget] = useState<TechCategory | null>(null);
 
   const startAdd = () => {
     setEditingCategory(null);
@@ -80,8 +91,6 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
   };
 
   const removeCategory = async (name: string) => {
-    if (!confirm(`Delete category "${name}" and all tech items inside it?`)) return;
-    
     const updatedCategories = categories.filter((c) => c.name !== name);
     const updatedItems = items.filter((i) => i.category_name !== name);
 
@@ -95,6 +104,7 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
       toast.error((err as Error).message);
     } finally {
       setSaving(false);
+      setDeleteTarget(null);
     }
   };
 
@@ -240,7 +250,7 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 rounded-lg text-destructive/80 hover:text-destructive hover:bg-destructive/10"
-                              onClick={() => removeCategory(cat.name)}
+                              onClick={() => setDeleteTarget(cat)}
                               title="Delete Category"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -293,18 +303,18 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
         </CardContent>
       </Card>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent className="sm:max-w-md w-full flex flex-col h-full overflow-y-auto p-6">
-          <SheetHeader className="p-0">
-            <SheetTitle>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="p-0">
+            <DialogTitle>
               {editingCategory ? "Edit Tech Category" : "Add Tech Category"}
-            </SheetTitle>
-            <SheetDescription>
+            </DialogTitle>
+            <DialogDescription>
               {editingCategory
                 ? "Modify the category name, icon, and display order."
                 : "Enter a new category name and select its icon."}
-            </SheetDescription>
-          </SheetHeader>
+            </DialogDescription>
+          </DialogHeader>
           <form onSubmit={handleSave} className="flex-1 space-y-5 py-2 pb-6">
             <FieldGroup className="space-y-4">
               <Field>
@@ -364,8 +374,28 @@ export function CategoryClient({ initialCategories, initialItems }: CategoryClie
               </div>
             </FieldGroup>
           </form>
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this category?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="font-semibold text-foreground capitalize">{deleteTarget?.name}</span> and all tech items inside it will be permanently removed. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteTarget === null}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              onClick={() => deleteTarget && removeCategory(deleteTarget.name)}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
