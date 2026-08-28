@@ -9,7 +9,7 @@
 <p align="center">
         <!-- Intro -->
         <samp>
-                「 I'm a software developer from <b>Jakarta, Indonesia <img src="https://flagcdn.com/16x12/id.png" width="16" height="12" alt="Indonesia" /></b> 」
+                「 I'm a software developer from <b>Jakarta, <img src="https://flagcdn.com/16x12/id.png" width="16" height="12" alt="Indonesia" /></b> 」
                 <br>
                 「 Focused on creating impactful web applications that improve lives 」
                 <br>
