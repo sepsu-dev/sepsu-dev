@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -44,17 +44,17 @@ export function HomePage({ content }: { content: HomeContent }) {
   const hasPrevPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
 
+  const isFirstRender = React.useRef(true);
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const id = hash.replace("#", "");
-      const el = document.getElementById(id);
-      if (el) {
-        const timer = setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 150);
-        return () => clearTimeout(timer);
-      }
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-  }, [pathname, currentPage]);
+    const el = document.getElementById("projects");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentPage]);
 
   const categoryIcons: Record<string, typeof Layout> = { frontend: Layout, backend: Server, database: Database, devops: GitBranch };
 
