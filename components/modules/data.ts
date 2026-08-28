@@ -37,7 +37,7 @@ export const HARDCODED_SETTINGS: Record<string, string> = {
 export const HARDCODED_PROJECTS: ProjectItem[] = [
   {
     uid: "english-course-center",
-    title: "English Course Center",
+    title: "english.course.center",
     description: "An interactive institutional web portal and course catalog for English education programs.",
     image_url: "/projects/english-course-center.jpg",
     demo_url: "https://www.english-course-center.web.id/",
