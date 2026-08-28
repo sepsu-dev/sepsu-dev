@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, Terminal, ArrowUpRight, Sun, Moon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/components/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

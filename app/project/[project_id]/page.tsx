@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Globe, ArrowUpRight } from "lucide-react";
-import { getProject } from "@/lib/repo";
+import { HARDCODED_PROJECTS } from "@/components/modules/data";
 import { ProjectImages } from "@/components/modules/project-images";
 import { TechBadge } from "@/components/ui/tech-badge";
 import { Navbar } from "@/components/shared/navbar";
@@ -18,7 +18,7 @@ const GithubIcon = ({ className }: { className?: string }) => (
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ project_id: string }> }) {
   const { project_id } = await params;
-  const project = await getProject(project_id);
+  const project = HARDCODED_PROJECTS.find((p) => p.uid === project_id);
   if (!project) notFound();
 
   const images = project.image_url ? [project.image_url] : [];

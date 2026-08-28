@@ -9,7 +9,7 @@ import { Footer } from "@/components/shared/footer";
 import { ContactSection } from "@/components/shared/contact-section";
 import { Terminal, Code2, Database, Layout, Server, GitBranch, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { TechBadge } from "@/components/ui/tech-badge";
-import { cn } from "@/lib/utils";
+import { cn } from "@/components/utils";
 
 export interface ProjectItem {
   uid: string;
