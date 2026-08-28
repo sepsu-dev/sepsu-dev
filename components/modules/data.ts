@@ -28,13 +28,23 @@ export const HARDCODED_SETTINGS: Record<string, string> = {
   email: "sepsu.dev@gmail.com",
   github_url: "https://github.com/sepsu-dev",
   bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
-  focus_1: "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
-  focus_2: "⚛️ Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
-  focus_3: "🐳 Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
-  focus_4: "🛢️ Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
+  focus_1: "Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
+  focus_2: "Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
+  focus_3: "Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
+  focus_4: "Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
 };
 
 export const HARDCODED_PROJECTS: ProjectItem[] = [
+  {
+    uid: "english-course-center",
+    title: "English Course Center",
+    description: "An interactive institutional web portal and course catalog for English education programs.",
+    image_url: "/projects/english-course-center.jpg",
+    demo_url: "https://www.english-course-center.web.id/",
+    github_url: "",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS"],
+    sort_order: 0
+  },
   {
     uid: "cek-bmi-yu",
     title: "cekbmi.yu",
@@ -43,7 +53,7 @@ export const HARDCODED_PROJECTS: ProjectItem[] = [
     demo_url: "",
     github_url: "",
     tags: ["Next.js", "TypeScript", "Tailwind CSS"],
-    sort_order: 0
+    sort_order: 1
   },
   {
     uid: "naha-admin",
