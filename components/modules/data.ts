@@ -27,11 +27,11 @@ export const HARDCODED_SETTINGS: Record<string, string> = {
   location: "Jakarta, Indonesia",
   email: "sepsu.dev@gmail.com",
   github_url: "https://github.com/sepsu-dev",
-  bio: "Passionate full-stack developer with experience building performant web applications using Next.js, Node.js, and TypeScript.",
-  focus_1: "⚡ Next.js / React for Frontend",
-  focus_2: "⚛️ TypeScript for Type Safety",
-  focus_3: "🐳 Docker for Containerization",
-  focus_4: "🛢️ PostgreSQL / Redis for Databases",
+  bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
+  focus_1: "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
+  focus_2: "⚛️ Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
+  focus_3: "🐳 Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
+  focus_4: "🛢️ Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
 };
 
 export const HARDCODED_PROJECTS: ProjectItem[] = [
@@ -192,9 +192,13 @@ export const HARDCODED_TECH_STACK: TechCategory[] = [
     category: "Frontend",
     icon: "frontend",
     items: [
-      { name: "React / Next.js", icon: "React" },
+      { name: "React.js", icon: "React" },
+      { name: "Vue.js", icon: "Vue" },
+      { name: "React Native", icon: "React" },
+      { name: "Next.js", icon: "NextJS" },
       { name: "TypeScript", icon: "TypeScript" },
-      { name: "Tailwind CSS", icon: "Tailwind" }
+      { name: "Tailwind CSS", icon: "Tailwind" },
+      { name: "Bootstrap 5", icon: "Bootstrap" }
     ]
   },
   {
@@ -202,7 +206,10 @@ export const HARDCODED_TECH_STACK: TechCategory[] = [
     icon: "backend",
     items: [
       { name: "Node.js", icon: "NodeJS" },
-      { name: "Express / NestJS", icon: "NestJS" }
+      { name: "Express.js", icon: "Express" },
+      { name: "Nest.js", icon: "NestJS" },
+      { name: "Laravel", icon: "Laravel" },
+      { name: "CodeIgniter", icon: "CodeIgniter" }
     ]
   },
   {
@@ -210,15 +217,21 @@ export const HARDCODED_TECH_STACK: TechCategory[] = [
     icon: "database",
     items: [
       { name: "PostgreSQL", icon: "PostgreSQL" },
-      { name: "Redis", icon: "Redis" }
+      { name: "MySQL", icon: "MySQL" },
+      { name: "SQL Server", icon: "SQL Server" },
+      { name: "Redis", icon: "Redis" },
+      { name: "MongoDB", icon: "MongoDB" }
     ]
   },
   {
-    category: "Tools",
+    category: "Tools & Cloud",
     icon: "devops",
     items: [
-      { name: "Git & GitHub", icon: "Git" },
-      { name: "Docker", icon: "Docker" }
+      { name: "Docker", icon: "Docker" },
+      { name: "Git", icon: "Git" },
+      { name: "GitHub", icon: "GitHub" },
+      { name: "GitLab", icon: "GitLab" },
+      { name: "Ubuntu", icon: "Ubuntu" }
     ]
   }
 ];
