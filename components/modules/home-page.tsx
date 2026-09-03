@@ -59,12 +59,7 @@ export function HomePage({ content }: { content: HomeContent }) {
       setIsLoadingPage(true);
       const timer = setTimeout(() => {
         setIsLoadingPage(false);
-      }, 260);
-
-      const el = document.getElementById("projects");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
+      }, 200);
 
       return () => clearTimeout(timer);
     }
