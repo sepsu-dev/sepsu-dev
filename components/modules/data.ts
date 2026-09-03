@@ -22,16 +22,16 @@ export interface TechCategory {
 
 export const HARDCODED_SETTINGS: Record<string, string> = {
   site_name: "Sepsu Dev",
-  role: "Full-stack Engineer",
+  role: "Software Engineer",
   hero_badge: "portfolio.sh",
   location: "Jakarta, Indonesia",
   email: "sepsu.dev@gmail.com",
   github_url: "https://github.com/sepsu-dev",
   bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
-  focus_1: "Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
-  focus_2: "Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
-  focus_3: "Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
-  focus_4: "Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
+  focus_1: "Building high-throughput backend services with Go, Java, Node.js, and PHP (Laravel)",
+  focus_2: "Crafting reactive modern user interfaces with React.js, Next.js, Vue.js, and TypeScript",
+  focus_3: "Automating cloud & DevOps pipelines with Docker, Ubuntu, Nginx, and GitHub/GitLab CI/CD",
+  focus_4: "Architecting scalable data persistence with PostgreSQL, MySQL, Redis, and Elasticsearch",
 };
 
 export const HARDCODED_PROJECTS: ProjectItem[] = [
@@ -199,49 +199,60 @@ export const HARDCODED_PROJECTS: ProjectItem[] = [
 
 export const HARDCODED_TECH_STACK: TechCategory[] = [
   {
-    category: "Frontend",
-    icon: "frontend",
-    items: [
-      { name: "React.js", icon: "React" },
-      { name: "Vue.js", icon: "Vue" },
-      { name: "React Native", icon: "React" },
-      { name: "Next.js", icon: "NextJS" },
-      { name: "TypeScript", icon: "TypeScript" },
-      { name: "Tailwind CSS", icon: "Tailwind" },
-      { name: "Bootstrap 5", icon: "Bootstrap" }
-    ]
-  },
-  {
     category: "Backend",
     icon: "backend",
     items: [
-      { name: "Node.js", icon: "NodeJS" },
-      { name: "Express.js", icon: "Express" },
-      { name: "Nest.js", icon: "NestJS" },
-      { name: "Laravel", icon: "Laravel" },
-      { name: "CodeIgniter", icon: "CodeIgniter" }
+      { name: "Go", icon: "go" },
+      { name: "Java", icon: "openjdk" },
+      { name: "Node.js", icon: "nodedotjs" },
+      { name: "Nest.js", icon: "nestjs" },
+      { name: "Express.js", icon: "express" },
+      { name: "PHP", icon: "php" },
+      { name: "Laravel", icon: "laravel" },
+      { name: "CodeIgniter", icon: "codeigniter" }
     ]
   },
   {
-    category: "Database",
+    category: "Frontend",
+    icon: "frontend",
+    items: [
+      { name: "TypeScript", icon: "typescript" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "React.js", icon: "react" },
+      { name: "Next.js", icon: "nextdotjs" },
+      { name: "Vue.js", icon: "vuedotjs" },
+      { name: "Tailwind CSS", icon: "tailwindcss" },
+      { name: "Bootstrap 5", icon: "bootstrap" }
+    ]
+  },
+  {
+    category: "Database & Cache",
     icon: "database",
     items: [
-      { name: "PostgreSQL", icon: "PostgreSQL" },
-      { name: "MySQL", icon: "MySQL" },
-      { name: "SQL Server", icon: "SQL Server" },
-      { name: "Redis", icon: "Redis" },
-      { name: "MongoDB", icon: "MongoDB" }
+      { name: "PostgreSQL", icon: "postgresql" },
+      { name: "MySQL", icon: "mysql" },
+      { name: "SQL Server", icon: "database" },
+      { name: "MongoDB", icon: "mongodb" },
+      { name: "Redis", icon: "redis" },
+      { name: "Elasticsearch", icon: "elasticsearch" },
+      { name: "RabbitMQ", icon: "rabbitmq" },
+      { name: "Prisma", icon: "prisma" },
+      { name: "Sequelize", icon: "sequelize" }
     ]
   },
   {
-    category: "Tools & Cloud",
+    category: "DevOps & Tools",
     icon: "devops",
     items: [
-      { name: "Docker", icon: "Docker" },
-      { name: "Git", icon: "Git" },
-      { name: "GitHub", icon: "GitHub" },
-      { name: "GitLab", icon: "GitLab" },
-      { name: "Ubuntu", icon: "Ubuntu" }
+      { name: "Docker", icon: "docker" },
+      { name: "CI/CD", icon: "githubactions" },
+      { name: "Git", icon: "git" },
+      { name: "GitHub", icon: "github" },
+      { name: "GitLab", icon: "gitlab" },
+      { name: "Ubuntu", icon: "ubuntu" },
+      { name: "Nginx", icon: "nginx" },
+      { name: "Postman", icon: "postman" },
+      { name: "Swagger", icon: "swagger" }
     ]
   }
 ];

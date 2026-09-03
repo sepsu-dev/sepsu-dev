@@ -44,15 +44,29 @@ export function HomePage({ content }: { content: HomeContent }) {
   const hasPrevPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
 
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false);
   const isFirstRender = React.useRef(true);
+  const prevPageRef = React.useRef(currentPage);
+
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    const el = document.getElementById("projects");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+
+    if (prevPageRef.current !== currentPage) {
+      prevPageRef.current = currentPage;
+      setIsLoadingPage(true);
+      const timer = setTimeout(() => {
+        setIsLoadingPage(false);
+      }, 260);
+
+      const el = document.getElementById("projects");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+
+      return () => clearTimeout(timer);
     }
   }, [currentPage]);
 
@@ -95,7 +109,18 @@ export function HomePage({ content }: { content: HomeContent }) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-muted-foreground">Based in <span className="text-foreground font-semibold">{settings.location ?? "Jakarta, Indonesia"}</span></span>
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                <span>Based in</span>
+                <span className="text-foreground font-semibold inline-flex items-center gap-1.5">
+                  <span>Jakarta</span>
+                  <span className="inline-flex items-center overflow-hidden rounded-[2px] shadow-xs border border-border/40" title="Indonesia">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-4 h-2.5">
+                      <rect width="3" height="1" fill="#e70011" />
+                      <rect y="1" width="3" height="1" fill="#ffffff" />
+                    </svg>
+                  </span>
+                </span>
+              </span>
             </div>
             <p className="text-foreground/80 font-medium">{settings.bio ?? ""}</p>
           </div>
@@ -160,29 +185,70 @@ export function HomePage({ content }: { content: HomeContent }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 relative">
-            {pageItems.map((p) => (
-              <Link key={p.uid} href={`/project/${p.uid}`} className="group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch animate-in fade-in duration-300">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
-                  {p.image_url ? (
-                    <Image src={p.image_url} alt={p.title} fill sizes="(max-width: 640px) 100vw, 224px" className="object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-mono text-xs">IMAGE_NOT_AVAILABLE</div>
-                  )}
-                </div>
-                <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">
-                    <span>{p.title}</span>
-                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-primary flex-shrink-0" />
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">{p.description}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                    {p.tags.slice(0, 4).map((tag) => <TechBadge key={tag} tag={tag} />)}
+          <div className="flex flex-col gap-4 relative min-h-[460px]">
+            {isLoadingPage ? (
+              // Smooth Skeleton Loading Cards
+              Array.from({ length: limit }).map((_, idx) => (
+                <div
+                  key={`skeleton-${idx}`}
+                  className="flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-border/30 bg-card/20 backdrop-blur-md overflow-hidden animate-pulse items-stretch"
+                >
+                  <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl bg-muted/40 overflow-hidden border border-border/20" />
+                  <div className="flex flex-col gap-3 min-w-0 flex-1 justify-between py-1">
+                    <div className="space-y-2.5">
+                      <div className="h-5 w-48 bg-muted/50 rounded-md" />
+                      <div className="h-3.5 w-full bg-muted/30 rounded-md" />
+                      <div className="h-3.5 w-3/4 bg-muted/30 rounded-md" />
+                    </div>
+                    <div className="flex flex-wrap gap-2 pt-3">
+                      <div className="h-6 w-16 bg-muted/40 rounded-lg" />
+                      <div className="h-6 w-20 bg-muted/40 rounded-lg" />
+                      <div className="h-6 w-14 bg-muted/40 rounded-lg" />
+                    </div>
                   </div>
                 </div>
-              </Link>
-            ))}
+              ))
+            ) : (
+              pageItems.map((p, idx) => (
+                <Link
+                  key={`${currentPage}-${p.uid}`}
+                  href={`/project/${p.uid}`}
+                  style={{ animationDelay: `${idx * 60}ms` }}
+                  className="group relative flex flex-col sm:flex-row gap-6 p-5 sm:p-6 rounded-xl border border-primary/20 bg-card/25 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:bg-card items-stretch animate-in fade-in slide-in-from-bottom-2 fill-mode-both duration-300"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  <div className="relative flex-shrink-0 w-full sm:w-52 md:w-56 aspect-[16/10] rounded-xl overflow-hidden border border-border/45 bg-muted/10 z-10 shadow-sm group-hover:border-primary/30 transition-all duration-300">
+                    {p.image_url ? (
+                      <Image
+                        src={p.image_url}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 224px"
+                        className="object-cover object-top relative z-10 transition-all duration-300 ease-out group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-mono text-xs">
+                        IMAGE_NOT_AVAILABLE
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-3 min-w-0 flex-1 relative z-10">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight transition-colors group-hover:text-primary flex items-center gap-1">
+                      <span>{p.title}</span>
+                      <ArrowUpRight className="w-4 h-4 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-primary flex-shrink-0" />
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">
+                      {p.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+                      {p.tags.slice(0, 4).map((tag) => (
+                        <TechBadge key={tag} tag={tag} />
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
 
           {totalPages > 1 && (

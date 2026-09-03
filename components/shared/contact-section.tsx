@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Mail, Check, Copy, ArrowUpRight, MessageSquare } from "lucide-react";
-import { toast } from "sonner";
 
 interface ContactSectionProps {
   email: string;
@@ -27,13 +26,9 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
         document.body.removeChild(textarea);
       }
       setCopied(true);
-      toast.success("Email copied to clipboard!", {
-        description: `You can now paste ${email} anywhere.`,
-        duration: 3000,
-      });
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 2200);
     } catch (err) {
-      toast.error("Failed to copy email");
+      console.error("Failed to copy email", err);
     }
   };
 
@@ -76,7 +71,7 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row md:flex-col gap-3 min-w-[200px]">
+          <div className="flex flex-col sm:flex-row md:flex-col gap-3 min-w-[200px] relative">
             {/* Email CTA */}
             <a
               href={`mailto:${email}`}
@@ -86,23 +81,37 @@ export function ContactSection({ email, githubUrl }: ContactSectionProps) {
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </a>
 
-            {/* Copy Email CTA */}
-            <button
-              onClick={handleCopyEmail}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-border bg-background hover:bg-muted text-sm font-bold transition-all cursor-pointer"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  <span className="text-emerald-500">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 text-muted-foreground" />
-                  <span>Copy Address</span>
-                </>
+            {/* Copy Email CTA Container with Floating Tooltip */}
+            <div className="relative w-full">
+              {/* Tooltip */}
+              {copied && (
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-in fade-in zoom-in-95 slide-in-from-bottom-2 duration-200 pointer-events-none">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-foreground text-background text-xs font-mono font-bold shadow-lg whitespace-nowrap">
+                    <Check className="w-3 h-3 text-emerald-400" />
+                    <span>Copied to clipboard!</span>
+                  </div>
+                  {/* Tooltip arrow pointer */}
+                  <div className="w-2 h-2 bg-foreground rotate-45 -mt-1" />
+                </div>
               )}
-            </button>
+
+              <button
+                onClick={handleCopyEmail}
+                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-border bg-background hover:bg-muted text-sm font-bold transition-all cursor-pointer"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-500" />
+                    <span className="text-emerald-500">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-muted-foreground" />
+                    <span>Copy Address</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
