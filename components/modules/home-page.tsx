@@ -37,33 +37,43 @@ export function HomePage({ content }: { content: HomeContent }) {
 
   const limit = 3;
   const totalPages = Math.max(1, Math.ceil(projects.length / limit));
-  const rawPage = Number(searchParams.get("page"));
-  const currentPage = Math.min(Math.max(Number.isFinite(rawPage) ? rawPage : 1, 1), totalPages);
+
+  // Initialize page from URL search params safely on client
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false);
+
+  React.useEffect(() => {
+    const raw = Number(searchParams.get("page"));
+    if (Number.isFinite(raw) && raw >= 1 && raw <= totalPages) {
+      setCurrentPage(raw);
+    }
+  }, [searchParams, totalPages]);
+
   const startIndex = (currentPage - 1) * limit;
   const pageItems = projects.slice(startIndex, startIndex + limit);
   const hasPrevPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
 
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false);
-  const isFirstRender = React.useRef(true);
-  const prevPageRef = React.useRef(currentPage);
+  const handlePageChange = (newPage: number) => {
+    if (newPage === currentPage || newPage < 1 || newPage > totalPages) return;
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    // Show smooth in-place skeleton transition
+    setIsLoadingPage(true);
+    setCurrentPage(newPage);
+
+    // Sync URL without triggering Next.js server navigation or loading.tsx
+    const url = new URL(window.location.href);
+    if (newPage === 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", newPage.toString());
     }
+    window.history.pushState(null, "", url.toString());
 
-    if (prevPageRef.current !== currentPage) {
-      prevPageRef.current = currentPage;
-      setIsLoadingPage(true);
-      const timer = setTimeout(() => {
-        setIsLoadingPage(false);
-      }, 200);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentPage]);
+    setTimeout(() => {
+      setIsLoadingPage(false);
+    }, 200);
+  };
 
   const categoryIcons: Record<string, typeof Layout> = { frontend: Layout, backend: Server, database: Database, devops: GitBranch };
 
@@ -249,20 +259,51 @@ export function HomePage({ content }: { content: HomeContent }) {
           {totalPages > 1 && (
             <div className="flex flex-col items-center gap-4 mt-8 pt-6 border-t border-border/40">
               <div className="flex items-center gap-2">
-                <Link href={`?page=${currentPage - 1}`} scroll={false} aria-label="Previous page" className={cn("group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card", !hasPrevPage && "pointer-events-none opacity-20 grayscale")}>
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={!hasPrevPage}
+                  aria-label="Previous page"
+                  className={cn(
+                    "group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card cursor-pointer",
+                    !hasPrevPage && "pointer-events-none opacity-20 grayscale"
+                  )}
+                >
                   <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
-                </Link>
+                </button>
                 <div className="flex items-center gap-2 mx-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <Link key={p} href={`?page=${p}`} scroll={false} aria-label={`Go to page ${p}`} className={cn("relative w-10 h-10 flex items-center justify-center rounded-lg text-xs font-mono font-bold transition-all duration-300 border overflow-hidden", p === currentPage ? "border-primary text-primary-foreground" : "border-border/50 bg-card/20 text-muted-foreground hover:border-border hover:bg-card hover:text-foreground")}>
-                      {p === currentPage && <div className="absolute inset-0 bg-primary -z-10 animate-in fade-in zoom-in duration-300" />}
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => handlePageChange(p)}
+                      aria-label={`Go to page ${p}`}
+                      className={cn(
+                        "relative w-10 h-10 flex items-center justify-center rounded-lg text-xs font-mono font-bold transition-all duration-300 border overflow-hidden cursor-pointer",
+                        p === currentPage
+                          ? "border-primary text-primary-foreground"
+                          : "border-border/50 bg-card/20 text-muted-foreground hover:border-border hover:bg-card hover:text-foreground"
+                      )}
+                    >
+                      {p === currentPage && (
+                        <div className="absolute inset-0 bg-primary -z-10 animate-in fade-in zoom-in duration-300" />
+                      )}
                       {p.toString().padStart(2, "0")}
-                    </Link>
+                    </button>
                   ))}
                 </div>
-                <Link href={`?page=${currentPage + 1}`} scroll={false} aria-label="Next page" className={cn("group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card", !hasNextPage && "pointer-events-none opacity-20 grayscale")}>
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={!hasNextPage}
+                  aria-label="Next page"
+                  className={cn(
+                    "group flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card/40 transition-all duration-300 hover:border-primary/50 hover:bg-card cursor-pointer",
+                    !hasNextPage && "pointer-events-none opacity-20 grayscale"
+                  )}
+                >
                   <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
+                </button>
               </div>
             </div>
           )}
