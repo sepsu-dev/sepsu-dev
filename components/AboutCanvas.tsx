@@ -61,63 +61,55 @@ export default function AboutCanvas() {
     function computeInitialPositions() {
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      const scale = Math.max(0.8, Math.min(1.1, window.innerWidth / 1500));
 
       setItems({
-        // 1. Center Note Card: firmly anchored slightly higher up on the desk
+        // 1. Center About Me Card (Fixed desk card - NOT draggable)
         "about-card": {
-          x: cx - 195,
+          x: cx - 210,
           y: cy - 275,
           rotate: 0,
           zIndex: 10,
         },
-        // 2. Charizard Pokemon Card (Individually Draggable)
+        // 2. Charizard / Old Trafford Card (Individually Draggable)
         charizard: {
-          x: cx - 440 * scale,
+          x: cx - 440,
           y: cy - 350,
           rotate: -5,
           zIndex: 4,
         },
-        // 3. Type Specimen "Aa Inter Display" (Individually Draggable)
-        typeSpecimen: {
-          x: cx - 210 * scale,
-          y: cy - 420,
-          rotate: -10,
-          zIndex: 3,
-        },
         // 4. Spotify Player (Fixed on desk, cannot be dragged individually)
         spotify: {
-          x: cx + 80 * scale,
+          x: cx + 80,
           y: cy - 410,
           rotate: -4,
           zIndex: 3,
         },
-        // 5. MacBook Pro Lid (Individually Draggable)
+        // 5. ThinkPad Laptop (Individually Draggable)
         macbook: {
-          x: cx + 320 * scale,
-          y: cy - 140,
-          rotate: -26,
+          x: cx + 300,
+          y: cy - 160,
+          rotate: -8,
           zIndex: 5,
         },
         // 6. iPhone Device Mock (Individually Draggable)
         iphone: {
-          x: cx - 430 * scale,
-          y: cy + 60,
-          rotate: 14,
+          x: cx - 440,
+          y: cy + 40,
+          rotate: 12,
           zIndex: 6,
         },
-        // 7. Profile Photo Print (Individually Draggable)
+        // 7. Senne Lammens - MU Goalkeeper (Individually Draggable)
         profilePhoto: {
-          x: cx - 310 * scale,
-          y: cy + 240,
-          rotate: 5,
+          x: cx - 330,
+          y: cy + 220,
+          rotate: 4,
           zIndex: 7,
         },
-        // 8. Polaroid Card with Bulgaria Photo (Individually Draggable)
+        // 8. Landscape Photos - Jakarta & West Java Mountains (Individually Draggable)
         polaroid: {
-          x: cx + 260 * scale,
-          y: cy + 130,
-          rotate: 3,
+          x: cx + 250,
+          y: cy + 120,
+          rotate: 2,
           zIndex: 6,
         },
       });
@@ -182,9 +174,9 @@ export default function AboutCanvas() {
     const rawPanX = canvasPanRef.current.startPanX + dx;
     const rawPanY = canvasPanRef.current.startPanY + dy;
 
-    // Boundary for canvas panning: stop slightly past the edge cards ("lebih dikit saja")
-    const maxPanX = Math.max(180, window.innerWidth * 0.18);
-    const maxPanY = Math.max(160, window.innerHeight * 0.25);
+    // Boundary for canvas panning: ample room so mobile/tablet users can pan freely across the full desktop desk
+    const maxPanX = Math.max(500, window.innerWidth * 0.45);
+    const maxPanY = Math.max(450, window.innerHeight * 0.45);
 
     setPan({
       x: Math.max(-maxPanX, Math.min(maxPanX, rawPanX)),
@@ -315,7 +307,6 @@ export default function AboutCanvas() {
 
   const aboutCard = items["about-card"];
   const charizard = items["charizard"];
-  const typeSpecimen = items["typeSpecimen"];
   const spotify = items["spotify"];
   const macbook = items["macbook"];
   const iphone = items["iphone"];
@@ -403,7 +394,7 @@ export default function AboutCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 2. CHARIZARD TRADING CARD (Individually Draggable)        */}
+        {/* 2. MANCHESTER UNITED / OLD TRAFFORD CARD (Draggable)     */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -416,7 +407,7 @@ export default function AboutCanvas() {
             zIndex: charizard.zIndex,
             cursor: activeDragId === "charizard" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[185px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[210px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -424,60 +415,50 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`rounded-2xl overflow-hidden shadow-[0_16px_36px_rgba(0,0,0,0.16)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/50 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`rounded-2xl overflow-hidden bg-white dark:bg-[#1c1c1c] shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/90 dark:border-stone-800 p-3 space-y-2.5 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "charizard"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://framerusercontent.com/images/zivJ5C6BJfrXx1qXFvPd0jGlVM.png"
-                alt={`${JOTTER_SETTINGS.name} Trading Card`}
-                draggable={false}
-                className="w-full h-auto object-cover pointer-events-none"
-              />
+              {/* Old Trafford Stadium Photo */}
+              <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
+                  alt="Old Trafford - Theatre of Dreams"
+                  draggable={false}
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-white text-[9px] font-mono">
+                  Old Trafford 🏟️
+                </span>
+              </div>
+
+              {/* Title & Crest */}
+              <div className="flex items-center justify-between pt-0.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-5 h-5 shrink-0 flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://thumb.wikimedia.org/wikipedia/sco/thumb/7/7a/Manchester_United_FC_crest.svg/960px-Manchester_United_FC_crest.svg.png"
+                      alt="Manchester United"
+                      className="w-full h-full object-contain"
+                      draggable={false}
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">
+                    Theatre of Dreams
+                  </span>
+                </div>
+                <span className="px-1.5 py-0.5 rounded bg-[#DA291C]/10 text-[#DA291C] dark:text-red-400 text-[9px] font-mono font-bold">
+                  GGMU
+                </span>
+              </div>
             </div>
           </motion.div>
         </div>
 
-        {/* ======================================================== */}
-        {/* 3. TYPE SPECIMEN "Aa Inter Display" (Draggable)          */}
-        {/* ======================================================== */}
-        <div
-          role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "typeSpecimen")}
-          onPointerMove={(e) => handleItemPointerMove(e, "typeSpecimen")}
-          onPointerUp={(e) => handleItemPointerUp(e, "typeSpecimen")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "typeSpecimen")}
-          style={{
-            transform: `translate3d(${typeSpecimen.x}px, ${typeSpecimen.y}px, 0) rotate(${typeSpecimen.rotate}deg)`,
-            zIndex: typeSpecimen.zIndex,
-            cursor: activeDragId === "typeSpecimen" ? "grabbing" : "grab",
-          }}
-          className="absolute top-0 left-0 w-[115px] select-none pointer-events-auto touch-none group hover:z-30"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_14px_30px_rgba(0,0,0,0.11)] dark:shadow-[0_14px_30px_rgba(0,0,0,0.40)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "typeSpecimen"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
-              }`}
-            >
-              <h2 className="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 pointer-events-none">
-                Aa
-              </h2>
-              <p className="text-[10px] font-medium text-stone-500 dark:text-stone-400 mt-1 pointer-events-none">
-                Inter Display
-              </p>
-            </div>
-          </motion.div>
-        </div>
 
         {/* ======================================================== */}
         {/* 4. SPOTIFY PLAYER (Fixed on desk - NOT draggable)        */}
@@ -505,7 +486,7 @@ export default function AboutCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 5. MACBOOK PRO LID (Individually Draggable)              */}
+        {/* 5. THINKPAD LAPTOP (Individually Draggable)              */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -518,7 +499,7 @@ export default function AboutCanvas() {
             zIndex: macbook.zIndex,
             cursor: activeDragId === "macbook" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[250px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[240px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -526,19 +507,29 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`drop-shadow-[0_20px_32px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_20px_32px_rgba(0,0,0,0.55)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`p-3 rounded-2xl bg-stone-900 border border-stone-800 shadow-[0_20px_35px_rgba(0,0,0,0.30)] dark:shadow-[0_20px_35px_rgba(0,0,0,0.60)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "macbook"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://framerusercontent.com/images/EQzY5FH98ov3nqo9co607dry8.png"
-                alt="MacBook Pro"
-                draggable={false}
-                className="w-full h-auto object-cover pointer-events-none"
-              />
+              {/* ThinkPad Laptop Lid / Styling */}
+              <div className="aspect-[16/10] w-full rounded-xl bg-[#111111] border border-stone-800/80 p-3.5 flex flex-col justify-between relative overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-0.5">
+                    <span className="font-mono text-xs font-bold tracking-tight text-stone-200">
+                      ThinkPad
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse ml-0.5" />
+                  </div>
+                  <span className="text-[9px] font-mono text-stone-600">X1 Carbon</span>
+                </div>
+                {/* Keyboard & TrackPoint iconic red dot preview */}
+                <div className="w-full h-12 rounded-lg bg-stone-950 border border-stone-800/60 flex flex-col items-center justify-center relative">
+                  <div className="w-8 h-1 bg-stone-800 rounded-full mb-1" />
+                  <span className="w-2 h-2 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.8)]" />
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -583,7 +574,7 @@ export default function AboutCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 7. PROFILE PHOTO PRINT (Individually Draggable)          */}
+        {/* 7. SENNE LAMMENS - MANCHESTER UNITED GOALKEEPER CARD     */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -596,7 +587,7 @@ export default function AboutCanvas() {
             zIndex: profilePhoto.zIndex,
             cursor: activeDragId === "profilePhoto" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[115px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[155px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -604,27 +595,31 @@ export default function AboutCanvas() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-1.5 rounded-2xl bg-white dark:bg-[#252525] border border-stone-200 dark:border-stone-700 shadow-[0_14px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_14px_30px_rgba(0,0,0,0.40)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full rounded-2xl overflow-hidden bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "profilePhoto"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-square w-full rounded-xl overflow-hidden pointer-events-none">
+              <div className="aspect-[3/4] w-full overflow-hidden bg-stone-900 pointer-events-none relative">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://framerusercontent.com/images/adCSELRcqpcgk3XZb5PlodjPsM.jpg"
-                  alt={JOTTER_SETTINGS.name}
+                  src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=600&q=80"
+                  alt="Senne Lammens"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
+                  <span className="text-white text-xs font-semibold tracking-tight">Senne Lammens</span>
+                  <span className="text-[9px] font-mono text-red-400">GK · Manchester United</span>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 8. POLAROID CARD - BULGARIA (Individually Draggable)     */}
+        {/* 8. LANDSCAPE: JAKARTA & JAWA BARAT (No Text Caption)     */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -645,27 +640,33 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-3 pb-5 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "polaroid"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 mb-3 pointer-events-none">
+              {/* Photo 1: Jakarta City Skyline (No text) */}
+              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://framerusercontent.com/images/n3H51i3cAzn9ZHVAnFJYeEtNQQg.jpg"
-                  alt="Bulgaria"
+                  src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=80"
+                  alt="Jakarta Cityscape"
                   draggable={false}
                   className="w-full h-full object-cover pointer-events-none"
                 />
               </div>
-              <p
-                className="text-center text-sm sm:text-base text-stone-700 dark:text-stone-300 font-medium pointer-events-none"
-                style={{ fontFamily: "var(--font-caveat), cursive" }}
-              >
-                Last trip, Bulgaria, 2026
-              </p>
+
+              {/* Photo 2: West Java Mountains (No text) */}
+              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 pointer-events-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+                  alt="West Java Mountains"
+                  draggable={false}
+                  className="w-full h-full object-cover pointer-events-none"
+                />
+              </div>
             </div>
           </motion.div>
         </div>

@@ -5,14 +5,14 @@ import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Sepsu Dev - Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+    "About Sepsu Dev - Software Engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
     title: "About - Sepsu Dev",
     description:
-      "Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+      "Software Engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
     url: "https://sepsu.dev/about",
     images: [
       {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About - Sepsu Dev",
     description:
-      "Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+      "Software Engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
   },
 };
 

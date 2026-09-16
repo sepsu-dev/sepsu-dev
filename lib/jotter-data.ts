@@ -18,7 +18,7 @@ export interface ProjectCaseStudy {
 
 export const JOTTER_SETTINGS = {
   name: "Sepsu Dev",
-  role: "Full-stack Engineer | Open Source Contributor",
+  role: "Software Engineer",
   status: "Available for work",
   location: "Jakarta, Indonesia",
   email: "sepsu.dev@gmail.com",
@@ -28,7 +28,7 @@ export const JOTTER_SETTINGS = {
   instagramUrl: "https://instagram.com",
   avatarUrl: "https://framerusercontent.com/images/adCSELRcqpcgk3XZb5PlodjPsM.jpg?width=594&height=594",
   bulgariaPhotoUrl: "https://framerusercontent.com/images/n3H51i3cAzn9ZHVAnFJYeEtNQQg.jpg?scale-down-to=1024",
-  bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
+  bio: "Software Engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
   focus: [
     "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
     "⚛️ Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",

@@ -3,9 +3,41 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SlidersHorizontal, Moon, Sun, MapPin, Clock } from "lucide-react";
+import {
+  SlidersHorizontal,
+  Moon,
+  Sun,
+  MapPin,
+  Clock,
+  TrendingUp,
+  Eye,
+  Activity,
+  CloudSun,
+  CloudMoon,
+  CloudRain,
+  Cloud,
+  Thermometer,
+  Trophy,
+  Calendar,
+  Shield,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { JOTTER_PROJECTS, JOTTER_SETTINGS } from "@/lib/jotter-data";
+import {
+  TypeScript,
+  React as ReactIcon,
+  NextJs,
+  NodeJs,
+  Docker,
+  PostgreSQL,
+  Laravel,
+  NestJS,
+  TailwindCSS,
+  Redis,
+  MongoDB,
+  MySQL,
+  VueJs,
+} from "developer-icons";
 
 interface ItemState {
   x: number;
@@ -31,9 +63,52 @@ export default function DraggableCanvas() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>("");
 
+  // Weather state (Jakarta)
+  const [weather, setWeather] = useState<{
+    temp: number;
+    isDay: boolean;
+    weatherCode: number;
+  }>({
+    temp: 29,
+    isDay: true,
+    weatherCode: 1,
+  });
+
+  useEffect(() => {
+    // Fetch real-time weather for Jakarta via Open-Meteo
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=-6.2088&longitude=106.8456&current=temperature_2m,is_day,weather_code&timezone=Asia%2FJakarta"
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data.current) {
+            setWeather({
+              temp: Math.round(data.current.temperature_2m),
+              isDay: Boolean(data.current.is_day),
+              weatherCode: data.current.weather_code,
+            });
+          }
+        }
+      } catch {
+        const hour = new Date().getHours();
+        setWeather((prev) => ({
+          ...prev,
+          isDay: hour >= 6 && hour < 18,
+        }));
+      }
+    };
+
+    fetchWeather();
+    const weatherTimer = setInterval(fetchWeather, 15 * 60 * 1000);
+    return () => clearInterval(weatherTimer);
+  }, []);
+
   useEffect(() => {
     // Check initial dark mode status
-    const isDark = document.documentElement.classList.contains("dark") ||
+    const isDark =
+      document.documentElement.classList.contains("dark") ||
       localStorage.getItem("theme") === "dark";
     setIsDarkMode(isDark);
 
@@ -53,7 +128,10 @@ export default function DraggableCanvas() {
 
     updateTime();
     const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   const toggleDarkMode = () => {
@@ -104,7 +182,6 @@ export default function DraggableCanvas() {
     function computeInitialPositions() {
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      const scale = Math.max(0.8, Math.min(1.1, window.innerWidth / 1500));
 
       setItems({
         // 1. Center Card: firmly anchored slightly higher up on the desk
@@ -114,9 +191,9 @@ export default function DraggableCanvas() {
           rotate: 0,
           zIndex: 10,
         },
-        // 2. Clause Card: top-left, peeking from upper edge above cryptix
+        // 2. Clause Card (Location & Time): top-left, peeking from upper edge above cryptix
         clause: {
-          x: cx - 490 * scale,
+          x: cx - 490,
           y: cy - 455,
           rotate: 0,
           zIndex: 4,
@@ -130,42 +207,42 @@ export default function DraggableCanvas() {
         },
         // 4. Cryptix: mid-left, to the left of center card
         cryptix: {
-          x: cx - 580 * scale,
+          x: cx - 580,
           y: cy - 110,
           rotate: -2,
           zIndex: 5,
         },
-        // 5. SignFlow: bottom-left, shifted slightly lower and to the left
+        // 5. SignFlow (Dark mode): bottom-left, shifted slightly lower and to the left
         signflow: {
-          x: cx - 480 * scale,
+          x: cx - 480,
           y: cy + 230,
           rotate: 0,
           zIndex: 7,
         },
         // 6. Novera: top-right, tilted, right of center card
         novera: {
-          x: cx + 270 * scale,
+          x: cx + 270,
           y: cy - 240,
           rotate: 2,
           zIndex: 5,
         },
-        // 7. Oscar Bergman Cursor: mid-right, pointing to right edge of center card
+        // 7. Cursor Pill: mid-right, pointing to right edge of center card
         cursor: {
-          x: cx + 205 * scale,
+          x: cx + 205,
           y: cy - 40,
           rotate: 0,
           zIndex: 15,
         },
-        // 8. Ask Contract Generator: mid-right, below cursor
+        // 8. Ask Contract Generator (Tech stack): mid-right, below cursor
         generator: {
-          x: cx + 360 * scale,
+          x: cx + 360,
           y: cy + 80,
           rotate: 0,
           zIndex: 8,
         },
         // 9. Pitlane: bottom-right, peeking lower down from bottom right corner
         pitlane: {
-          x: cx + 230 * scale,
+          x: cx + 230,
           y: cy + 340,
           rotate: 2.5,
           zIndex: 6,
@@ -232,9 +309,9 @@ export default function DraggableCanvas() {
     const rawPanX = canvasPanRef.current.startPanX + dx;
     const rawPanY = canvasPanRef.current.startPanY + dy;
 
-    // Boundary for canvas panning: stop slightly past the edge cards ("lebih dikit saja")
-    const maxPanX = Math.max(180, window.innerWidth * 0.18);
-    const maxPanY = Math.max(220, window.innerHeight * 0.32);
+    // Boundary for canvas panning: ample room so mobile/tablet users can pan freely across the full desktop desk
+    const maxPanX = Math.max(500, window.innerWidth * 0.45);
+    const maxPanY = Math.max(450, window.innerHeight * 0.45);
 
     setPan({
       x: Math.max(-maxPanX, Math.min(maxPanX, rawPanX)),
@@ -351,11 +428,10 @@ export default function DraggableCanvas() {
     // Boundary for card dragging: slightly beyond the edge cards ("lebih dikit saja")
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
-    const scale = Math.max(0.8, Math.min(1.1, window.innerWidth / 1500));
 
-    const margin = 80;
-    const minCardX = cx - 620 * scale - margin;
-    const maxCardX = cx + 450 * scale + margin;
+    const margin = 100;
+    const minCardX = cx - 620 - margin;
+    const maxCardX = cx + 450 + margin;
     const minCardY = cy - 530 - margin;
     const maxY = cy + 420 + margin;
 
@@ -397,7 +473,7 @@ export default function DraggableCanvas() {
 
   const centerCard = items["center-card"];
   const cryptix = items["cryptix"];
-  const novera = items["novera"];
+  const novera = items["novera"];/*  */
   const pitlane = items["pitlane"];
   const clause = items["clause"];
   const graph = items["graph"];
@@ -654,49 +730,63 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "clause"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* Header */}
+              {/* Header: Location on Left & Real-time Weather/Temp on Right */}
               <div className="flex items-center justify-between pointer-events-none">
-                <span className="text-[9px] font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
-                  Location & Time
-                </span>
-                <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-600 dark:text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Online</span>
-                </span>
-              </div>
-
-              {/* City with Indonesian Flag & Live Clock (without heavy bold) */}
-              <div className="pointer-events-none space-y-1">
                 <div className="flex items-center gap-1.5 text-stone-700 dark:text-stone-300 text-xs font-normal">
-                  <span className="inline-flex items-center justify-center w-4 h-3 rounded-[2px] overflow-hidden border border-stone-200 dark:border-stone-700 shadow-2xs shrink-0" title="Indonesia">
+                  <span
+                    className="inline-flex items-center justify-center w-4 h-3 rounded-[2px] overflow-hidden border border-stone-200 dark:border-stone-700 shadow-2xs shrink-0"
+                    title="Indonesia"
+                  >
                     <span className="w-full h-full flex flex-col">
                       <span className="w-full h-1/2 bg-[#ff0000]" />
                       <span className="w-full h-1/2 bg-white" />
                     </span>
                   </span>
-                  <span>Jakarta, Indonesia</span>
+                  <span>Jakarta, ID</span>
                 </div>
-                <div className="flex items-baseline gap-1.5 pt-0.5">
-                  <span className="font-mono text-2xl font-normal tracking-tight text-stone-800 dark:text-stone-200">
-                    {currentTime || "00:00:00"}
-                  </span>
-                  <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
-                    WIB · GMT+7
-                  </span>
+
+                {/* Real-time Weather & Day/Night Icon */}
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800/80 text-[10px] font-mono text-stone-600 dark:text-stone-300">
+                  {weather.isDay ? (
+                    weather.weatherCode >= 51 ? (
+                      <CloudRain className="w-3 h-3 text-sky-500" />
+                    ) : weather.weatherCode >= 1 && weather.weatherCode <= 3 ? (
+                      <CloudSun className="w-3 h-3 text-amber-500" />
+                    ) : (
+                      <Sun className="w-3 h-3 text-amber-500" />
+                    )
+                  ) : weather.weatherCode >= 51 ? (
+                    <CloudRain className="w-3 h-3 text-sky-400" />
+                  ) : weather.weatherCode >= 1 && weather.weatherCode <= 3 ? (
+                    <CloudMoon className="w-3 h-3 text-indigo-400" />
+                  ) : (
+                    <Moon className="w-3 h-3 text-indigo-400" />
+                  )}
+                  <span>{weather.temp}°C</span>
                 </div>
+              </div>
+
+              {/* Live Clock */}
+              <div className="pointer-events-none flex items-baseline justify-between pt-0.5">
+                <span className="font-mono text-2xl font-normal tracking-tight text-stone-900 dark:text-stone-100">
+                  {currentTime || "00:00:00"}
+                </span>
+                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
+                  WIB · GMT+7
+                </span>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 6. GRAPH WIDGET (Individually Draggable)                 */}
+        {/* 6. MANCHESTER UNITED WIDGET (Individually Draggable)     */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -709,7 +799,7 @@ export default function DraggableCanvas() {
             zIndex: graph.zIndex,
             cursor: activeDragId === "graph" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[320px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[220px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -717,42 +807,80 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "graph"
                   ? ""
-                  : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
+                  : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
               }`}
             >
-              <div className="flex items-center justify-between text-[11px] text-stone-400 mb-1.5 pointer-events-none">
-                <span className="font-mono text-[10px]">250</span>
+              {/* Header: Official MU Logo + Club Name + League Rank */}
+              <div className="flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-0.5 bg-[#e53e3e]" />
-                  <span className="w-2 h-0.5 bg-[#cbd5e0]" />
+                  <div className="w-7 h-7 shrink-0 drop-shadow-xs flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://thumb.wikimedia.org/wikipedia/sco/thumb/7/7a/Manchester_United_FC_crest.svg/960px-Manchester_United_FC_crest.svg.png"
+                      alt="Manchester United Crest"
+                      className="w-full h-full object-contain"
+                      draggable={false}
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 tracking-tight block leading-none">
+                      Man United
+                    </span>
+                    <span className="text-[9px] font-mono text-stone-400 dark:text-stone-500">
+                      Premier League
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/40 border border-red-200/60 dark:border-red-900/40 text-[10px] font-mono text-[#DA291C] dark:text-red-400 font-semibold">
+                  <Trophy className="w-2.5 h-2.5" />
+                  <span>#14</span>
                 </div>
               </div>
-              <svg
-                viewBox="0 0 360 80"
-                className="w-full h-14 stroke-current pointer-events-none"
-              >
-                <path
-                  d="M 0 65 Q 90 10 180 35 T 360 15"
-                  fill="none"
-                  stroke="#121212"
-                  strokeWidth="1.5"
-                  className="dark:stroke-white opacity-80"
-                />
-                <path
-                  d="M 0 50 Q 100 55 190 20 T 360 45"
-                  fill="none"
-                  stroke="#3182ce"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 4"
-                />
-              </svg>
-              <div className="flex items-center justify-between text-[10px] text-stone-400 mt-1 border-t border-stone-100 dark:border-stone-800/80 pt-1 pointer-events-none">
-                <span>0</span>
-                <span>120</span>
-                <span>240</span>
+
+              {/* League Table Micro Summary */}
+              <div className="grid grid-cols-4 gap-1 p-2 rounded-xl bg-stone-50 dark:bg-stone-900/70 border border-stone-100 dark:border-stone-800/80 text-center font-mono pointer-events-none">
+                <div>
+                  <span className="text-[8px] text-stone-400 block uppercase">P</span>
+                  <span className="text-[11px] font-medium text-stone-800 dark:text-stone-200">28</span>
+                </div>
+                <div>
+                  <span className="text-[8px] text-stone-400 block uppercase">W</span>
+                  <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">9</span>
+                </div>
+                <div>
+                  <span className="text-[8px] text-stone-400 block uppercase">D</span>
+                  <span className="text-[11px] font-medium text-stone-500">7</span>
+                </div>
+                <div>
+                  <span className="text-[8px] text-stone-400 block uppercase">PTS</span>
+                  <span className="text-[11px] font-bold text-stone-900 dark:text-stone-100">34</span>
+                </div>
+              </div>
+
+              {/* Next Match Fixture Card */}
+              <div className="p-2.5 rounded-xl bg-stone-100/70 dark:bg-stone-800/50 border border-stone-200/60 dark:border-stone-700/50 pointer-events-none space-y-1.5">
+                <div className="flex items-center justify-between text-[9px] font-mono text-stone-400 dark:text-stone-500">
+                  <span className="flex items-center gap-1 text-stone-600 dark:text-stone-400 font-medium">
+                    <Calendar className="w-2.5 h-2.5 text-[#DA291C]" /> Matchday 29
+                  </span>
+                  <span>EPL</span>
+                </div>
+
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">Man Utd</span>
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-700 text-stone-500">
+                    VS
+                  </span>
+                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">Arsenal</span>
+                </div>
+
+                <div className="text-[9px] font-mono text-center text-[#DA291C] dark:text-red-400 pt-0.5">
+                  Old Trafford · Sun, 23:30 WIB
+                </div>
               </div>
             </div>
           </motion.div>
@@ -841,7 +969,7 @@ export default function DraggableCanvas() {
             zIndex: generator.zIndex,
             cursor: activeDragId === "generator" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[250px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -855,69 +983,77 @@ export default function DraggableCanvas() {
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="flex items-center justify-between pointer-events-none">
+              <div className="flex items-center pointer-events-none">
                 <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
-                  Tech Stack & Tools ...
+                  Tech Stack & Tools
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               </div>
 
-              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800 pointer-events-none">
-                <div className="flex items-center gap-1.5 text-stone-500 dark:text-stone-400">
-                  {/* TypeScript */}
-                  <span
-                    title="TypeScript"
-                    className="w-5 h-5 rounded-md bg-[#3178c6]/10 dark:bg-[#3178c6]/20 text-[#3178c6] text-[9px] font-bold flex items-center justify-center"
-                  >
-                    TS
-                  </span>
-                  {/* React */}
-                  <span
-                    title="React.js"
-                    className="w-5 h-5 rounded-md bg-[#00d8ff]/10 dark:bg-[#00d8ff]/20 text-[#00d8ff] flex items-center justify-center p-0.5"
-                  >
-                    <svg className="w-3.5 h-3.5 fill-current" viewBox="-11.5 -10.23174 23 20.46348">
-                      <circle cx="0" cy="0" r="2.05" />
-                      <g stroke="currentColor" strokeWidth="1" fill="none">
-                        <ellipse rx="11" ry="4.2" />
-                        <ellipse rx="11" ry="4.2" transform="rotate(60)" />
-                        <ellipse rx="11" ry="4.2" transform="rotate(120)" />
-                      </g>
-                    </svg>
-                  </span>
-                  {/* Next.js */}
-                  <span
-                    title="Next.js"
-                    className="w-5 h-5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-100 text-[9px] font-bold flex items-center justify-center"
-                  >
-                    N
-                  </span>
-                  {/* Node.js */}
-                  <span
-                    title="Node.js"
-                    className="w-5 h-5 rounded-md bg-[#5fa04e]/10 dark:bg-[#5fa04e]/20 text-[#5fa04e] text-[8px] font-bold flex items-center justify-center"
-                  >
-                    JS
-                  </span>
-                  {/* Docker */}
-                  <span
-                    title="Docker"
-                    className="w-5 h-5 rounded-md bg-[#2496ed]/10 dark:bg-[#2496ed]/20 text-[10px] flex items-center justify-center"
-                  >
-                    🐳
-                  </span>
-                  {/* Database */}
-                  <span
-                    title="PostgreSQL / SQL"
-                    className="w-5 h-5 rounded-md bg-[#4169e1]/10 dark:bg-[#4169e1]/20 text-[#4169e1] text-[8px] font-bold flex items-center justify-center"
-                  >
-                    SQL
-                  </span>
-                </div>
+              <div className="flex flex-wrap items-center gap-2.5 pt-1 pointer-events-none">
+                {/* TypeScript */}
+                <span title="TypeScript" className="flex items-center justify-center">
+                  <TypeScript size={19} />
+                </span>
 
-                <div className="w-5 h-5 rounded-full bg-[#121212] dark:bg-white text-white dark:text-black flex items-center justify-center text-[10px] font-bold">
-                  ↑
-                </div>
+                {/* React */}
+                <span title="React.js" className="flex items-center justify-center">
+                  <ReactIcon size={19} />
+                </span>
+
+                {/* Next.js */}
+                <span title="Next.js" className="flex items-center justify-center">
+                  <NextJs size={19} />
+                </span>
+
+                {/* Vue.js */}
+                <span title="Vue.js" className="flex items-center justify-center">
+                  <VueJs size={19} />
+                </span>
+
+                {/* Tailwind CSS */}
+                <span title="Tailwind CSS" className="flex items-center justify-center">
+                  <TailwindCSS size={19} />
+                </span>
+
+                {/* Node.js */}
+                <span title="Node.js" className="flex items-center justify-center">
+                  <NodeJs size={19} />
+                </span>
+
+                {/* NestJS */}
+                <span title="NestJS" className="flex items-center justify-center">
+                  <NestJS size={19} />
+                </span>
+
+                {/* Laravel */}
+                <span title="Laravel" className="flex items-center justify-center">
+                  <Laravel size={19} />
+                </span>
+
+                {/* Docker */}
+                <span title="Docker" className="flex items-center justify-center">
+                  <Docker size={19} />
+                </span>
+
+                {/* PostgreSQL */}
+                <span title="PostgreSQL" className="flex items-center justify-center">
+                  <PostgreSQL size={19} />
+                </span>
+
+                {/* MySQL */}
+                <span title="MySQL" className="flex items-center justify-center">
+                  <MySQL size={19} />
+                </span>
+
+                {/* MongoDB */}
+                <span title="MongoDB" className="flex items-center justify-center">
+                  <MongoDB size={19} />
+                </span>
+
+                {/* Redis */}
+                <span title="Redis" className="flex items-center justify-center">
+                  <Redis size={19} />
+                </span>
               </div>
             </div>
           </motion.div>

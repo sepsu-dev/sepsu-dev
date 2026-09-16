@@ -89,18 +89,18 @@ export default async function ProjectPage({ params }: Props) {
           </Link>
 
           {/* Case Study Header */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-xs font-medium text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                 {project.category}
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">
               {project.title}
             </h1>
 
-            <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl">
               {project.description}
             </p>
 
@@ -109,16 +109,16 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-white dark:text-[#121212] text-xs font-semibold hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-stone-900 text-white dark:bg-white dark:text-stone-900 text-xs font-medium hover:opacity-90 transition-opacity"
               >
-                <span>View live site</span>
+                <span>Visit website</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
 
           {/* Main Banner Image */}
-          <div className="rounded-3xl overflow-hidden border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-lg">
+          <div className="rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#181818] shadow-xs">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={project.mainImage}
@@ -128,21 +128,21 @@ export default async function ProjectPage({ params }: Props) {
           </div>
 
           {/* Problem Statement & Outcome */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-8 rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-sm space-y-3">
-              <h2 className="text-xs font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-6 rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#181818] space-y-2">
+              <h2 className="text-[10px] font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 Problem Statement
               </h2>
-              <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
                 {project.problemStatement}
               </p>
             </div>
 
-            <div className="p-8 rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-sm space-y-3">
-              <h2 className="text-xs font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            <div className="p-6 rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#181818] space-y-2">
+              <h2 className="text-[10px] font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 Outcome
               </h2>
-              <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
                 {project.outcome}
               </p>
             </div>

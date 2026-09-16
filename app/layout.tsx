@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Caveat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Preloader from "@/components/Preloader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,10 +29,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sepsu.dev"),
   title: "Sepsu Dev",
   description:
-    "Full-stack engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications. Based in Jakarta, Indonesia.",
+    "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications. Based in Jakarta, Indonesia.",
   keywords: [
     "Sepsu Dev",
-    "Full-stack Engineer",
     "Software Engineer",
     "Web Developer Jakarta",
     "React",
@@ -58,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "Sepsu Dev",
     title: "Sepsu Dev",
     description:
-      "Full-stack engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
+      "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
     images: [
       {
         url: "https://framerusercontent.com/images/4Gkd70fg0CvsPxE9NwLIZZal3Y.jpg?scale-down-to=1024",
@@ -72,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sepsu Dev",
     description:
-      "Full-stack engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
+      "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
     images: ["https://framerusercontent.com/images/4Gkd70fg0CvsPxE9NwLIZZal3Y.jpg?scale-down-to=1024"],
     creator: "@sepsudev",
   },
@@ -101,7 +99,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${caveat.variable} antialiased min-h-screen relative`}>
-        <Preloader />
         {children}
         <Navbar />
       </body>

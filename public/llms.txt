@@ -9,6 +9,7 @@ Sepsu Dev is an interactive portfolio showcasing production projects, technical 
 - [Home Desk](https://sepsu.dev/): Interactive workspace canvas featuring projects, live location widget, dark mode switch, and tech stack pills.
 - [About](https://sepsu.dev/about): Career focus, technical skills, philosophy, and experience background.
 - [Projects](https://sepsu.dev/projects): Curated list of web applications and case studies with paginated views.
+- [Contact](https://sepsu.dev/contact): Get in touch for roles, projects, and collaboration inquiries.
 - [Cryptix Case Study](https://sepsu.dev/project/cryptix): Next-gen crypto exchange application product design & engineering.
 - [Novera Case Study](https://sepsu.dev/project/novera): AI-assisted legal contract workspace platform.
 - [Pitlane Case Study](https://sepsu.dev/project/pitlane): Real-time motorsport telemetry and data visualization platform.

@@ -35,7 +35,7 @@ export default function HomePage() {
       addressCountry: "Indonesia",
     },
     knowsAbout: [
-      "Full-stack Engineering",
+      "Software Engineering",
       "Next.js",
       "React",
       "TypeScript",
