@@ -1,10 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 
-export const metadata = {
-  title: "Privacy Policy - Jotter",
-  description: "Privacy Policy for Oscar Bergman portfolio.",
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Privacy Policy for Sepsu Dev portfolio and web applications.",
+  alternates: {
+    canonical: "/privacypolicy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function PrivacyPolicyPage() {
@@ -26,7 +34,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="text-xs font-mono text-stone-400 dark:text-stone-500">
-            Last updated 29 July 2026
+            Last updated September 2026
           </p>
         </div>
 
@@ -35,7 +43,7 @@ export default function PrivacyPolicyPage() {
           <p>
             This Privacy Policy explains what information is collected when you visit
             this site, how it is used, and the choices you have. This is a personal
-            portfolio, so data collection is kept to a minimum.
+            portfolio by {JOTTER_SETTINGS.name}, so data collection is kept strictly to a minimum.
           </p>
 
           <div className="space-y-2">
@@ -58,18 +66,7 @@ export default function PrivacyPolicyPage() {
               This site may use privacy-friendly analytics and essential cookies to
               keep things running and to measure traffic in aggregate. You can block
               or delete cookies in your browser settings at any time without
-              breaking the site.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              How your information is used
-            </h2>
-            <p>
-              Any data collected is used only to operate and improve the site — for
-              example, to see which projects people are drawn to. It is never sold,
-              rented or traded.
+              affecting your ability to use the site.
             </p>
           </div>
 
@@ -78,20 +75,8 @@ export default function PrivacyPolicyPage() {
               Third-party services
             </h2>
             <p>
-              This site is hosted with modern infrastructure and may embed content
-              from third parties such as fonts or media. Those providers have their
-              own privacy policies governing the data they process.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Data retention
-            </h2>
-            <p>
-              Analytics data is kept in aggregated, anonymised form only for as long
-              as needed to understand site trends. Any emails sent directly to me are
-              retained only as needed to converse and respond.
+              External fonts, assets, and embeds may be served by third-party
+              providers. Those services operate under their own privacy policies.
             </p>
           </div>
 

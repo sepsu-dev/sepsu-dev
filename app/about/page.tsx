@@ -1,10 +1,34 @@
 import type { Metadata } from "next";
 import AboutCanvas from "@/components/AboutCanvas";
+import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 
 export const metadata: Metadata = {
-  title: "About - Oscar Bergman",
+  title: "About",
   description:
-    "Based in Stockholm, usually working with one or two teams at a time, always with a notebook nearby even though everything ends up in Figma eventually.",
+    "About Sepsu Dev - Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About - Sepsu Dev",
+    description:
+      "Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+    url: "https://sepsu.dev/about",
+    images: [
+      {
+        url: JOTTER_SETTINGS.bulgariaPhotoUrl,
+        width: 1024,
+        height: 768,
+        alt: "Sepsu Dev",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About - Sepsu Dev",
+    description:
+      "Full-stack engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services in Jakarta, Indonesia.",
+  },
 };
 
 export default function AboutPage() {

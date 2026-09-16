@@ -367,30 +367,19 @@ export default function AboutCanvas() {
               </span>
             </div>
 
-            {/* Heading */}
-            <h1 className="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 mb-5 pointer-events-none">
-              {JOTTER_SETTINGS.name}
-            </h1>
+            {/* Heading & Subtitle */}
+            <div className="mb-5 pointer-events-none">
+              <h1 className="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
+                {JOTTER_SETTINGS.name}
+              </h1>
+              <p className="text-xs sm:text-sm font-medium text-stone-500 dark:text-stone-400 mt-1">
+                {JOTTER_SETTINGS.role}
+              </p>
+            </div>
 
             {/* Bio Copy */}
             <div className="space-y-4 text-xs sm:text-[13px] text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
-              <p>
-                I&apos;m Oscar. I&apos;ve spent the last six years designing products
-                for teams who take their craft seriously, fintech, legal and
-                developer tools mostly, the kind of places where a confusing
-                interface actually costs someone something.
-              </p>
-              <p>
-                I don&apos;t believe in flashy for the sake of flashy. Good design,
-                to me, is mostly about restraint: knowing what to leave out, what to
-                say once, what to let breathe. The projects on this site are less
-                about the pixels and more about the decisions behind them.
-              </p>
-              <p>
-                Based in Stockholm, usually working with one or two teams at a time,
-                always with a notebook nearby even though everything ends up in
-                Figma eventually.
-              </p>
+              <p>{JOTTER_SETTINGS.bio}</p>
             </div>
 
             {/* Action Buttons */}
@@ -444,7 +433,7 @@ export default function AboutCanvas() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://framerusercontent.com/images/zivJ5C6BJfrXx1qXFvPd0jGlVM.png"
-                alt="Oscar Bergman Trading Card"
+                alt={`${JOTTER_SETTINGS.name} Trading Card`}
                 draggable={false}
                 className="w-full h-auto object-cover pointer-events-none"
               />
@@ -625,7 +614,7 @@ export default function AboutCanvas() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://framerusercontent.com/images/adCSELRcqpcgk3XZb5PlodjPsM.jpg"
-                  alt="Oscar Bergman"
+                  alt={JOTTER_SETTINGS.name}
                   draggable={false}
                   className="w-full h-full object-cover pointer-events-none"
                 />

@@ -1,16 +1,23 @@
-# Sepsu Dev — Software Engineer Portfolio
+# Sepsu Dev — Full-stack Engineer Portfolio
 
-> Software Engineer specializing in high-performance backends, modern web architectures, and fluid responsive user interfaces.
+> Full-stack engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications. Based in Jakarta, Indonesia.
 
 ## Overview
-Sepsu Dev is a portfolio application showcasing developer projects, technical stack skills, focus areas, and credentials.
+Sepsu Dev is an interactive portfolio showcasing production projects, technical stacks, architecture focus areas, and case studies.
 
-## Primary Resources
-- [Home](https://sepsu.dev/): Overview of profile, technical skills, and project showcase.
-- [Robots](https://sepsu.dev/robots.txt): Search engine crawler directive file.
+## Primary Pages & Resources
+- [Home Desk](https://sepsu.dev/): Interactive workspace canvas featuring projects, live location widget, dark mode switch, and tech stack pills.
+- [About](https://sepsu.dev/about): Career focus, technical skills, philosophy, and experience background.
+- [Projects](https://sepsu.dev/projects): Curated list of web applications and case studies with paginated views.
+- [Cryptix Case Study](https://sepsu.dev/project/cryptix): Next-gen crypto exchange application product design & engineering.
+- [Novera Case Study](https://sepsu.dev/project/novera): AI-assisted legal contract workspace platform.
+- [Pitlane Case Study](https://sepsu.dev/project/pitlane): Real-time motorsport telemetry and data visualization platform.
+- [Sitemap](https://sepsu.dev/sitemap.xml): Search engine indexing sitemap.
+- [Robots](https://sepsu.dev/robots.txt): Search engine crawler directives.
 
 ## Technical Architecture & Stack
-- **Framework**: Next.js 16 (App Router & Turbopack)
-- **Language**: TypeScript & React
-- **Styling**: Tailwind CSS & Glassmorphism design system
-- **Backend Tech**: Go, Node.js, PostgreSQL, Docker
+- **Framework**: Next.js (App Router, Turbopack, React 19)
+- **Languages**: TypeScript, PHP, Node.js
+- **Backend Frameworks**: Laravel, CodeIgniter, Express.js, Nest.js
+- **Databases & DevOps**: PostgreSQL, MySQL, SQL Server, Redis, MongoDB, Docker, CI/CD
+- **Frontend & Styling**: Tailwind CSS, Motion, Responsive Canvas

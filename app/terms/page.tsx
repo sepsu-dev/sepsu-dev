@@ -1,10 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 
-export const metadata = {
-  title: "Terms of Service - Jotter",
-  description: "Terms of Service for Oscar Bergman portfolio.",
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Terms of Service for Sepsu Dev portfolio website and interactive showcases.",
+  alternates: {
+    canonical: "/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {
@@ -26,25 +34,25 @@ export default function TermsPage() {
             Terms of Service
           </h1>
           <p className="text-xs font-mono text-stone-400 dark:text-stone-500">
-            Last updated 29 July 2026
+            Last updated September 2026
           </p>
         </div>
 
         {/* Content Box */}
         <div className="p-8 rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] space-y-8 text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed shadow-sm">
           <p>
-            By accessing and using this website you agree to the terms below. If you
+            By accessing and using this website ({JOTTER_SETTINGS.name}), you agree to the terms below. If you
             don’t agree with them, please don’t use the site.
           </p>
 
           <div className="space-y-2">
             <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Using this site
+              Personal portfolio
             </h2>
             <p>
-              You’re welcome to browse, get inspired and reach out. You agree not
-              to misuse the site — no attempting to break, overload or gain
-              unauthorised access to it, and nothing unlawful.
+              This site is a personal portfolio showcasing the work and experience
+              of {JOTTER_SETTINGS.name}. Everything here is provided for informational
+              and demonstration purposes.
             </p>
           </div>
 
@@ -53,20 +61,10 @@ export default function TermsPage() {
               Intellectual property
             </h2>
             <p>
-              Unless stated otherwise, the design, layout, text and visuals on
-              this site are my own work and are protected by copyright. Please
-              don’t reproduce or republish them without permission.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Portfolio work
-            </h2>
-            <p>
-              Projects shown here may have been created for or with clients and can
-              include their trademarks or brands. They remain the property of
-              their respective owners and are displayed for portfolio purposes only.
+              Unless otherwise noted, all content, design elements, images, and code
+              on this site are owned by {JOTTER_SETTINGS.name} or used with permission. You
+              may not copy, reproduce, or redistribute any of it without prior
+              written consent.
             </p>
           </div>
 
@@ -75,19 +73,9 @@ export default function TermsPage() {
               Disclaimer
             </h2>
             <p>
-              This site is provided “as is”. While I try to keep everything accurate
-              and up to date, I make no guarantee that the content is complete,
-              current or error-free.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-              Limitation of liability
-            </h2>
-            <p>
-              To the maximum extent permitted by law, I won’t be liable for any
-              loss or damage arising from your use of this site.
+              This site is provided “as is”, without warranties of any kind. While I
+              aim to keep the content accurate and up to date, I make no guarantees
+              about completeness or reliability.
             </p>
           </div>
 
@@ -96,9 +84,8 @@ export default function TermsPage() {
               External links
             </h2>
             <p>
-              This site may link to external websites. I don’t control those sites
-              and can’t accept responsibility for their content or privacy
-              practices.
+              The site may link to external websites. I don’t control those sites
+              and am not responsible for their content or practices.
             </p>
           </div>
 

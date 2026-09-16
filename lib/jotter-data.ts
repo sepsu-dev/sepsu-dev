@@ -17,17 +17,24 @@ export interface ProjectCaseStudy {
 }
 
 export const JOTTER_SETTINGS = {
-  name: "Oscar Bergman",
-  role: "Product Designer",
+  name: "Sepsu Dev",
+  role: "Full-stack Engineer | Open Source Contributor",
   status: "Available for work",
-  location: "Stockholm, Sweden",
-  email: "oscarbergman@gmail.com",
-  contactEmail: "hello@oscar.design",
-  twitterUrl: "https://twitter.com",
+  location: "Jakarta, Indonesia",
+  email: "sepsu.dev@gmail.com",
+  contactEmail: "sepsu.dev@gmail.com",
+  githubUrl: "https://github.com/sepsu-dev",
+  twitterUrl: "https://twitter.com/",
   instagramUrl: "https://instagram.com",
   avatarUrl: "https://framerusercontent.com/images/adCSELRcqpcgk3XZb5PlodjPsM.jpg?width=594&height=594",
   bulgariaPhotoUrl: "https://framerusercontent.com/images/n3H51i3cAzn9ZHVAnFJYeEtNQQg.jpg?scale-down-to=1024",
-  bio: "This page works a bit like my desk. Projects, notes and half finished thoughts, all within reach. Drag things around, open whatever catches your eye.\n\nWant the longer story? That's what the about page is for.\n\nP.S. Yes, everything on this page is draggable. Might as well try it.",
+  bio: "Full-stack engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
+  focus: [
+    "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
+    "⚛️ Crafting highly interactive user interfaces with React.js, Vue.js, and React Native",
+    "🐳 Orchestrating containerized environments with Docker, Ubuntu, GitLab, and GitHub CI/CD",
+    "🛢️ Managing scalable databases using PostgreSQL, MySQL, SQL Server, Redis, and MongoDB",
+  ],
 };
 
 export const JOTTER_PROJECTS: ProjectCaseStudy[] = [

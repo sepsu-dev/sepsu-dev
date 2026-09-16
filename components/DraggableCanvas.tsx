@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Moon, Sun, MapPin, Clock } from "lucide-react";
 import { motion } from "motion/react";
 import { JOTTER_PROJECTS, JOTTER_SETTINGS } from "@/lib/jotter-data";
 
@@ -28,7 +28,45 @@ export default function DraggableCanvas() {
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [maxZIndex, setMaxZIndex] = useState<number>(25);
 
-  const [signflowActive, setSignflowActive] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<string>("");
+
+  useEffect(() => {
+    // Check initial dark mode status
+    const isDark = document.documentElement.classList.contains("dark") ||
+      localStorage.getItem("theme") === "dark";
+    setIsDarkMode(isDark);
+
+    // Live Jakarta time update
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Jakarta",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        })
+      );
+    };
+
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const nextDark = !isDarkMode;
+    setIsDarkMode(nextDark);
+    if (nextDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
 
   // Ref for canvas background pan tracking
   const canvasPanRef = useRef<{
@@ -128,7 +166,7 @@ export default function DraggableCanvas() {
         // 9. Pitlane: bottom-right, peeking lower down from bottom right corner
         pitlane: {
           x: cx + 230 * scale,
-          y: cy + 260,
+          y: cy + 340,
           rotate: 2.5,
           zIndex: 6,
         },
@@ -196,7 +234,7 @@ export default function DraggableCanvas() {
 
     // Boundary for canvas panning: stop slightly past the edge cards ("lebih dikit saja")
     const maxPanX = Math.max(180, window.innerWidth * 0.18);
-    const maxPanY = Math.max(160, window.innerHeight * 0.25);
+    const maxPanY = Math.max(220, window.innerHeight * 0.32);
 
     setPan({
       x: Math.max(-maxPanX, Math.min(maxPanX, rawPanX)),
@@ -319,7 +357,7 @@ export default function DraggableCanvas() {
     const minCardX = cx - 620 * scale - margin;
     const maxCardX = cx + 450 * scale + margin;
     const minCardY = cy - 530 - margin;
-    const maxY = cy + 340 + margin;
+    const maxY = cy + 420 + margin;
 
     setItems((prev) => ({
       ...prev,
@@ -425,7 +463,7 @@ export default function DraggableCanvas() {
             </div>
 
             <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
-              Hey, I&apos;m Oscar.
+              Hey, I&apos;m {JOTTER_SETTINGS.name}.
             </h1>
 
             <div className="space-y-3.5 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
@@ -478,10 +516,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
             <Link
-              href="/work/cryptix"
+              href="/project/cryptix"
               onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/work/cryptix")}
-              onClick={(e) => handleProjectCardClick(e, "/work/cryptix")}
+              onPointerUp={(e) => handleProjectPointerUp(e, "/project/cryptix")}
+              onClick={(e) => handleProjectCardClick(e, "/project/cryptix")}
               draggable={false}
               className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
             >
@@ -522,10 +560,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
           >
             <Link
-              href="/work/novera"
+              href="/project/novera"
               onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/work/novera")}
-              onClick={(e) => handleProjectCardClick(e, "/work/novera")}
+              onPointerUp={(e) => handleProjectPointerUp(e, "/project/novera")}
+              onClick={(e) => handleProjectCardClick(e, "/project/novera")}
               draggable={false}
               className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
             >
@@ -566,10 +604,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
           >
             <Link
-              href="/work/pitlane"
+              href="/project/pitlane"
               onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/work/pitlane")}
-              onClick={(e) => handleProjectCardClick(e, "/work/pitlane")}
+              onPointerUp={(e) => handleProjectPointerUp(e, "/project/pitlane")}
+              onClick={(e) => handleProjectCardClick(e, "/project/pitlane")}
               draggable={false}
               className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
             >
@@ -595,7 +633,7 @@ export default function DraggableCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 5. CONFIDENTIALITY CLAUSE (Individually Draggable)       */}
+        {/* 5. LOCATION & LOCAL TIME (Individually Draggable)        */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -616,37 +654,43 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] text-xs space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "clause"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="flex items-center justify-between gap-1 pointer-events-none">
-                <span className="font-semibold text-[11px] text-stone-800 dark:text-stone-200">
-                  Confidentiality clause incomplete
+              {/* Header */}
+              <div className="flex items-center justify-between pointer-events-none">
+                <span className="text-[9px] font-mono uppercase tracking-wider text-stone-400 dark:text-stone-500">
+                  Location & Time
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#f6ad55]/20 text-[#dd6b20]">
-                  MEDIUM
+                <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-600 dark:text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Online</span>
                 </span>
               </div>
-              <div className="p-2.5 rounded-lg bg-stone-50 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/50 text-[10px] text-stone-600 dark:text-stone-400 leading-relaxed italic pointer-events-none">
-                &quot;The Receiving Party agrees to maintain the confidentiality of
-                all proprietary information for a period of five (5) years...&quot;
+
+              {/* City with Indonesian Flag & Live Clock (without heavy bold) */}
+              <div className="pointer-events-none space-y-1">
+                <div className="flex items-center gap-1.5 text-stone-700 dark:text-stone-300 text-xs font-normal">
+                  <span className="inline-flex items-center justify-center w-4 h-3 rounded-[2px] overflow-hidden border border-stone-200 dark:border-stone-700 shadow-2xs shrink-0" title="Indonesia">
+                    <span className="w-full h-full flex flex-col">
+                      <span className="w-full h-1/2 bg-[#ff0000]" />
+                      <span className="w-full h-1/2 bg-white" />
+                    </span>
+                  </span>
+                  <span>Jakarta, Indonesia</span>
+                </div>
+                <div className="flex items-baseline gap-1.5 pt-0.5">
+                  <span className="font-mono text-2xl font-normal tracking-tight text-stone-800 dark:text-stone-200">
+                    {currentTime || "00:00:00"}
+                  </span>
+                  <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
+                    WIB · GMT+7
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-[#e53e3e] pointer-events-none">
-                <span>⚠️</span>
-                <span>Missing exception for disclosures required by law.</span>
-              </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  if (itemDragRef.current.hasMoved) e.stopPropagation();
-                }}
-                className="w-full py-1.5 rounded-lg bg-[#121212] text-white dark:bg-white dark:text-black text-[10px] font-semibold hover:bg-stone-800 transition-colors cursor-pointer"
-              >
-                Apply recommendation
-              </button>
             </div>
           </motion.div>
         </div>
@@ -728,7 +772,7 @@ export default function DraggableCanvas() {
             zIndex: signflow.zIndex,
             cursor: activeDragId === "signflow" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[200px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -736,45 +780,47 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "signflow"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="pointer-events-none">
-                <span className="text-[9px] font-mono uppercase tracking-wider text-stone-400">
-                  Integration
-                </span>
-                <h4 className="font-semibold text-xs text-stone-900 dark:text-stone-100 mt-0.5">
-                  SignFlow
-                </h4>
-                <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-relaxed mt-0.5">
-                  Send contracts for secure e-signature directly from Novera.
-                </p>
-              </div>
-              <div className="flex items-center justify-between pt-1 border-t border-stone-200/70 dark:border-stone-800">
-                <div className="flex items-center gap-1 text-[10px] text-stone-500 pointer-events-none">
-                  <SlidersHorizontal className="w-3 h-3" />
-                  <span>Settings</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 pointer-events-none">
+                  <div className="w-6 h-6 rounded-lg bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-600 dark:text-stone-300">
+                    {isDarkMode ? (
+                      <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                    ) : (
+                      <Sun className="w-3.5 h-3.5 text-amber-500" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs font-normal text-stone-800 dark:text-stone-200">
+                      {isDarkMode ? "Dark theme" : "Light theme"}
+                    </p>
+                    <p className="text-[9px] font-mono text-stone-400 dark:text-stone-500">
+                      Workspace
+                    </p>
+                  </div>
                 </div>
+
+                {/* Minimalist Switch */}
                 <button
                   type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
-                    if (itemDragRef.current.hasMoved) {
-                      e.stopPropagation();
-                      return;
-                    }
-                    setSignflowActive(!signflowActive);
+                    e.stopPropagation();
+                    toggleDarkMode();
                   }}
-                  aria-label="Toggle SignFlow Active"
-                  className={`w-7 h-4 rounded-full transition-colors flex items-center p-0.5 cursor-pointer ${
-                    signflowActive
-                      ? "bg-[#121212] dark:bg-white justify-end"
-                      : "bg-stone-300 dark:bg-stone-700 justify-start"
+                  aria-label="Toggle Dark Mode"
+                  className={`w-8 h-4.5 rounded-full transition-colors flex items-center p-0.5 cursor-pointer relative z-10 ${
+                    isDarkMode
+                      ? "bg-indigo-600 justify-end"
+                      : "bg-stone-200 dark:bg-stone-700 justify-start"
                   }`}
                 >
-                  <span className="w-3 h-3 rounded-full bg-white dark:bg-black shadow-xs" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-white shadow-2xs pointer-events-none transition-transform" />
                 </button>
               </div>
             </div>
@@ -782,7 +828,7 @@ export default function DraggableCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 8. ASK CONTRACT GENERATOR BAR (Individually Draggable)   */}
+        {/* 8. TECH STACK & TOOLS (Individually Draggable)           */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -795,7 +841,7 @@ export default function DraggableCanvas() {
             zIndex: generator.zIndex,
             cursor: activeDragId === "generator" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[230px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -809,16 +855,66 @@ export default function DraggableCanvas() {
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <p className="text-[11px] text-stone-500 dark:text-stone-400 font-medium pointer-events-none">
-                Ask Contract Generator ...
-              </p>
-              <div className="flex items-center justify-between text-stone-400 text-xs pt-1 border-t border-stone-200/60 dark:border-stone-800 pointer-events-none">
-                <div className="flex items-center gap-2">
-                  <span>📎</span>
-                  <span>🖼️</span>
-                  <span>🎙️</span>
-                  <span>⚏</span>
+              <div className="flex items-center justify-between pointer-events-none">
+                <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                  Tech Stack & Tools ...
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              </div>
+
+              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-800 pointer-events-none">
+                <div className="flex items-center gap-1.5 text-stone-500 dark:text-stone-400">
+                  {/* TypeScript */}
+                  <span
+                    title="TypeScript"
+                    className="w-5 h-5 rounded-md bg-[#3178c6]/10 dark:bg-[#3178c6]/20 text-[#3178c6] text-[9px] font-bold flex items-center justify-center"
+                  >
+                    TS
+                  </span>
+                  {/* React */}
+                  <span
+                    title="React.js"
+                    className="w-5 h-5 rounded-md bg-[#00d8ff]/10 dark:bg-[#00d8ff]/20 text-[#00d8ff] flex items-center justify-center p-0.5"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current" viewBox="-11.5 -10.23174 23 20.46348">
+                      <circle cx="0" cy="0" r="2.05" />
+                      <g stroke="currentColor" strokeWidth="1" fill="none">
+                        <ellipse rx="11" ry="4.2" />
+                        <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+                        <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+                      </g>
+                    </svg>
+                  </span>
+                  {/* Next.js */}
+                  <span
+                    title="Next.js"
+                    className="w-5 h-5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-100 text-[9px] font-bold flex items-center justify-center"
+                  >
+                    N
+                  </span>
+                  {/* Node.js */}
+                  <span
+                    title="Node.js"
+                    className="w-5 h-5 rounded-md bg-[#5fa04e]/10 dark:bg-[#5fa04e]/20 text-[#5fa04e] text-[8px] font-bold flex items-center justify-center"
+                  >
+                    JS
+                  </span>
+                  {/* Docker */}
+                  <span
+                    title="Docker"
+                    className="w-5 h-5 rounded-md bg-[#2496ed]/10 dark:bg-[#2496ed]/20 text-[10px] flex items-center justify-center"
+                  >
+                    🐳
+                  </span>
+                  {/* Database */}
+                  <span
+                    title="PostgreSQL / SQL"
+                    className="w-5 h-5 rounded-md bg-[#4169e1]/10 dark:bg-[#4169e1]/20 text-[#4169e1] text-[8px] font-bold flex items-center justify-center"
+                  >
+                    SQL
+                  </span>
                 </div>
+
                 <div className="w-5 h-5 rounded-full bg-[#121212] dark:bg-white text-white dark:text-black flex items-center justify-center text-[10px] font-bold">
                   ↑
                 </div>
@@ -837,11 +933,11 @@ export default function DraggableCanvas() {
           onPointerUp={(e) => handleItemPointerUp(e, "cursor")}
           onPointerCancel={(e) => handleItemPointerUp(e, "cursor")}
           style={{
-            transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0)`,
+            transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0) rotate(${cursor.rotate}deg)`,
             zIndex: cursor.zIndex,
             cursor: activeDragId === "cursor" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 pointer-events-auto touch-none"
+          className="absolute top-0 left-0 w-auto select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
@@ -863,7 +959,7 @@ export default function DraggableCanvas() {
                 <path d="M4 0l16 12-7 2-4 8z" />
               </svg>
               <span className="px-2.5 py-1 rounded-md bg-[#0099ff] text-white text-[11px] font-medium shadow-md whitespace-nowrap pointer-events-none">
-                Oscar Bergman
+                {JOTTER_SETTINGS.name}
               </span>
             </div>
           </motion.div>
