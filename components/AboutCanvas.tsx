@@ -141,6 +141,13 @@ export default function AboutCanvas() {
           zIndex: 7,
         },
       });
+
+      // Default zoom: 90% (0.9) for mobile / small screens, 100% (1) for desktop
+      const isMobile = window.innerWidth < 768;
+      const initialScale = isMobile ? 0.9 : 1;
+      setScale(initialScale);
+      scaleRef.current = initialScale;
+
       setMounted(true);
     }
 
@@ -852,7 +859,7 @@ export default function AboutCanvas() {
         </div>
       </div>
 
-      {/* Zoom Indicator HUD: only appears during / after Ctrl+Scroll activity, auto-fades */}
+      {/* Zoom Indicator HUD: only appears on desktop during/after Ctrl+Scroll activity, auto-fades */}
       <AnimatePresence>
         {showZoomHud && (
           <motion.div
@@ -860,7 +867,7 @@ export default function AboutCanvas() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-40 flex items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
+            className="hidden md:flex fixed bottom-6 right-6 z-40 items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
           >
             <button
               type="button"

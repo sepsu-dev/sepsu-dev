@@ -263,6 +263,13 @@ export default function DraggableCanvas() {
           zIndex: 6,
         },
       });
+
+      // Default zoom: 90% (0.9) for mobile / small screens, 100% (1) for desktop
+      const isMobile = window.innerWidth < 768;
+      const initialScale = isMobile ? 0.9 : 1;
+      setScale(initialScale);
+      scaleRef.current = initialScale;
+
       setMounted(true);
     }
 
@@ -902,7 +909,7 @@ export default function DraggableCanvas() {
             zIndex: graph.zIndex,
             cursor: activeDragId === "graph" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[246px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -910,15 +917,15 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "graph"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
               }`}
             >
-              {/* Header: MU Crest + Matchday Label + Live Indicator */}
+              {/* Header: MU Crest + Next Match + Standings Badge */}
               <div className="flex items-center justify-between pointer-events-none">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <div className="w-5 h-5 shrink-0 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -933,31 +940,40 @@ export default function DraggableCanvas() {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800/80 text-[10px] font-mono text-stone-600 dark:text-stone-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
-                  <span>EPL</span>
+                {/* Table Standings Badge: 13th • 4 pts */}
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-600 dark:text-stone-300">
+                  <span className="font-semibold text-stone-900 dark:text-stone-100">#13</span>
+                  <span className="text-stone-400">•</span>
+                  <span>4 pts</span>
                 </div>
               </div>
 
-              {/* Matchup Banner */}
+              {/* Matchup Banner: Fulham vs Man United (Away) */}
               <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 pointer-events-none">
-                <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                  Man United
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-stone-800 dark:text-stone-200">
+                    Fulham
+                  </span>
+                  <span className="text-[9px] font-mono text-stone-400">Home</span>
+                </div>
                 <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-white dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700 text-stone-400">
                   vs
                 </span>
-                <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                  Arsenal
-                </span>
+                <div className="flex flex-col items-end">
+                  <span className="text-xs font-bold text-[#DA291C] dark:text-red-400">
+                    Man United
+                  </span>
+                  <span className="text-[9px] font-mono text-stone-400">Away</span>
+                </div>
               </div>
 
-              {/* Footer Info: Venue & Date */}
+              {/* Footer Info: Venue & League */}
               <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 dark:text-stone-400 px-0.5 pointer-events-none">
-                <span className="truncate">Old Trafford</span>
-                <span className="text-[#DA291C] dark:text-red-400 font-medium shrink-0">
-                  Sun, 23:30 WIB
-                </span>
+                <span className="truncate">Craven Cottage</span>
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
+                  <span className="text-[#DA291C] dark:text-red-400 font-medium">EPL Away</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -1175,7 +1191,7 @@ export default function DraggableCanvas() {
         </div>
       </div>
 
-      {/* Zoom Indicator HUD: only appears during / after Ctrl+Scroll activity, auto-fades */}
+      {/* Zoom Indicator HUD: only appears on desktop during/after Ctrl+Scroll activity, auto-fades */}
       <AnimatePresence>
         {showZoomHud && (
           <motion.div
@@ -1183,7 +1199,7 @@ export default function DraggableCanvas() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-40 flex items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
+            className="hidden md:flex fixed bottom-6 right-6 z-40 items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
           >
             <button
               type="button"
