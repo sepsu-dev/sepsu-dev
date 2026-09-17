@@ -615,7 +615,7 @@ export default function DraggableCanvas() {
       onPointerCancel={handleCanvasPointerUp}
       className="fixed inset-0 w-screen h-screen overflow-hidden select-none bg-[#fafafa] dark:bg-[#121212] jotter-dot-grid touch-none"
       style={{
-        cursor: isPanning ? "grabbing" : "grab",
+        cursor: isPanning ? "grabbing, move" : "default",
         backgroundPosition: `${pan.x}px ${pan.y}px`,
       }}
     >
