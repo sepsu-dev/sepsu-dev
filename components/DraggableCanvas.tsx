@@ -18,8 +18,11 @@ import {
   Cloud,
   Thermometer,
   Shield,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { JOTTER_PROJECTS, JOTTER_SETTINGS } from "@/lib/jotter-data";
 import {
   TypeScript,
@@ -52,6 +55,19 @@ export default function DraggableCanvas() {
   // Canvas pan offset (panning the whole desk)
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(1);
+  const [showZoomHud, setShowZoomHud] = useState<boolean>(false);
+  const scaleRef = useRef<number>(1);
+  const panRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const zoomHudTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    scaleRef.current = scale;
+  }, [scale]);
+
+  useEffect(() => {
+    panRef.current = pan;
+  }, [pan]);
 
   // Individual cards state
   const [items, setItems] = useState<Record<string, ItemState>>({});
@@ -99,48 +115,49 @@ export default function DraggableCanvas() {
     };
 
     fetchWeather();
-    const weatherTimer = setInterval(fetchWeather, 15 * 60 * 1000);
-    return () => clearInterval(weatherTimer);
-  }, []);
+    const weatherInterval = setInterval(fetchWeather, 300000);
 
-  useEffect(() => {
-    // Check initial dark mode status
-    const isDark =
-      document.documentElement.classList.contains("dark") ||
-      localStorage.getItem("theme") === "dark";
-    setIsDarkMode(isDark);
-
-    // Live Jakarta time update
-    const updateTime = () => {
+    const updateClock = () => {
       const now = new Date();
       setCurrentTime(
         now.toLocaleTimeString("en-US", {
-          timeZone: "Asia/Jakarta",
-          hour: "2-digit",
+          hour: "numeric",
           minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
+          hour12: true,
         })
       );
     };
+    updateClock();
+    const clockInterval = setInterval(updateClock, 1000);
 
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
+    const syncTheme = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => {
-      clearInterval(timer);
+      clearInterval(weatherInterval);
+      clearInterval(clockInterval);
+      observer.disconnect();
     };
   }, []);
 
   const toggleDarkMode = () => {
-    const nextDark = !isDarkMode;
-    setIsDarkMode(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
+    const isDark = document.documentElement.classList.contains("dark");
+    if (isDark) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setIsDarkMode(true);
     }
   };
 
@@ -253,17 +270,116 @@ export default function DraggableCanvas() {
 
     window.addEventListener("resize", computeInitialPositions);
 
-    const preventScroll = (e: TouchEvent | WheelEvent) => {
-      e.preventDefault();
+    const triggerZoomHud = () => {
+      setShowZoomHud(true);
+      if (zoomHudTimeoutRef.current) {
+        clearTimeout(zoomHudTimeoutRef.current);
+      }
+      zoomHudTimeoutRef.current = setTimeout(() => {
+        setShowZoomHud(false);
+      }, 2200);
     };
 
-    window.addEventListener("wheel", preventScroll, { passive: false });
-    window.addEventListener("touchmove", preventScroll, { passive: false });
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.ctrlKey || e.metaKey) {
+        triggerZoomHud();
+        const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+        const currentScale = scaleRef.current;
+        const targetScale = Math.min(2.0, Math.max(0.4, Number((currentScale * zoomFactor).toFixed(3))));
+
+        if (targetScale === currentScale) return;
+
+        // Zoom centered around cursor focal point
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const currentPan = panRef.current;
+
+        const newPanX = mouseX - (mouseX - currentPan.x) * (targetScale / currentScale);
+        const newPanY = mouseY - (mouseY - currentPan.y) * (targetScale / currentScale);
+
+        setScale(targetScale);
+        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+      } else {
+        // Normal scroll pans the canvas
+        setPan((prev) => ({
+          x: Math.round(prev.x - e.deltaX * 0.8),
+          y: Math.round(prev.y - e.deltaY * 0.8),
+        }));
+      }
+    };
+
+    // Touch Pinch-to-zoom for Mobile & Tablet (2 fingers)
+    let initialPinchDistance = 0;
+    let initialPinchScale = 1;
+    let initialPinchPan = { x: 0, y: 0 };
+    let initialPinchCenter = { x: 0, y: 0 };
+
+    const getTouchDistance = (t1: Touch, t2: Touch) => {
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      return Math.hypot(dx, dy);
+    };
+
+    const getTouchCenter = (t1: Touch, t2: Touch) => {
+      return {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        triggerZoomHud();
+        initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        initialPinchScale = scaleRef.current;
+        initialPinchPan = { ...panRef.current };
+        initialPinchCenter = getTouchCenter(e.touches[0], e.touches[1]);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && initialPinchDistance > 0) {
+        e.preventDefault();
+        triggerZoomHud();
+        const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        const scaleRatio = currentDistance / initialPinchDistance;
+        const targetScale = Math.min(2.0, Math.max(0.4, Number((initialPinchScale * scaleRatio).toFixed(3))));
+
+        // Zoom relative to the center between the 2 fingers
+        const cx = initialPinchCenter.x;
+        const cy = initialPinchCenter.y;
+        const newPanX = cx - (cx - initialPinchPan.x) * (targetScale / initialPinchScale);
+        const newPanY = cy - (cy - initialPinchPan.y) * (targetScale / initialPinchScale);
+
+        setScale(targetScale);
+        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+      } else {
+        // Prevent browser native pull-to-refresh & screen pinch
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        initialPinchDistance = 0;
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: false });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("touchcancel", handleTouchEnd);
 
     return () => {
       window.removeEventListener("resize", computeInitialPositions);
-      window.removeEventListener("wheel", preventScroll);
-      window.removeEventListener("touchmove", preventScroll);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("touchcancel", handleTouchEnd);
     };
   }, []);
 
@@ -485,7 +601,8 @@ export default function DraggableCanvas() {
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`,
+          transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${scale})`,
+          transformOrigin: "0 0",
           willChange: "transform",
         }}
       >
@@ -772,7 +889,7 @@ export default function DraggableCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 6. MANCHESTER UNITED WIDGET (Individually Draggable)     */}
+        {/* 6. MAN UNITED FIXTURE WIDGET (Individually Draggable)   */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -785,7 +902,7 @@ export default function DraggableCanvas() {
             zIndex: graph.zIndex,
             cursor: activeDragId === "graph" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[220px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -793,15 +910,16 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "graph"
-                ? ""
-                : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
-                }`}
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeDragId === "graph"
+                  ? ""
+                  : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
+              }`}
             >
-              {/* Header: MU Crest + Club Name + Next Match Label */}
+              {/* Header: MU Crest + Matchday Label + Live Indicator */}
               <div className="flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+                  <div className="w-5 h-5 shrink-0 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/mu-logo.png"
@@ -810,39 +928,36 @@ export default function DraggableCanvas() {
                       draggable={false}
                     />
                   </div>
-                  <div>
-                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 tracking-tight block leading-none">
-                      Man United
-                    </span>
-                    <span className="text-[9px] font-mono text-stone-400 dark:text-stone-500 mt-0.5 block">
-                      Next Fixture
-                    </span>
-                  </div>
+                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 tracking-tight">
+                    Next Match
+                  </span>
                 </div>
 
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-medium">
-                  EPL
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800/80 text-[10px] font-mono text-stone-600 dark:text-stone-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
+                  <span>EPL</span>
+                </div>
+              </div>
+
+              {/* Matchup Banner */}
+              <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 pointer-events-none">
+                <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                  Man United
+                </span>
+                <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-white dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700 text-stone-400">
+                  vs
+                </span>
+                <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                  Arsenal
                 </span>
               </div>
 
-              {/* Matchup Clean Display */}
-              <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 pointer-events-none space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                    Man Utd
-                  </span>
-                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-white dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700 text-stone-500 dark:text-stone-400 shadow-2xs">
-                    vs
-                  </span>
-                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                    Arsenal
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between pt-1 border-t border-stone-200/50 dark:border-stone-800/80 text-[10px] font-mono text-stone-500 dark:text-stone-400">
-                  <span>Old Trafford</span>
-                  <span className="text-red-600 dark:text-red-400 font-medium">Sun · 23:30 WIB</span>
-                </div>
+              {/* Footer Info: Venue & Date */}
+              <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 dark:text-stone-400 px-0.5 pointer-events-none">
+                <span className="truncate">Old Trafford</span>
+                <span className="text-[#DA291C] dark:text-red-400 font-medium shrink-0">
+                  Sun, 23:30 WIB
+                </span>
               </div>
             </div>
           </motion.div>
@@ -1059,6 +1174,62 @@ export default function DraggableCanvas() {
           </motion.div>
         </div>
       </div>
+
+      {/* Zoom Indicator HUD: only appears during / after Ctrl+Scroll activity, auto-fades */}
+      <AnimatePresence>
+        {showZoomHud && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-40 flex items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const next = Math.max(0.4, Number((scale - 0.1).toFixed(2)));
+                setScale(next);
+              }}
+              aria-label="Zoom Out"
+              title="Zoom Out"
+              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setScale(1);
+                setPan({ x: 0, y: 0 });
+              }}
+              aria-label="Reset Zoom and Pan"
+              title="Reset View (100%)"
+              className="px-2 py-0.5 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors flex items-center gap-1 font-sans text-[11px]"
+            >
+              <span>{Math.round(scale * 100)}%</span>
+              {scale !== 1 && <RotateCcw className="w-2.5 h-2.5 opacity-60" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const next = Math.min(2.0, Number((scale + 0.1).toFixed(2)));
+                setScale(next);
+              }}
+              aria-label="Zoom In"
+              title="Zoom In"
+              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

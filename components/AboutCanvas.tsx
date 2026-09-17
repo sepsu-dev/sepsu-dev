@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 
 interface ItemState {
@@ -19,6 +20,19 @@ export default function AboutCanvas() {
   // Canvas pan offset
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(1);
+  const [showZoomHud, setShowZoomHud] = useState<boolean>(false);
+  const scaleRef = useRef<number>(1);
+  const panRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const zoomHudTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    scaleRef.current = scale;
+  }, [scale]);
+
+  useEffect(() => {
+    panRef.current = pan;
+  }, [pan]);
 
   // Items positions on the desk canvas
   const [items, setItems] = useState<Record<string, ItemState>>({});
@@ -134,17 +148,116 @@ export default function AboutCanvas() {
 
     window.addEventListener("resize", computeInitialPositions);
 
-    const preventScroll = (e: TouchEvent | WheelEvent) => {
-      e.preventDefault();
+    const triggerZoomHud = () => {
+      setShowZoomHud(true);
+      if (zoomHudTimeoutRef.current) {
+        clearTimeout(zoomHudTimeoutRef.current);
+      }
+      zoomHudTimeoutRef.current = setTimeout(() => {
+        setShowZoomHud(false);
+      }, 2200);
     };
 
-    window.addEventListener("wheel", preventScroll, { passive: false });
-    window.addEventListener("touchmove", preventScroll, { passive: false });
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.ctrlKey || e.metaKey) {
+        triggerZoomHud();
+        const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+        const currentScale = scaleRef.current;
+        const targetScale = Math.min(2.0, Math.max(0.4, Number((currentScale * zoomFactor).toFixed(3))));
+
+        if (targetScale === currentScale) return;
+
+        // Zoom centered around cursor focal point
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const currentPan = panRef.current;
+
+        const newPanX = mouseX - (mouseX - currentPan.x) * (targetScale / currentScale);
+        const newPanY = mouseY - (mouseY - currentPan.y) * (targetScale / currentScale);
+
+        setScale(targetScale);
+        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+      } else {
+        // Normal scroll pans the canvas
+        setPan((prev) => ({
+          x: Math.round(prev.x - e.deltaX * 0.8),
+          y: Math.round(prev.y - e.deltaY * 0.8),
+        }));
+      }
+    };
+
+    // Touch Pinch-to-zoom for Mobile & Tablet (2 fingers)
+    let initialPinchDistance = 0;
+    let initialPinchScale = 1;
+    let initialPinchPan = { x: 0, y: 0 };
+    let initialPinchCenter = { x: 0, y: 0 };
+
+    const getTouchDistance = (t1: Touch, t2: Touch) => {
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      return Math.hypot(dx, dy);
+    };
+
+    const getTouchCenter = (t1: Touch, t2: Touch) => {
+      return {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        triggerZoomHud();
+        initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        initialPinchScale = scaleRef.current;
+        initialPinchPan = { ...panRef.current };
+        initialPinchCenter = getTouchCenter(e.touches[0], e.touches[1]);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && initialPinchDistance > 0) {
+        e.preventDefault();
+        triggerZoomHud();
+        const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        const scaleRatio = currentDistance / initialPinchDistance;
+        const targetScale = Math.min(2.0, Math.max(0.4, Number((initialPinchScale * scaleRatio).toFixed(3))));
+
+        // Zoom relative to the center between the 2 fingers
+        const cx = initialPinchCenter.x;
+        const cy = initialPinchCenter.y;
+        const newPanX = cx - (cx - initialPinchPan.x) * (targetScale / initialPinchScale);
+        const newPanY = cy - (cy - initialPinchPan.y) * (targetScale / initialPinchScale);
+
+        setScale(targetScale);
+        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+      } else {
+        // Prevent browser native pull-to-refresh & screen pinch
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        initialPinchDistance = 0;
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: false });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("touchcancel", handleTouchEnd);
 
     return () => {
       window.removeEventListener("resize", computeInitialPositions);
-      window.removeEventListener("wheel", preventScroll);
-      window.removeEventListener("touchmove", preventScroll);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("touchcancel", handleTouchEnd);
     };
   }, []);
 
@@ -346,7 +459,8 @@ export default function AboutCanvas() {
       <div
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`,
+          transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${scale})`,
+          transformOrigin: "0 0",
           willChange: "transform",
         }}
       >
@@ -737,6 +851,62 @@ export default function AboutCanvas() {
           </motion.div>
         </div>
       </div>
+
+      {/* Zoom Indicator HUD: only appears during / after Ctrl+Scroll activity, auto-fades */}
+      <AnimatePresence>
+        {showZoomHud && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-40 flex items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const next = Math.max(0.4, Number((scale - 0.1).toFixed(2)));
+                setScale(next);
+              }}
+              aria-label="Zoom Out"
+              title="Zoom Out"
+              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setScale(1);
+                setPan({ x: 0, y: 0 });
+              }}
+              aria-label="Reset Zoom and Pan"
+              title="Reset View (100%)"
+              className="px-2 py-0.5 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors flex items-center gap-1 font-sans text-[11px]"
+            >
+              <span>{Math.round(scale * 100)}%</span>
+              {scale !== 1 && <RotateCcw className="w-2.5 h-2.5 opacity-60" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const next = Math.min(2.0, Number((scale + 0.1).toFixed(2)));
+                setScale(next);
+              }}
+              aria-label="Zoom In"
+              title="Zoom In"
+              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
