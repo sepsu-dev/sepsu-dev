@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { motion } from "motion/react";
 import { JOTTER_PROJECTS } from "@/lib/jotter-data";
 
 const ITEMS_PER_PAGE = 3;
@@ -41,51 +42,62 @@ export default function ProjectsList() {
           </p>
         </div>
 
-        {/* Projects Grid: Clean, consistent card presentation */}
+        {/* Projects Grid: Clean, consistent card presentation with staggered animation */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
-          {currentProjects.map((project) => (
-            <Link
+          {currentProjects.map((project, idx) => (
+            <motion.div
               key={project.slug}
-              href={`/project/${project.slug}`}
-              className="group flex flex-col rounded-2xl bg-white dark:bg-[#181818] border border-stone-200/80 dark:border-stone-800/80 overflow-hidden shadow-xs hover:border-stone-400 dark:hover:border-stone-700 transition-all duration-300"
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: idx * 0.12,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="h-full flex"
             >
-              {/* Project Image */}
-              <div className="aspect-[16/10] w-full overflow-hidden bg-stone-100 dark:bg-stone-900 relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={project.mainImage}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                />
-              </div>
+              <Link
+                href={`/project/${project.slug}`}
+                className="group flex flex-col w-full rounded-2xl bg-white dark:bg-[#181818] border border-stone-200/80 dark:border-stone-800/80 overflow-hidden shadow-xs hover:border-stone-400 dark:hover:border-stone-700 transition-all duration-300"
+              >
+                {/* Project Image */}
+                <div className="aspect-[16/10] w-full overflow-hidden bg-stone-100 dark:bg-stone-900 relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.mainImage}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  />
+                </div>
 
-              {/* Project Details */}
-              <div className="p-5 flex flex-col flex-1 justify-between gap-3.5">
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-base font-semibold text-stone-900 dark:text-stone-100 group-hover:text-[#0099ff] transition-colors">
-                      {project.title}
-                    </h2>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#0099ff] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                {/* Project Details */}
+                <div className="p-5 flex flex-col flex-1 justify-between gap-3.5">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-base font-semibold text-stone-900 dark:text-stone-100 group-hover:text-[#0099ff] transition-colors">
+                        {project.title}
+                      </h2>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#0099ff] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                    </div>
+                    <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                      {project.description}
+                    </p>
                   </div>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {project.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-stone-100 dark:bg-stone-800/70 text-stone-500 dark:text-stone-400"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-stone-100 dark:bg-stone-800/70 text-stone-500 dark:text-stone-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
 

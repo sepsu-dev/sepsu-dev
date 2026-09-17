@@ -65,52 +65,66 @@ export default function AboutCanvas() {
       setItems({
         // 1. Center About Me Card (Fixed desk card - NOT draggable)
         "about-card": {
-          x: cx - 210,
-          y: cy - 275,
+          x: cx - 200,
+          y: cy - 260,
           rotate: 0,
           zIndex: 10,
         },
-        // 2. Charizard / Old Trafford Card (Individually Draggable)
+        // 2. Old Trafford Card (Individually Draggable) - Top Left
         charizard: {
-          x: cx - 440,
-          y: cy - 350,
+          x: cx - 510,
+          y: cy - 330,
           rotate: -5,
           zIndex: 4,
         },
-        // 4. Spotify Player (Fixed on desk, cannot be dragged individually)
+        // 4. Spotify Player (Individually Draggable) - Top Right
         spotify: {
-          x: cx + 80,
-          y: cy - 410,
-          rotate: -4,
+          x: cx + 110,
+          y: cy - 390,
+          rotate: -3,
           zIndex: 3,
         },
-        // 5. ThinkPad Laptop (Individually Draggable)
+        // 5. ThinkPad Laptop (Individually Draggable) - Mid Right
         macbook: {
           x: cx + 300,
-          y: cy - 160,
-          rotate: -8,
+          y: cy - 140,
+          rotate: -7,
           zIndex: 5,
         },
-        // 6. iPhone Device Mock (Individually Draggable)
+        // 6. Debian Card (Individually Draggable) - Mid Left
         iphone: {
-          x: cx - 440,
-          y: cy + 40,
-          rotate: 12,
+          x: cx - 490,
+          y: cy - 100,
+          rotate: 4,
           zIndex: 6,
         },
-        // 7. Senne Lammens - MU Goalkeeper (Individually Draggable)
-        profilePhoto: {
-          x: cx - 330,
-          y: cy + 220,
-          rotate: 4,
+        // 6b. GNOME Card (Individually Draggable) - Near Debian
+        gnome: {
+          x: cx - 390,
+          y: cy - 130,
+          rotate: -4,
           zIndex: 7,
         },
-        // 8. Landscape Photos - Jakarta & West Java Mountains (Individually Draggable)
-        polaroid: {
-          x: cx + 250,
-          y: cy + 120,
-          rotate: 2,
-          zIndex: 6,
+        // 6c. Ubuntu Card (Individually Draggable) - Near Debian & GNOME
+        ubuntu: {
+          x: cx - 440,
+          y: cy - 10,
+          rotate: 3,
+          zIndex: 8,
+        },
+        // 7. Senne Lammens - MU Goalkeeper (Individually Draggable) - Bottom Left
+        profilePhoto: {
+          x: cx - 380,
+          y: cy + 130,
+          rotate: -3,
+          zIndex: 7,
+        },
+        // 8. Nanas / Pineapple Fruit Card (Individually Draggable) - Bottom Right
+        pineapple: {
+          x: cx + 180,
+          y: cy + 130,
+          rotate: 4,
+          zIndex: 7,
         },
       });
       setMounted(true);
@@ -310,8 +324,10 @@ export default function AboutCanvas() {
   const spotify = items["spotify"];
   const macbook = items["macbook"];
   const iphone = items["iphone"];
+  const gnome = items["gnome"] || { x: 0, y: 0, rotate: 0, zIndex: 7 };
+  const ubuntu = items["ubuntu"] || { x: 0, y: 0, rotate: 0, zIndex: 8 };
   const profilePhoto = items["profilePhoto"];
-  const polaroid = items["polaroid"];
+  const pineapple = items["pineapple"] || { x: 0, y: 0, rotate: 0, zIndex: 7 };
 
   return (
     <div
@@ -407,7 +423,7 @@ export default function AboutCanvas() {
             zIndex: charizard.zIndex,
             cursor: activeDragId === "charizard" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[210px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[260px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -415,45 +431,21 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`rounded-2xl overflow-hidden bg-white dark:bg-[#1c1c1c] shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/90 dark:border-stone-800 p-3 space-y-2.5 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`rounded-2xl overflow-hidden bg-white dark:bg-[#1c1c1c] shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/90 dark:border-stone-800 p-2.5 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "charizard"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* Old Trafford Stadium Photo */}
-              <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 relative">
+              {/* Old Trafford Stadium Photo (Clean, no text) */}
+              <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
-                  alt="Old Trafford - Theatre of Dreams"
+                  alt="Old Trafford"
                   draggable={false}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover pointer-events-none"
                 />
-                <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-white text-[9px] font-mono">
-                  Old Trafford 🏟️
-                </span>
-              </div>
-
-              {/* Title & Crest */}
-              <div className="flex items-center justify-between pt-0.5">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 shrink-0 flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="https://thumb.wikimedia.org/wikipedia/sco/thumb/7/7a/Manchester_United_FC_crest.svg/960px-Manchester_United_FC_crest.svg.png"
-                      alt="Manchester United"
-                      className="w-full h-full object-contain"
-                      draggable={false}
-                    />
-                  </div>
-                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">
-                    Theatre of Dreams
-                  </span>
-                </div>
-                <span className="px-1.5 py-0.5 rounded bg-[#DA291C]/10 text-[#DA291C] dark:text-red-400 text-[9px] font-mono font-bold">
-                  GGMU
-                </span>
               </div>
             </div>
           </motion.div>
@@ -461,32 +453,45 @@ export default function AboutCanvas() {
 
 
         {/* ======================================================== */}
-        {/* 4. SPOTIFY PLAYER (Fixed on desk - NOT draggable)        */}
+        {/* 4. SPOTIFY PLAYER (Individually Draggable)                */}
         {/* ======================================================== */}
         <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "spotify")}
+          onPointerMove={(e) => handleItemPointerMove(e, "spotify")}
+          onPointerUp={(e) => handleItemPointerUp(e, "spotify")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "spotify")}
           style={{
             transform: `translate3d(${spotify.x}px, ${spotify.y}px, 0) rotate(${spotify.rotate}deg)`,
             zIndex: spotify.zIndex,
+            cursor: activeDragId === "spotify" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[290px] h-[80px] select-none pointer-events-auto"
+          className="absolute top-0 left-0 w-[300px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.75, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full rounded-2xl overflow-hidden shadow-[0_14px_32px_rgba(0,0,0,0.18)] dark:shadow-[0_14px_32px_rgba(0,0,0,0.45)]"
+            className={`w-full rounded-2xl overflow-hidden bg-[#282828] shadow-[0_16px_36px_rgba(0,0,0,0.22)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.50)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              activeDragId === "spotify"
+                ? ""
+                : "group-hover:scale-[1.03] group-hover:-rotate-2 group-hover:-translate-y-1"
+            }`}
           >
-            <iframe
-              style={{ height: "100%", width: "100%" }}
-              src="https://open.spotify.com/embed/track/0gSLaX91J2Cs9cWXqsRc4X?theme=0"
-              frameBorder="0"
-              allow="encrypted-media"
-            />
+            {/* Spotify Embed Player Container */}
+            <div className="w-full h-[80px] relative">
+              <iframe
+                style={{ height: "100%", width: "100%" }}
+                src="https://open.spotify.com/embed/track/0gSLaX91J2Cs9cWXqsRc4X?theme=0"
+                frameBorder="0"
+                allow="encrypted-media"
+              />
+            </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 5. THINKPAD LAPTOP (Individually Draggable)              */}
+        {/* 5. CUTE CAT CARD (Individually Draggable, No text)       */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -499,7 +504,7 @@ export default function AboutCanvas() {
             zIndex: macbook.zIndex,
             cursor: activeDragId === "macbook" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[240px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[230px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -507,35 +512,27 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`p-3 rounded-2xl bg-stone-900 border border-stone-800 shadow-[0_20px_35px_rgba(0,0,0,0.30)] dark:shadow-[0_20px_35px_rgba(0,0,0,0.60)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "macbook"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* ThinkPad Laptop Lid / Styling */}
-              <div className="aspect-[16/10] w-full rounded-xl bg-[#111111] border border-stone-800/80 p-3.5 flex flex-col justify-between relative overflow-hidden">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-0.5">
-                    <span className="font-mono text-xs font-bold tracking-tight text-stone-200">
-                      ThinkPad
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse ml-0.5" />
-                  </div>
-                  <span className="text-[9px] font-mono text-stone-600">X1 Carbon</span>
-                </div>
-                {/* Keyboard & TrackPoint iconic red dot preview */}
-                <div className="w-full h-12 rounded-lg bg-stone-950 border border-stone-800/60 flex flex-col items-center justify-center relative">
-                  <div className="w-8 h-1 bg-stone-800 rounded-full mb-1" />
-                  <span className="w-2 h-2 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.8)]" />
-                </div>
+              <div className="aspect-[3/2] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/cat.jpg"
+                  alt="Tiger"
+                  draggable={false}
+                  className="w-full h-full object-cover object-center pointer-events-none"
+                />
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 6. IPHONE DEVICE MOCK (Individually Draggable)            */}
+        {/* 6a. DEBIAN OS CARD (Individually Draggable, No text)      */}
         {/* ======================================================== */}
         <div
           role="presentation"
@@ -548,7 +545,7 @@ export default function AboutCanvas() {
             zIndex: iphone.zIndex,
             cursor: activeDragId === "iphone" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[95px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[100px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -556,19 +553,103 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`drop-shadow-[0_18px_28px_rgba(0,0,0,0.22)] dark:drop-shadow-[0_18px_28px_rgba(0,0,0,0.50)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "iphone"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://framerusercontent.com/images/OvtWqHArnwUDJ7xv9wA3btBTyJI.png"
-                alt="iPhone"
-                draggable={false}
-                className="w-full h-auto object-cover pointer-events-none"
-              />
+              <div className="aspect-square w-full rounded-xl bg-stone-50 dark:bg-[#111113] border border-stone-200/60 dark:border-stone-800/80 flex items-center justify-center p-3 pointer-events-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/debian.svg"
+                  alt="Debian"
+                  draggable={false}
+                  className="w-full h-full object-contain pointer-events-none"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* 6b. GNOME CARD (Individually Draggable, No text)          */}
+        {/* ======================================================== */}
+        <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "gnome")}
+          onPointerMove={(e) => handleItemPointerMove(e, "gnome")}
+          onPointerUp={(e) => handleItemPointerUp(e, "gnome")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "gnome")}
+          style={{
+            transform: `translate3d(${gnome.x}px, ${gnome.y}px, 0) rotate(${gnome.rotate}deg)`,
+            zIndex: gnome.zIndex,
+            cursor: activeDragId === "gnome" ? "grabbing" : "grab",
+          }}
+          className="absolute top-0 left-0 w-[100px] select-none pointer-events-auto touch-none group hover:z-30"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeDragId === "gnome"
+                  ? ""
+                  : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+              }`}
+            >
+              <div className="aspect-square w-full rounded-xl bg-[#4a86cf]/10 dark:bg-[#4a86cf]/20 border border-[#4a86cf]/20 flex items-center justify-center p-3 pointer-events-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/gnome.svg"
+                  alt="GNOME"
+                  draggable={false}
+                  className="w-full h-full object-contain pointer-events-none [filter:brightness(0)_saturate(100%)_invert(44%)_sepia(49%)_saturate(763%)_hue-rotate(175deg)_brightness(94%)_contrast(91%)] dark:[filter:brightness(0)_saturate(100%)_invert(76%)_sepia(25%)_saturate(1039%)_hue-rotate(185deg)_brightness(98%)_contrast(92%)]"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* 6c. UBUNTU CARD (Individually Draggable, No text)         */}
+        {/* ======================================================== */}
+        <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "ubuntu")}
+          onPointerMove={(e) => handleItemPointerMove(e, "ubuntu")}
+          onPointerUp={(e) => handleItemPointerUp(e, "ubuntu")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "ubuntu")}
+          style={{
+            transform: `translate3d(${ubuntu.x}px, ${ubuntu.y}px, 0) rotate(${ubuntu.rotate}deg)`,
+            zIndex: ubuntu.zIndex,
+            cursor: activeDragId === "ubuntu" ? "grabbing" : "grab",
+          }}
+          className="absolute top-0 left-0 w-[100px] select-none pointer-events-auto touch-none group hover:z-30"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeDragId === "ubuntu"
+                  ? ""
+                  : "group-hover:scale-[1.04] group-hover:rotate-4 group-hover:-translate-y-2"
+              }`}
+            >
+              <div className="aspect-square w-full rounded-xl bg-[#E95420]/10 dark:bg-[#E95420]/20 border border-[#E95420]/20 flex items-center justify-center p-3 pointer-events-none">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/ubuntu-simple.svg"
+                  alt="Ubuntu"
+                  draggable={false}
+                  className="w-full h-full object-contain pointer-events-none [filter:brightness(0)_saturate(100%)_invert(40%)_sepia(97%)_saturate(1487%)_hue-rotate(352deg)_brightness(94%)_contrast(95%)] dark:[filter:brightness(0)_saturate(100%)_invert(57%)_sepia(97%)_saturate(1487%)_hue-rotate(352deg)_brightness(102%)_contrast(98%)]"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
@@ -587,7 +668,7 @@ export default function AboutCanvas() {
             zIndex: profilePhoto.zIndex,
             cursor: activeDragId === "profilePhoto" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[155px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[275px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -595,74 +676,59 @@ export default function AboutCanvas() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full rounded-2xl overflow-hidden bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 activeDragId === "profilePhoto"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-[3/4] w-full overflow-hidden bg-stone-900 pointer-events-none relative">
+              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-950 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=600&q=80"
+                  src="/senne-lammens.jpg"
                   alt="Senne Lammens"
                   draggable={false}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center pointer-events-none"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
-                  <span className="text-white text-xs font-semibold tracking-tight">Senne Lammens</span>
-                  <span className="text-[9px] font-mono text-red-400">GK · Manchester United</span>
-                </div>
               </div>
             </div>
           </motion.div>
         </div>
 
+
         {/* ======================================================== */}
-        {/* 8. LANDSCAPE: JAKARTA & JAWA BARAT (No Text Caption)     */}
+        {/* 9. PINEAPPLE FRUIT CARD (Individually Draggable, No text) */}
         {/* ======================================================== */}
         <div
           role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "polaroid")}
-          onPointerMove={(e) => handleItemPointerMove(e, "polaroid")}
-          onPointerUp={(e) => handleItemPointerUp(e, "polaroid")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "polaroid")}
+          onPointerDown={(e) => handleItemPointerDown(e, "pineapple")}
+          onPointerMove={(e) => handleItemPointerMove(e, "pineapple")}
+          onPointerUp={(e) => handleItemPointerUp(e, "pineapple")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "pineapple")}
           style={{
-            transform: `translate3d(${polaroid.x}px, ${polaroid.y}px, 0) rotate(${polaroid.rotate}deg)`,
-            zIndex: polaroid.zIndex,
-            cursor: activeDragId === "polaroid" ? "grabbing" : "grab",
+            transform: `translate3d(${pineapple.x}px, ${pineapple.y}px, 0) rotate(${pineapple.rotate}deg)`,
+            zIndex: pineapple.zIndex,
+            cursor: activeDragId === "pineapple" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[240px] select-none pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[180px] select-none pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.75, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "polaroid"
+              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeDragId === "pineapple"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              {/* Photo 1: Jakarta City Skyline (No text) */}
-              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 pointer-events-none">
+              <div className="aspect-square w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=80"
-                  alt="Jakarta Cityscape"
-                  draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
-                />
-              </div>
-
-              {/* Photo 2: West Java Mountains (No text) */}
-              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
-                  alt="West Java Mountains"
+                  src="/pineapple.jpg"
+                  alt="Pineapple"
                   draggable={false}
                   className="w-full h-full object-cover pointer-events-none"
                 />

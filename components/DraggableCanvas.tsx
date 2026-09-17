@@ -17,8 +17,6 @@ import {
   CloudRain,
   Cloud,
   Thermometer,
-  Trophy,
-  Calendar,
   Shield,
 } from "lucide-react";
 import { motion } from "motion/react";
@@ -333,37 +331,26 @@ export default function DraggableCanvas() {
   };
 
   // Dedicated project card click & pointer trackers
-  const projectPointerRef = useRef<{ startX: number; startY: number; time: number }>({
+  const projectPointerRef = useRef<{
+    startX: number;
+    startY: number;
+    time: number;
+    hasDragged: boolean;
+  }>({
     startX: 0,
     startY: 0,
     time: 0,
+    hasDragged: false,
   });
 
-  const handleProjectPointerDown = (e: React.PointerEvent) => {
-    projectPointerRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      time: Date.now(),
-    };
-  };
-
   const handleProjectCardClick = (e: React.MouseEvent, href: string) => {
-    const dx = Math.abs(e.clientX - projectPointerRef.current.startX);
-    const dy = Math.abs(e.clientY - projectPointerRef.current.startY);
-    if (canvasPanRef.current.hasMoved || dx > 8 || dy > 8) {
+    // If the card was dragged more than 5px, suppress the navigation click
+    if (itemDragRef.current.hasMoved || projectPointerRef.current.hasDragged) {
       e.preventDefault();
+      e.stopPropagation();
       return;
     }
     router.push(href);
-  };
-
-  const handleProjectPointerUp = (e: React.PointerEvent, href: string) => {
-    const dx = Math.abs(e.clientX - projectPointerRef.current.startX);
-    const dy = Math.abs(e.clientY - projectPointerRef.current.startY);
-    const dt = Date.now() - projectPointerRef.current.time;
-    if (!canvasPanRef.current.hasMoved && dx < 8 && dy < 8 && dt < 800) {
-      router.push(href);
-    }
   };
 
   // ========================================================
@@ -503,10 +490,7 @@ export default function DraggableCanvas() {
         }}
       >
         {/* ======================================================== */}
-        {/* 1. CENTER INTRO CARD (Fixed desk card - NOT draggable)   */}
-        {/* ======================================================== */}
-        {/* ======================================================== */}
-        {/* 1. CENTER INTRO CARD (Fixed desk card - NOT draggable)   */}
+        {/* 1. CENTER INTRO CARD (Fixed note - NOT draggable)        */}
         {/* ======================================================== */}
         <div
           style={{
@@ -519,14 +503,8 @@ export default function DraggableCanvas() {
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.04, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full p-7 rounded-2xl bg-white dark:bg-[#1c1c1c] border-2 border-[#199af2] shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)] relative"
+            className="w-full p-7 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)]"
           >
-            {/* 4 Selection corner handles */}
-            <div className="w-2.5 h-2.5 bg-white border-2 border-[#199af2] rounded-xs absolute -top-1.5 -left-1.5 pointer-events-none" />
-            <div className="w-2.5 h-2.5 bg-white border-2 border-[#199af2] rounded-xs absolute -top-1.5 -right-1.5 pointer-events-none" />
-            <div className="w-2.5 h-2.5 bg-white border-2 border-[#199af2] rounded-xs absolute -bottom-1.5 -left-1.5 pointer-events-none" />
-            <div className="w-2.5 h-2.5 bg-white border-2 border-[#199af2] rounded-xs absolute -bottom-1.5 -right-1.5 pointer-events-none" />
-
             {/* Profile Photo */}
             <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -539,21 +517,15 @@ export default function DraggableCanvas() {
             </div>
 
             <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
-              Hey, I&apos;m {JOTTER_SETTINGS.name}.
+              Hello, I&apos;m {JOTTER_SETTINGS.short_name}.
             </h1>
 
-            <div className="space-y-3.5 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
+            <div className="space-y-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
               <p>
-                This page works a bit like my desk. Projects, notes and half
-                finished thoughts, all within reach. Drag things around, open
-                whatever catches your eye.
+                Welcome to my interactive workspace. Here you&apos;ll find selected projects, experiments, and technical highlights — feel free to explore and rearrange things.
               </p>
-              <p>
-                Want the longer story? That&apos;s what the about page is for.
-              </p>
-              <p className="font-medium text-stone-500 dark:text-stone-400">
-                P.S. Yes, everything on this page is draggable. Might as well try
-                it.
+              <p className="text-xs text-stone-500 dark:text-stone-400">
+                Looking for details on my background and experience? Check out the about page.
               </p>
             </div>
 
@@ -577,27 +549,32 @@ export default function DraggableCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 2. CRYPTIX PROJECT CARD (Project Card - Link on Desk)    */}
+        {/* 2. CRYPTIX PROJECT CARD (Individually Draggable Project) */}
         {/* ======================================================== */}
         <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "cryptix")}
+          onPointerMove={(e) => handleItemPointerMove(e, "cryptix")}
+          onPointerUp={(e) => handleItemPointerUp(e, "cryptix")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "cryptix")}
           style={{
             transform: `translate3d(${cryptix.x}px, ${cryptix.y}px, 0) rotate(${cryptix.rotate}deg)`,
             zIndex: cryptix.zIndex,
+            cursor: activeDragId === "cryptix" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto hover:z-30"
+          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link
-              href="/project/cryptix"
-              onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/project/cryptix")}
+            <div
               onClick={(e) => handleProjectCardClick(e, "/project/cryptix")}
-              draggable={false}
-              className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "cryptix"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -616,32 +593,37 @@ export default function DraggableCanvas() {
                   {cryptixData.tagline}
                 </span>
               </div>
-            </Link>
+            </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 3. NOVERA PROJECT CARD (Project Card - Link on Desk)     */}
+        {/* 3. NOVERA PROJECT CARD (Individually Draggable Project)  */}
         {/* ======================================================== */}
         <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "novera")}
+          onPointerMove={(e) => handleItemPointerMove(e, "novera")}
+          onPointerUp={(e) => handleItemPointerUp(e, "novera")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "novera")}
           style={{
             transform: `translate3d(${novera.x}px, ${novera.y}px, 0) rotate(${novera.rotate}deg)`,
             zIndex: novera.zIndex,
+            cursor: activeDragId === "novera" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto hover:z-30"
+          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link
-              href="/project/novera"
-              onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/project/novera")}
+            <div
               onClick={(e) => handleProjectCardClick(e, "/project/novera")}
-              draggable={false}
-              className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
+              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "novera"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -660,32 +642,37 @@ export default function DraggableCanvas() {
                   {noveraData.tagline}
                 </span>
               </div>
-            </Link>
+            </div>
           </motion.div>
         </div>
 
         {/* ======================================================== */}
-        {/* 4. PITLANE PROJECT CARD (Project Card - Link on Desk)    */}
+        {/* 4. PITLANE PROJECT CARD (Individually Draggable Project) */}
         {/* ======================================================== */}
         <div
+          role="presentation"
+          onPointerDown={(e) => handleItemPointerDown(e, "pitlane")}
+          onPointerMove={(e) => handleItemPointerMove(e, "pitlane")}
+          onPointerUp={(e) => handleItemPointerUp(e, "pitlane")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "pitlane")}
           style={{
             transform: `translate3d(${pitlane.x}px, ${pitlane.y}px, 0) rotate(${pitlane.rotate}deg)`,
             zIndex: pitlane.zIndex,
+            cursor: activeDragId === "pitlane" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto hover:z-30"
+          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link
-              href="/project/pitlane"
-              onPointerDown={handleProjectPointerDown}
-              onPointerUp={(e) => handleProjectPointerUp(e, "/project/pitlane")}
+            <div
               onClick={(e) => handleProjectCardClick(e, "/project/pitlane")}
-              draggable={false}
-              className="block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pitlane"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -704,7 +691,7 @@ export default function DraggableCanvas() {
                   {pitlaneData.tagline}
                 </span>
               </div>
-            </Link>
+            </div>
           </motion.div>
         </div>
 
@@ -730,11 +717,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "clause"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "clause"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               {/* Header: Location on Left & Real-time Weather/Temp on Right */}
               <div className="flex items-center justify-between pointer-events-none">
@@ -807,21 +793,20 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "graph"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
-              }`}
+              className={`w-full p-4 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "graph"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
+                }`}
             >
-              {/* Header: Official MU Logo + Club Name + League Rank */}
+              {/* Header: MU Crest + Club Name + Next Match Label */}
               <div className="flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 shrink-0 drop-shadow-xs flex items-center justify-center">
+                  <div className="w-6 h-6 shrink-0 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src="https://thumb.wikimedia.org/wikipedia/sco/thumb/7/7a/Manchester_United_FC_crest.svg/960px-Manchester_United_FC_crest.svg.png"
+                      src="/mu-logo.png"
                       alt="Manchester United Crest"
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain drop-shadow-xs"
                       draggable={false}
                     />
                   </div>
@@ -829,57 +814,34 @@ export default function DraggableCanvas() {
                     <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 tracking-tight block leading-none">
                       Man United
                     </span>
-                    <span className="text-[9px] font-mono text-stone-400 dark:text-stone-500">
-                      Premier League
+                    <span className="text-[9px] font-mono text-stone-400 dark:text-stone-500 mt-0.5 block">
+                      Next Fixture
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/40 border border-red-200/60 dark:border-red-900/40 text-[10px] font-mono text-[#DA291C] dark:text-red-400 font-semibold">
-                  <Trophy className="w-2.5 h-2.5" />
-                  <span>#14</span>
-                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-medium">
+                  EPL
+                </span>
               </div>
 
-              {/* League Table Micro Summary */}
-              <div className="grid grid-cols-4 gap-1 p-2 rounded-xl bg-stone-50 dark:bg-stone-900/70 border border-stone-100 dark:border-stone-800/80 text-center font-mono pointer-events-none">
-                <div>
-                  <span className="text-[8px] text-stone-400 block uppercase">P</span>
-                  <span className="text-[11px] font-medium text-stone-800 dark:text-stone-200">28</span>
-                </div>
-                <div>
-                  <span className="text-[8px] text-stone-400 block uppercase">W</span>
-                  <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">9</span>
-                </div>
-                <div>
-                  <span className="text-[8px] text-stone-400 block uppercase">D</span>
-                  <span className="text-[11px] font-medium text-stone-500">7</span>
-                </div>
-                <div>
-                  <span className="text-[8px] text-stone-400 block uppercase">PTS</span>
-                  <span className="text-[11px] font-bold text-stone-900 dark:text-stone-100">34</span>
-                </div>
-              </div>
-
-              {/* Next Match Fixture Card */}
-              <div className="p-2.5 rounded-xl bg-stone-100/70 dark:bg-stone-800/50 border border-stone-200/60 dark:border-stone-700/50 pointer-events-none space-y-1.5">
-                <div className="flex items-center justify-between text-[9px] font-mono text-stone-400 dark:text-stone-500">
-                  <span className="flex items-center gap-1 text-stone-600 dark:text-stone-400 font-medium">
-                    <Calendar className="w-2.5 h-2.5 text-[#DA291C]" /> Matchday 29
+              {/* Matchup Clean Display */}
+              <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 pointer-events-none space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                    Man Utd
                   </span>
-                  <span>EPL</span>
-                </div>
-
-                <div className="flex items-center justify-between px-1">
-                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">Man Utd</span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-700 text-stone-500">
-                    VS
+                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-white dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700 text-stone-500 dark:text-stone-400 shadow-2xs">
+                    vs
                   </span>
-                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100">Arsenal</span>
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                    Arsenal
+                  </span>
                 </div>
 
-                <div className="text-[9px] font-mono text-center text-[#DA291C] dark:text-red-400 pt-0.5">
-                  Old Trafford · Sun, 23:30 WIB
+                <div className="flex items-center justify-between pt-1 border-t border-stone-200/50 dark:border-stone-800/80 text-[10px] font-mono text-stone-500 dark:text-stone-400">
+                  <span>Old Trafford</span>
+                  <span className="text-red-600 dark:text-red-400 font-medium">Sun · 23:30 WIB</span>
                 </div>
               </div>
             </div>
@@ -908,11 +870,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "signflow"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "signflow"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 pointer-events-none">
@@ -942,11 +903,10 @@ export default function DraggableCanvas() {
                     toggleDarkMode();
                   }}
                   aria-label="Toggle Dark Mode"
-                  className={`w-8 h-4.5 rounded-full transition-colors flex items-center p-0.5 cursor-pointer relative z-10 ${
-                    isDarkMode
-                      ? "bg-indigo-600 justify-end"
-                      : "bg-stone-200 dark:bg-stone-700 justify-start"
-                  }`}
+                  className={`w-8 h-4.5 rounded-full transition-colors flex items-center p-0.5 cursor-pointer relative z-10 ${isDarkMode
+                    ? "bg-indigo-600 justify-end"
+                    : "bg-stone-200 dark:bg-stone-700 justify-start"
+                    }`}
                 >
                   <span className="w-3.5 h-3.5 rounded-full bg-white shadow-2xs pointer-events-none transition-transform" />
                 </button>
@@ -977,11 +937,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-3 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "generator"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
-              }`}
+              className={`w-full p-3 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "generator"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
+                }`}
             >
               <div className="flex items-center pointer-events-none">
                 <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
@@ -1081,9 +1040,8 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.7, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`flex items-start gap-1 ${
-                activeDragId === "cursor" ? "" : "animate-cursor-float"
-              }`}
+              className={`flex items-start gap-1 ${activeDragId === "cursor" ? "" : "animate-cursor-float"
+                }`}
             >
               <svg
                 width="18"

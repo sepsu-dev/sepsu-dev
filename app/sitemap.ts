@@ -30,18 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/privacypolicy`,
-      lastModified,
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified,
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
   ];
 
   const projectPages: MetadataRoute.Sitemap = JOTTER_PROJECTS.map((project) => ({

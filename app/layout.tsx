@@ -86,8 +86,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "https://framerusercontent.com/images/cQUWMsY5CkPA87rZxOo8HY608aM.svg",
-    apple: "https://framerusercontent.com/images/cQUWMsY5CkPA87rZxOo8HY608aM.svg",
+    icon: "/mu-logo.png",
+    apple: "/mu-logo.png",
   },
 };
 

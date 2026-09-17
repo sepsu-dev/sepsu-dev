@@ -18,6 +18,7 @@ export interface ProjectCaseStudy {
 
 export const JOTTER_SETTINGS = {
   name: "Sepsu Dev",
+  short_name: "Sepsu",
   role: "Software Engineer",
   status: "Available for work",
   location: "Jakarta, Indonesia",
@@ -26,8 +27,8 @@ export const JOTTER_SETTINGS = {
   githubUrl: "https://github.com/sepsu-dev",
   twitterUrl: "https://twitter.com/",
   instagramUrl: "https://instagram.com",
-  avatarUrl: "https://framerusercontent.com/images/adCSELRcqpcgk3XZb5PlodjPsM.jpg?width=594&height=594",
-  bulgariaPhotoUrl: "https://framerusercontent.com/images/n3H51i3cAzn9ZHVAnFJYeEtNQQg.jpg?scale-down-to=1024",
+  avatarUrl: "/avatar.png",
+  bulgariaPhotoUrl: "/avatar.png",
   bio: "Software Engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.",
   focus: [
     "⚡ Architecting robust backend services using Laravel, CodeIgniter, Express.js, and Nest.js",
