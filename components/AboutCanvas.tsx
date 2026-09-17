@@ -73,13 +73,20 @@ export default function AboutCanvas() {
 
   useEffect(() => {
     function computeInitialPositions() {
+      const isMobile = window.innerWidth < 768;
+      const initialScale = isMobile
+        ? Math.min(0.9, Number(((window.innerWidth - 24) / 400).toFixed(3)))
+        : 1;
+      setScale(initialScale);
+      scaleRef.current = initialScale;
+
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
 
       setItems({
-        // 1. Center About Me Card (Fixed desk card - NOT draggable)
+        // 1. Center About Me Card (Fixed desk card - NOT draggable, horizontally centered)
         "about-card": {
-          x: cx - 200,
+          x: cx / initialScale - 200,
           y: cy - 260,
           rotate: 0,
           zIndex: 10,
@@ -141,12 +148,6 @@ export default function AboutCanvas() {
           zIndex: 7,
         },
       });
-
-      // Default zoom: 90% (0.9) for mobile / small screens, 100% (1) for desktop
-      const isMobile = window.innerWidth < 768;
-      const initialScale = isMobile ? 0.9 : 1;
-      setScale(initialScale);
-      scaleRef.current = initialScale;
 
       setMounted(true);
     }

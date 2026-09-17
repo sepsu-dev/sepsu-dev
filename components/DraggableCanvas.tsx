@@ -195,13 +195,20 @@ export default function DraggableCanvas() {
 
   useEffect(() => {
     function computeInitialPositions() {
+      const isMobile = window.innerWidth < 768;
+      const initialScale = isMobile
+        ? Math.min(0.9, Number(((window.innerWidth - 24) / 380).toFixed(3)))
+        : 1;
+      setScale(initialScale);
+      scaleRef.current = initialScale;
+
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
 
       setItems({
-        // 1. Center Card: firmly anchored slightly higher up on the desk
+        // 1. Center Card: firmly anchored slightly higher up on the desk, horizontally centered
         "center-card": {
-          x: cx - 185,
+          x: cx / initialScale - 190,
           y: cy - 240,
           rotate: 0,
           zIndex: 10,
@@ -257,12 +264,6 @@ export default function DraggableCanvas() {
           zIndex: 6,
         },
       });
-
-      // Default zoom: 90% (0.9) for mobile / small screens, 100% (1) for desktop
-      const isMobile = window.innerWidth < 768;
-      const initialScale = isMobile ? 0.9 : 1;
-      setScale(initialScale);
-      scaleRef.current = initialScale;
 
       setMounted(true);
     }
