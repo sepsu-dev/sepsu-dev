@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   SlidersHorizontal,
@@ -23,7 +24,6 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { JOTTER_PROJECTS, JOTTER_SETTINGS } from "@/lib/jotter-data";
 import {
   TypeScript,
   React as ReactIcon,
@@ -128,7 +128,7 @@ export default function DraggableCanvas() {
       );
     };
     updateClock();
-    const clockInterval = setInterval(updateClock, 1000);
+    const clockInterval = setInterval(updateClock, 10000);
 
     const syncTheme = () => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
@@ -241,13 +241,7 @@ export default function DraggableCanvas() {
           rotate: 2,
           zIndex: 5,
         },
-        // 7. Cursor Pill: mid-right, pointing to right edge of center card
-        cursor: {
-          x: cx + 205,
-          y: cy - 40,
-          rotate: 0,
-          zIndex: 15,
-        },
+
         // 8. Ask Contract Generator (Tech stack): mid-right, below cursor
         generator: {
           x: cx + 360,
@@ -501,7 +495,6 @@ export default function DraggableCanvas() {
     if (e.button !== 0 && e.pointerType === "mouse") return;
     // Stop propagation so the canvas does NOT pan while dragging this specific card
     e.stopPropagation();
-    e.preventDefault();
 
     const newZ = maxZIndex + 1;
     setMaxZIndex(newZ);
@@ -538,7 +531,6 @@ export default function DraggableCanvas() {
   ) => {
     if (activeDragId !== itemId) return;
     e.stopPropagation();
-    e.preventDefault();
 
     const dx = e.clientX - itemDragRef.current.startClientX;
     const dy = e.clientY - itemDragRef.current.startClientY;
@@ -576,19 +568,23 @@ export default function DraggableCanvas() {
   ) => {
     if (activeDragId === itemId) {
       e.stopPropagation();
+      const moved = itemDragRef.current.hasMoved;
       setActiveDragId(null);
       try {
         e.currentTarget.releasePointerCapture(e.pointerId);
       } catch {
         // ignore
       }
+
+      // If user merely clicked without dragging, navigate to project detail
+      if (!moved && (itemId === "cryptix" || itemId === "novera" || itemId === "pitlane")) {
+        router.push(`/project/${itemId}`);
+      }
     }
   };
 
 
-  const cryptixData = JOTTER_PROJECTS.find((p) => p.slug === "cryptix")!;
-  const noveraData = JOTTER_PROJECTS.find((p) => p.slug === "novera")!;
-  const pitlaneData = JOTTER_PROJECTS.find((p) => p.slug === "pitlane")!;
+
 
   if (!mounted || !items["center-card"]) {
     return (
@@ -604,7 +600,6 @@ export default function DraggableCanvas() {
   const graph = items["graph"];
   const signflow = items["signflow"];
   const generator = items["generator"];
-  const cursor = items["cursor"];
 
   return (
     <div
@@ -642,35 +637,49 @@ export default function DraggableCanvas() {
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.04, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full p-7 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)]"
+            className="relative"
           >
+            {/* Blue Canvas Selection Frame with 4 Corner Handles */}
+            <div className="absolute -inset-[3px] border-2 border-[#0099ff] rounded-[18px] pointer-events-none z-20">
+              {/* Top-Left Handle */}
+              <span className="absolute -top-[5px] -left-[5px] w-[10px] h-[10px] bg-white border-2 border-[#0099ff] rounded-[1px] shadow-2xs" />
+              {/* Top-Right Handle */}
+              <span className="absolute -top-[5px] -right-[5px] w-[10px] h-[10px] bg-white border-2 border-[#0099ff] rounded-[1px] shadow-2xs" />
+              {/* Bottom-Left Handle */}
+              <span className="absolute -bottom-[5px] -left-[5px] w-[10px] h-[10px] bg-white border-2 border-[#0099ff] rounded-[1px] shadow-2xs" />
+              {/* Bottom-Right Handle */}
+              <span className="absolute -bottom-[5px] -right-[5px] w-[10px] h-[10px] bg-white border-2 border-[#0099ff] rounded-[1px] shadow-2xs" />
+            </div>
+
+            <div className="w-full p-7 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)]">
             {/* Profile Photo */}
-            <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={JOTTER_SETTINGS.avatarUrl}
-                alt={JOTTER_SETTINGS.name}
+            <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none relative">
+              <Image
+                src="/avatar.webp"
+                alt="Sepsu Dev"
+                fill
+                sizes="48px"
                 draggable={false}
-                className="w-full h-full object-cover pointer-events-none"
+                className="object-cover pointer-events-none"
               />
             </div>
 
             <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
-              Hello, I&apos;m {JOTTER_SETTINGS.short_name}.
+              Hello, I&apos;m Sepsu.
             </h1>
 
             <div className="space-y-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
               <p>
                 Welcome to my interactive workspace. Here you&apos;ll find selected projects, experiments, and technical highlights — feel free to explore and rearrange things.
               </p>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className="text-xs text-stone-600 dark:text-stone-300">
                 Looking for details on my background and experience? Check out the about page.
               </p>
             </div>
 
             <div className="flex items-center gap-3 pt-5">
               <a
-                href={`mailto:${JOTTER_SETTINGS.email}`}
+                href="mailto:sepsu.dev@gmail.com"
                 onPointerDown={(e) => e.stopPropagation()}
                 className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
               >
@@ -684,6 +693,7 @@ export default function DraggableCanvas() {
                 About me
               </Link>
             </div>
+          </div>
           </motion.div>
         </div>
 
@@ -710,18 +720,19 @@ export default function DraggableCanvas() {
           >
             <div
               onClick={(e) => handleProjectCardClick(e, "/project/cryptix")}
-              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "cryptix"
+              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "cryptix"
                 ? ""
                 : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
                 }`}
             >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cryptixData.mainImage}
+              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
+                <Image
+                  src="/projects/cryptix-main.webp"
                   alt="Cryptix"
+                  fill
+                  sizes="270px"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="object-cover pointer-events-none"
                 />
               </div>
               <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
@@ -729,7 +740,7 @@ export default function DraggableCanvas() {
                   Cryptix
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  {cryptixData.tagline}
+                  End-to-End Product
                 </span>
               </div>
             </div>
@@ -759,18 +770,19 @@ export default function DraggableCanvas() {
           >
             <div
               onClick={(e) => handleProjectCardClick(e, "/project/novera")}
-              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "novera"
+              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "novera"
                 ? ""
                 : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
                 }`}
             >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={noveraData.mainImage}
+              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
+                <Image
+                  src="/projects/novera-main.webp"
                   alt="Novera"
+                  fill
+                  sizes="270px"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="object-cover pointer-events-none"
                 />
               </div>
               <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
@@ -778,7 +790,7 @@ export default function DraggableCanvas() {
                   Novera
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  {noveraData.tagline}
+                  SaaS Platform
                 </span>
               </div>
             </div>
@@ -808,18 +820,19 @@ export default function DraggableCanvas() {
           >
             <div
               onClick={(e) => handleProjectCardClick(e, "/project/pitlane")}
-              className={`block transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pitlane"
+              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pitlane"
                 ? ""
                 : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
                 }`}
             >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={pitlaneData.mainImage}
+              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
+                <Image
+                  src="/projects/pitlane-main.webp"
                   alt="Pitlane"
+                  fill
+                  sizes="270px"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="object-cover pointer-events-none"
                 />
               </div>
               <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
@@ -827,7 +840,7 @@ export default function DraggableCanvas() {
                   Pitlane
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  {pitlaneData.tagline}
+                  Web App
                 </span>
               </div>
             </div>
@@ -902,7 +915,7 @@ export default function DraggableCanvas() {
                 <span className="font-mono text-2xl font-normal tracking-tight text-stone-900 dark:text-stone-100">
                   {currentTime || "00:00:00"}
                 </span>
-                <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
+                <span className="text-[10px] font-mono text-stone-600 dark:text-stone-300">
                   WIB · GMT+7
                 </span>
               </div>
@@ -924,7 +937,7 @@ export default function DraggableCanvas() {
             zIndex: graph.zIndex,
             cursor: activeDragId === "graph" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[246px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[240px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -941,12 +954,13 @@ export default function DraggableCanvas() {
               {/* Header: MU Crest + Next Match + Standings Badge */}
               <div className="flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 shrink-0 flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/mu-logo.png"
+                  <div className="w-5 h-5 shrink-0 flex items-center justify-center relative">
+                    <Image
+                      src="/mu-logo.webp"
                       alt="Manchester United Crest"
-                      className="w-full h-full object-contain drop-shadow-xs"
+                      width={20}
+                      height={20}
+                      className="object-contain drop-shadow-xs pointer-events-none"
                       draggable={false}
                     />
                   </div>
@@ -956,29 +970,29 @@ export default function DraggableCanvas() {
                 </div>
 
                 {/* Table Standings Badge: 13th • 4 pts */}
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-600 dark:text-stone-300">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-700 dark:text-stone-300">
                   <span className="font-semibold text-stone-900 dark:text-stone-100">#13</span>
-                  <span className="text-stone-400">•</span>
+                  <span className="text-stone-500 dark:text-stone-400">•</span>
                   <span>4 pts</span>
                 </div>
               </div>
 
               {/* Matchup Banner: Fulham vs Man United (Away) */}
-              <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-100 dark:border-stone-800/80 pointer-events-none">
+              <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-100/80 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 pointer-events-none">
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-stone-800 dark:text-stone-200">
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
                     Fulham
                   </span>
-                  <span className="text-[9px] font-mono text-stone-400">Home</span>
+                  <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Home</span>
                 </div>
-                <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-white dark:bg-stone-800 border border-stone-200/80 dark:border-stone-700 text-stone-400">
+                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-200">
                   vs
                 </span>
                 <div className="flex flex-col items-end">
-                  <span className="text-xs font-bold text-[#DA291C] dark:text-red-400">
+                  <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
                     Man United
                   </span>
-                  <span className="text-[9px] font-mono text-stone-400">Away</span>
+                  <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Away</span>
                 </div>
               </div>
 
@@ -1031,10 +1045,10 @@ export default function DraggableCanvas() {
                     )}
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-stone-800 dark:text-stone-200">
+                    <p className="text-xs font-medium text-stone-900 dark:text-stone-100">
                       {isDarkMode ? "Dark theme" : "Light theme"}
                     </p>
-                    <p className="text-[9px] font-mono text-stone-400 dark:text-stone-500">
+                    <p className="text-[10px] font-mono text-stone-600 dark:text-stone-400">
                       Workspace
                     </p>
                   </div>
@@ -1089,7 +1103,7 @@ export default function DraggableCanvas() {
                 }`}
             >
               <div className="flex items-center pointer-events-none">
-                <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                <span className="text-[11px] text-stone-700 dark:text-stone-300 font-medium">
                   Tech Stack & Tools
                 </span>
               </div>
@@ -1101,12 +1115,12 @@ export default function DraggableCanvas() {
                 </span>
 
                 {/* React */}
-                <span title="React.js" className="flex items-center justify-center">
+                <span title="React" className="flex items-center justify-center">
                   <ReactIcon size={19} />
                 </span>
 
                 {/* Next.js */}
-                <span title="Next.js" className="flex items-center justify-center">
+                <span title="Next.js" className="flex items-center justify-center text-stone-900 dark:text-stone-100">
                   <NextJs size={19} />
                 </span>
 
@@ -1164,46 +1178,7 @@ export default function DraggableCanvas() {
           </motion.div>
         </div>
 
-        {/* ======================================================== */}
-        {/* 9. OSCAR BERGMAN CURSOR PILL (Individually Draggable)    */}
-        {/* ======================================================== */}
-        <div
-          role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "cursor")}
-          onPointerMove={(e) => handleItemPointerMove(e, "cursor")}
-          onPointerUp={(e) => handleItemPointerUp(e, "cursor")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "cursor")}
-          style={{
-            transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0) rotate(${cursor.rotate}deg)`,
-            zIndex: cursor.zIndex,
-            cursor: activeDragId === "cursor" ? "grabbing" : "grab",
-          }}
-          className="absolute top-0 left-0 w-auto select-none pointer-events-auto touch-none group hover:z-30"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div
-              className={`flex items-start gap-1 ${activeDragId === "cursor" ? "" : "animate-cursor-float"
-                }`}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="#0099ff"
-                className="shrink-0 -mt-1 -ml-1 drop-shadow-xs pointer-events-none"
-              >
-                <path d="M4 0l16 12-7 2-4 8z" />
-              </svg>
-              <span className="px-2.5 py-1 rounded-md bg-[#0099ff] text-white text-[11px] font-medium shadow-md whitespace-nowrap pointer-events-none">
-                {JOTTER_SETTINGS.name}
-              </span>
-            </div>
-          </motion.div>
-        </div>
+
       </div>
 
       {/* Zoom Indicator HUD: only appears on desktop during/after Ctrl+Scroll activity, auto-fades */}

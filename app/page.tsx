@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import DraggableCanvas from "@/components/DraggableCanvas";
-import { JOTTER_SETTINGS, JOTTER_PROJECTS } from "@/lib/jotter-data";
 
 export const metadata: Metadata = {
   title: "Sepsu Dev",
@@ -21,13 +20,13 @@ export default function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: JOTTER_SETTINGS.name,
-    jobTitle: JOTTER_SETTINGS.role,
+    name: "Sepsu Dev",
+    jobTitle: "Software Engineer",
     url: "https://sepsu.dev",
     sameAs: [
-      JOTTER_SETTINGS.githubUrl,
-      JOTTER_SETTINGS.twitterUrl,
-      JOTTER_SETTINGS.instagramUrl,
+      "https://github.com/sepsu-dev",
+      "https://twitter.com/",
+      "https://instagram.com",
     ],
     address: {
       "@type": "PostalAddress",

@@ -1,5 +1,4 @@
 import { MetadataRoute } from "next";
-import { JOTTER_PROJECTS } from "@/lib/jotter-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sepsu.dev";
@@ -32,8 +31,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const projectPages: MetadataRoute.Sitemap = JOTTER_PROJECTS.map((project) => ({
-    url: `${baseUrl}/project/${project.slug}`,
+  const projectSlugs = ["cryptix", "novera", "pitlane"];
+
+  const projectPages: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
+    url: `${baseUrl}/project/${slug}`,
     lastModified,
     changeFrequency: "monthly",
     priority: 0.8,

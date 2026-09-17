@@ -59,7 +59,7 @@ export const metadata: Metadata = {
       "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
     images: [
       {
-        url: "https://framerusercontent.com/images/4Gkd70fg0CvsPxE9NwLIZZal3Y.jpg?scale-down-to=1024",
+        url: "/projects/cryptix-main.webp",
         width: 1200,
         height: 630,
         alt: "Sepsu Dev",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Sepsu Dev",
     description:
       "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
-    images: ["https://framerusercontent.com/images/4Gkd70fg0CvsPxE9NwLIZZal3Y.jpg?scale-down-to=1024"],
+    images: ["/projects/cryptix-main.webp"],
     creator: "@sepsudev",
   },
   robots: {
@@ -86,8 +86,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/mu-logo.png",
-    apple: "/mu-logo.png",
+    icon: "/mu-logo.webp",
+    apple: "/mu-logo.webp",
   },
 };
 

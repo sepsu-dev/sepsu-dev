@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
-import { JOTTER_SETTINGS } from "@/lib/jotter-data";
+import { ZoomIn, ZoomOut, RotateCcw, Play, ExternalLink } from "lucide-react";
 
 interface ItemState {
   x: number;
@@ -506,29 +506,29 @@ export default function AboutCanvas() {
             <div className="flex items-center gap-2 mb-4 pointer-events-none">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-mono text-stone-600 dark:text-stone-400">
-                {JOTTER_SETTINGS.status}
+                Available for work
               </span>
             </div>
 
             {/* Heading & Subtitle */}
             <div className="mb-5 pointer-events-none">
               <h1 className="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
-                {JOTTER_SETTINGS.name}
+                Sepsu Dev
               </h1>
               <p className="text-xs sm:text-sm font-medium text-stone-500 dark:text-stone-400 mt-1">
-                {JOTTER_SETTINGS.role}
+                Software Engineer
               </p>
             </div>
 
             {/* Bio Copy */}
             <div className="space-y-4 text-xs sm:text-[13px] text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
-              <p>{JOTTER_SETTINGS.bio}</p>
+              <p>Software Engineer with 3+ years of experience building reliable backends and modern web applications. Focused on delivering clean, maintainable code with pragmatic architecture. Experienced in end-to-end product development, from API design to frontend deployment.</p>
             </div>
 
             {/* Action Buttons */}
             <div className="flex items-center gap-3 pt-6">
               <a
-                href={`mailto:${JOTTER_SETTINGS.email}`}
+                href="mailto:sepsu.dev@gmail.com"
                 onPointerDown={(e) => e.stopPropagation()}
                 className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
               >
@@ -574,13 +574,14 @@ export default function AboutCanvas() {
               }`}
             >
               {/* Old Trafford Stadium Photo (Clean, no text) */}
-              <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
+              <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
+                <Image
+                  src="/old-trafford.webp"
                   alt="Old Trafford"
+                  fill
+                  sizes="260px"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="object-cover pointer-events-none"
                 />
               </div>
             </div>
@@ -614,15 +615,71 @@ export default function AboutCanvas() {
                 : "group-hover:scale-[1.03] group-hover:-rotate-2 group-hover:-translate-y-1"
             }`}
           >
-            {/* Spotify Embed Player Container */}
-            <div className="w-full h-[80px] relative">
-              <iframe
-                style={{ height: "100%", width: "100%" }}
-                src="https://open.spotify.com/embed/track/0gSLaX91J2Cs9cWXqsRc4X?theme=0"
-                frameBorder="0"
-                allow="encrypted-media"
-              />
-            </div>
+            <a
+              href="https://open.spotify.com/track/0gSLaX91J2Cs9cWXqsRc4X"
+              target="_blank"
+              rel="noopener noreferrer"
+              onPointerDown={(e) => e.stopPropagation()}
+              className="block p-3.5 group/spotify cursor-pointer"
+              aria-label="Listen to track on Spotify"
+            >
+              <div className="flex items-center justify-between gap-3 pointer-events-none">
+                <div className="flex items-center gap-3 min-w-0">
+                  {/* Album / Track Art */}
+                  <div className="w-12 h-12 rounded-xl bg-stone-800 shrink-0 overflow-hidden relative shadow-sm">
+                    <Image
+                      src="/spotify-track.webp"
+                      alt="Album Art"
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover/spotify:bg-black/40 transition-colors">
+                      <div className="w-6 h-6 rounded-full bg-[#1db954] flex items-center justify-center text-black shadow-sm group-hover/spotify:scale-110 transition-transform">
+                        <Play className="w-3 h-3 fill-black ml-0.5" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Track Info */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold text-white truncate tracking-tight group-hover/spotify:text-[#1db954] transition-colors">
+                      Favorite Track
+                    </p>
+                    <p className="text-[11px] text-stone-400 truncate mt-0.5">
+                      Listen on Spotify
+                    </p>
+                  </div>
+                </div>
+
+                {/* Spotify Logo Icon */}
+                <div className="w-6 h-6 rounded-full bg-[#1db954]/15 flex items-center justify-center shrink-0">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="#1db954"
+                    className="w-3.5 h-3.5"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.216.354-.675.467-1.03.25-2.822-1.724-6.374-2.114-10.558-1.159-.404.093-.812-.162-.904-.566-.093-.404.162-.812.566-.904 4.582-1.048 8.513-.604 11.676 1.332.355.217.468.676.25 1.03zm1.47-3.268c-.272.443-.853.583-1.296.311-3.23-1.986-8.155-2.56-11.977-1.4-497.151-1.026-.137-1.177-.634-.151-.497.137-1.026.634-1.177 4.372-1.328 9.805-.688 13.505 1.587.443.272.583.853.311 1.296zm.126-3.41c-3.874-2.3-10.263-2.512-13.978-1.384-.593.18-1.223-.153-1.404-.746-.18-.593.153-1.223.746-1.404 4.269-1.296 11.328-1.047 15.793 1.604.533.316.708 1.008.392 1.541-.316.533-1.008.708-1.541.392z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Fake Audio Waveform / Playing bar */}
+              <div className="mt-2.5 pt-2 border-t border-stone-800/80 flex items-center justify-between pointer-events-none">
+                <div className="flex items-center gap-0.5">
+                  <span className="w-0.5 h-2 bg-[#1db954] rounded-full animate-pulse" />
+                  <span className="w-0.5 h-3.5 bg-[#1db954] rounded-full animate-pulse delay-75" />
+                  <span className="w-0.5 h-2.5 bg-[#1db954] rounded-full animate-pulse delay-150" />
+                  <span className="w-0.5 h-4 bg-[#1db954] rounded-full animate-pulse delay-100" />
+                  <span className="w-0.5 h-2 bg-[#1db954] rounded-full animate-pulse delay-200" />
+                </div>
+                <div className="flex items-center gap-1 text-[10px] font-mono text-stone-400">
+                  <span>Open Spotify</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </div>
+              </div>
+            </a>
           </motion.div>
         </div>
 
@@ -654,13 +711,14 @@ export default function AboutCanvas() {
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-[3/2] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/cat.jpg"
+              <div className="aspect-[3/2] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
+                <Image
+                  src="/cat.webp"
                   alt="Tiger"
+                  fill
+                  sizes="230px"
                   draggable={false}
-                  className="w-full h-full object-cover object-center pointer-events-none"
+                  className="object-cover object-center pointer-events-none"
                 />
               </div>
             </div>
@@ -818,13 +876,14 @@ export default function AboutCanvas() {
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-950 pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/senne-lammens.jpg"
+              <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-950 pointer-events-none relative">
+                <Image
+                  src="/senne-lammens.webp"
                   alt="Senne Lammens"
+                  fill
+                  sizes="260px"
                   draggable={false}
-                  className="w-full h-full object-cover object-center pointer-events-none"
+                  className="object-cover object-center pointer-events-none"
                 />
               </div>
             </div>
@@ -860,13 +919,14 @@ export default function AboutCanvas() {
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
               }`}
             >
-              <div className="aspect-square w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/pineapple.jpg"
+              <div className="aspect-square w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
+                <Image
+                  src="/pineapple.webp"
                   alt="Pineapple"
+                  fill
+                  sizes="180px"
                   draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="object-cover pointer-events-none"
                 />
               </div>
             </div>

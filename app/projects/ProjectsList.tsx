@@ -2,18 +2,61 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
-import { JOTTER_PROJECTS } from "@/lib/jotter-data";
+
+interface ProjectItem {
+  slug: string;
+  title: string;
+  category: string;
+  tagline: string;
+  description: string;
+  mainImage: string;
+  tags: string[];
+}
+
+const PROJECTS: ProjectItem[] = [
+  {
+    slug: "cryptix",
+    title: "Cryptix",
+    category: "End-to-End Product",
+    tagline: "End-to-End Product",
+    description:
+      "A next-generation crypto exchange app built around trust and speed. From onboarding through to complex multi-asset trades, Cryptix makes digital asset management feel intuitive and calm.",
+    mainImage: "/projects/cryptix-main.webp",
+    tags: ["Product Design", "Design System", "Mobile App", "Fintech"],
+  },
+  {
+    slug: "novera",
+    title: "Novera",
+    category: "SaaS Platform",
+    tagline: "SaaS Platform",
+    description:
+      "An AI-assisted contract workspace that speeds legal teams up without asking them to trust a black box. Reusable templates, auditable review, and live collaboration in one platform.",
+    mainImage: "/projects/novera-main.webp",
+    tags: ["SaaS", "Dashboard", "AI Workspace", "LegalTech"],
+  },
+  {
+    slug: "pitlane",
+    title: "Pitlane",
+    category: "Web App",
+    tagline: "Web App",
+    description:
+      "High-throughput motorsport telemetry and event stream visualization. Translating millions of data points per second into readable, glanceable insights for race engineers.",
+    mainImage: "/projects/pitlane-main.webp",
+    tags: ["Web App", "Telemetry", "Data Visualization", "Realtime"],
+  },
+];
 
 const ITEMS_PER_PAGE = 3;
 
 export default function ProjectsList() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(JOTTER_PROJECTS.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(PROJECTS.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProjects = JOTTER_PROJECTS.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentProjects = PROJECTS.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -21,7 +64,7 @@ export default function ProjectsList() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#fafafa] dark:bg-[#121212] text-stone-900 dark:text-stone-100 overflow-y-auto px-4 py-12 md:py-20 pb-36">
+    <main className="w-full min-h-screen bg-[#fafafa] dark:bg-[#121212] text-stone-900 dark:text-stone-100 overflow-y-auto px-4 py-12 md:py-20 pb-36">
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Back Link */}
         <Link
@@ -29,7 +72,7 @@ export default function ProjectsList() {
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 shadow-xs transition-colors group"
         >
           <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
-          <span>Back to desk</span>
+          <span>Back to home</span>
         </Link>
 
         {/* Header */}
@@ -37,7 +80,7 @@ export default function ProjectsList() {
           <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">
             Selected Projects
           </h1>
-          <p className="text-sm text-stone-500 dark:text-stone-400 max-w-xl leading-relaxed">
+          <p className="text-sm text-stone-600 dark:text-stone-300 max-w-xl leading-relaxed">
             Software, web applications, and developer tooling built with clean architecture and modern engineering.
           </p>
         </div>
@@ -62,11 +105,12 @@ export default function ProjectsList() {
               >
                 {/* Project Image */}
                 <div className="aspect-[16/10] w-full overflow-hidden bg-stone-100 dark:bg-stone-900 relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={project.mainImage}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                   />
                 </div>
 
@@ -79,7 +123,7 @@ export default function ProjectsList() {
                       </h2>
                       <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#0099ff] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                     </div>
-                    <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2 leading-relaxed">
                       {project.description}
                     </p>
                   </div>
@@ -89,7 +133,7 @@ export default function ProjectsList() {
                     {project.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-stone-100 dark:bg-stone-800/70 text-stone-500 dark:text-stone-400"
+                        className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-stone-700/60"
                       >
                         {tag}
                       </span>
@@ -103,15 +147,15 @@ export default function ProjectsList() {
 
         {/* Pagination Controls */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-200/80 dark:border-stone-800/80">
-          <p className="text-xs font-mono text-stone-400 dark:text-stone-500">
-            {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, JOTTER_PROJECTS.length)} of {JOTTER_PROJECTS.length} projects
+          <p className="text-xs font-mono font-medium text-stone-600 dark:text-stone-400">
+            {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, PROJECTS.length)} of {PROJECTS.length} projects
           </p>
 
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-600 dark:text-stone-400 disabled:opacity-40 disabled:cursor-not-allowed hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-700 dark:text-stone-300 disabled:opacity-40 disabled:cursor-not-allowed hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
               <span>Prev</span>
@@ -124,8 +168,8 @@ export default function ProjectsList() {
                   onClick={() => handlePageChange(page)}
                   className={`w-7 h-7 rounded-md text-xs font-mono transition-all ${
                     currentPage === page
-                      ? "bg-stone-900 text-white dark:bg-white dark:text-stone-900 font-medium"
-                      : "text-stone-500 hover:text-stone-900 dark:hover:text-stone-100"
+                      ? "bg-stone-900 text-white dark:bg-white dark:text-stone-900 font-semibold"
+                      : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
                   }`}
                 >
                   {page}
@@ -144,7 +188,7 @@ export default function ProjectsList() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft, Mail, MapPin, Send, MessageSquare, ArrowUpRight } from "lucide-react";
-import { JOTTER_SETTINGS } from "@/lib/jotter-data";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="w-full min-h-screen bg-[#fafafa] dark:bg-[#121212] text-stone-900 dark:text-stone-100 overflow-y-auto px-4 py-12 md:py-20 pb-36">
+    <main className="w-full min-h-screen bg-[#fafafa] dark:bg-[#121212] text-stone-900 dark:text-stone-100 overflow-y-auto px-4 py-12 md:py-20 pb-36">
       <div className="max-w-2xl mx-auto space-y-10">
         {/* Back Link */}
         <Link
@@ -28,7 +27,7 @@ export default function ContactPage() {
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 shadow-xs transition-colors group"
         >
           <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
-          <span>Back to desk</span>
+          <span>Back to home</span>
         </Link>
 
         {/* Header */}
@@ -44,7 +43,7 @@ export default function ContactPage() {
         {/* Contact Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <a
-            href={`mailto:${JOTTER_SETTINGS.contactEmail}`}
+            href="mailto:sepsu.dev@gmail.com"
             className="p-5 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-xs hover:shadow-md transition-all duration-200 group flex flex-col justify-between gap-4"
           >
             <div className="flex items-center justify-between">
@@ -54,9 +53,9 @@ export default function ContactPage() {
               <ArrowUpRight className="w-4 h-4 text-stone-400 group-hover:text-[#0099ff] transition-colors" />
             </div>
             <div>
-              <p className="text-xs font-mono text-stone-400 dark:text-stone-500">EMAIL</p>
+              <p className="text-xs font-mono font-medium text-stone-600 dark:text-stone-400">EMAIL</p>
               <p className="text-sm font-semibold text-stone-900 dark:text-stone-100 truncate mt-0.5">
-                {JOTTER_SETTINGS.contactEmail}
+                sepsu.dev@gmail.com
               </p>
             </div>
           </a>
@@ -64,14 +63,14 @@ export default function ContactPage() {
           <div className="p-5 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-xs flex flex-col justify-between gap-4">
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-700 dark:text-stone-300">
-                <MapPin className="w-4 h-4 text-[#0099ff]" />
+                <MapPin className="w-4 h-4 text-[#0077cc] dark:text-[#38bdf8]" />
               </div>
-              <span className="text-[11px] font-mono text-stone-400 dark:text-stone-500">GMT+7</span>
+              <span className="text-[11px] font-mono font-medium text-stone-600 dark:text-stone-400">GMT+7</span>
             </div>
             <div>
-              <p className="text-xs font-mono text-stone-400 dark:text-stone-500">LOCATION</p>
+              <p className="text-xs font-mono font-medium text-stone-600 dark:text-stone-400">LOCATION</p>
               <p className="text-sm font-semibold text-stone-900 dark:text-stone-100 mt-0.5">
-                {JOTTER_SETTINGS.location}
+                Jakarta, Indonesia
               </p>
             </div>
           </div>
@@ -83,13 +82,13 @@ export default function ContactPage() {
             <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100">
               Send a quick message
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400">
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
               This will launch your default email client with your message pre-filled.
             </p>
           </div>
 
           <form
-            action={`mailto:${JOTTER_SETTINGS.contactEmail}`}
+            action="mailto:sepsu.dev@gmail.com"
             method="GET"
             className="space-y-4"
           >
@@ -129,7 +128,7 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

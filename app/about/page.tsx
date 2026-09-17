@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import AboutCanvas from "@/components/AboutCanvas";
-import { JOTTER_SETTINGS } from "@/lib/jotter-data";
-
 export const metadata: Metadata = {
   title: "About",
   description:
@@ -16,7 +14,7 @@ export const metadata: Metadata = {
     url: "https://sepsu.dev/about",
     images: [
       {
-        url: JOTTER_SETTINGS.bulgariaPhotoUrl,
+        url: "/avatar.webp",
         width: 1024,
         height: 768,
         alt: "Sepsu Dev",

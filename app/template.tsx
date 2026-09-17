@@ -76,18 +76,19 @@ export default function Template({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Konten baru di-render dan beranimasi masuk SETELAH loading selesai hilang */}
-      {showContent && (
-        <motion.div
-          key={`content-${pathname}`}
-          initial={{ opacity: 0, y: 22, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full h-full min-h-screen"
-        >
-          {children}
-        </motion.div>
-      )}
+      {/* Konten selalu ada di DOM agar elemen semantik <main> terdeteksi langsung saat SSR / Lighthouse */}
+      <motion.div
+        key={`content-${pathname}`}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{
+          opacity: showContent ? 1 : 0,
+          y: showContent ? 0 : 16,
+        }}
+        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full h-full min-h-screen"
+      >
+        {children}
+      </motion.div>
     </>
   );
 }
