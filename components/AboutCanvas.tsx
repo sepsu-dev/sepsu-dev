@@ -183,13 +183,22 @@ export default function AboutCanvas() {
         const newPanX = mouseX - (mouseX - currentPan.x) * (targetScale / currentScale);
         const newPanY = mouseY - (mouseY - currentPan.y) * (targetScale / currentScale);
 
+        const maxPanX = Math.max(500, window.innerWidth * 0.45);
+        const maxPanY = Math.max(450, window.innerHeight * 0.45);
+
         setScale(targetScale);
-        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+        setPan({
+          x: Math.max(-maxPanX, Math.min(maxPanX, Math.round(newPanX))),
+          y: Math.max(-maxPanY, Math.min(maxPanY, Math.round(newPanY))),
+        });
       } else {
-        // Normal scroll pans the canvas
+        // Normal scroll pans the canvas with boundary limits
+        const maxPanX = Math.max(500, window.innerWidth * 0.45);
+        const maxPanY = Math.max(450, window.innerHeight * 0.45);
+
         setPan((prev) => ({
-          x: Math.round(prev.x - e.deltaX * 0.8),
-          y: Math.round(prev.y - e.deltaY * 0.8),
+          x: Math.max(-maxPanX, Math.min(maxPanX, Math.round(prev.x - e.deltaX * 0.8))),
+          y: Math.max(-maxPanY, Math.min(maxPanY, Math.round(prev.y - e.deltaY * 0.8))),
         }));
       }
     };
@@ -238,8 +247,14 @@ export default function AboutCanvas() {
         const newPanX = cx - (cx - initialPinchPan.x) * (targetScale / initialPinchScale);
         const newPanY = cy - (cy - initialPinchPan.y) * (targetScale / initialPinchScale);
 
+        const maxPanX = Math.max(500, window.innerWidth * 0.45);
+        const maxPanY = Math.max(450, window.innerHeight * 0.45);
+
         setScale(targetScale);
-        setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+        setPan({
+          x: Math.max(-maxPanX, Math.min(maxPanX, Math.round(newPanX))),
+          y: Math.max(-maxPanY, Math.min(maxPanY, Math.round(newPanY))),
+        });
       } else {
         // Prevent browser native pull-to-refresh & screen pinch
         e.preventDefault();
