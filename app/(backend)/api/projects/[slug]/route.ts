@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { DUMMY_PROJECTS } from "../route";
+import { DUMMY_PROJECTS } from "@/types/projects";
 
 interface Props {
   params: Promise<{ slug: string }>;

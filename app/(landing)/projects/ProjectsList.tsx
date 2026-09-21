@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 
-import { DUMMY_PROJECTS as PROJECTS } from "@/app/(backend)/api/projects/route";
+import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
 
 const ITEMS_PER_PAGE = 3;
 

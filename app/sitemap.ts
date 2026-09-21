@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { DUMMY_PROJECTS as PROJECTS } from "@/app/(backend)/api/projects/route";
+import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sepsu.dev";
