@@ -30,6 +30,11 @@ export default function Navbar() {
     { href: "/contact", label: "Contact", icon: Mail },
   ];
 
+  // Do not render dock on login or admin management portal
+  if (pathname.startsWith("/login") || pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <aside
       aria-label="Site dock"

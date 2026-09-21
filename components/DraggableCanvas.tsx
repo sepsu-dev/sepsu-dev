@@ -24,30 +24,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  TypeScript,
-  React as ReactIcon,
-  NextJs,
-  NodeJs,
-  Docker,
-  PostgreSQL,
-  Laravel,
-  NestJS,
-  TailwindCSS,
-  Redis,
-  MongoDB,
-  MySQL,
-  VueJs,
-  Bootstrap5,
-  ExpressJsDark,
-  ExpressJsLight,
-  MicrosoftSQLServer,
-  PHP,
-  Spring,
-  Go,
-  Elastic,
-  CodeIgniter,
-} from "developer-icons";
+import TechIcon from "@/components/TechIcon";
+import { LandingSettings } from "@/types/settings";
 
 interface ItemState {
   x: number;
@@ -96,6 +74,99 @@ export default function DraggableCanvas() {
     isDay: true,
     weatherCode: 1,
   });
+
+  // Dynamic Landing Settings (from /api/settings or fallback)
+  const [landingSettings, setLandingSettings] = useState<LandingSettings>({
+    profile: {
+      avatarUrl: "/avatar.webp",
+      greeting: "Hello, I'm Sepsu.",
+      name: "Sepsu Dev",
+      bioParagraph1:
+        "Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.",
+      bioParagraph2:
+        "Want to know more about my experience and journey? Check out the about page.",
+      ctaEmail: "sepsu.dev@gmail.com",
+      ctaText: "Get in touch",
+    },
+    locationWidget: {
+      city: "Jakarta",
+      countryCode: "ID",
+      countryName: "Indonesia",
+      flagColors: {
+        top: "#ff0000",
+        bottom: "#ffffff",
+      },
+      timeZoneLabel: "WIB · GMT+7",
+    },
+    sportsWidget: {
+      show: true,
+      title: "Next Match",
+      teamName: "Man United",
+      opponentName: "Spurs",
+      badgeRank: "#12",
+      badgePoints: "5 pts",
+      venue: "Old Trafford",
+      matchDate: "10 Oct · 23.30",
+    },
+    techStack: [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Vue.js",
+      "Tailwind CSS",
+      "Bootstrap",
+      "Node.js",
+      "Express.js",
+      "NestJS",
+      "Go",
+      "Java Spring",
+      "PHP Native",
+      "Laravel",
+      "CodeIgniter",
+      "PostgreSQL",
+      "MySQL",
+      "SQL Server",
+      "MongoDB",
+      "Redis",
+      "Elasticsearch",
+      "Docker",
+    ],
+  });
+
+  useEffect(() => {
+    // Fetch dynamic landing settings from backend API
+    const loadSettings = async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) {
+            setLandingSettings((prev) => ({
+              ...prev,
+              ...json.data,
+              profile: { ...prev.profile, ...(json.data.profile || {}) },
+              locationWidget: {
+                ...prev.locationWidget,
+                ...(json.data.locationWidget || {}),
+                flagColors: {
+                  ...prev.locationWidget.flagColors,
+                  ...(json.data.locationWidget?.flagColors || {}),
+                },
+              },
+              sportsWidget: {
+                ...prev.sportsWidget,
+                ...(json.data.sportsWidget || {}),
+              },
+              techStack: json.data.techStack || prev.techStack,
+            }));
+          }
+        }
+      } catch {
+        // use fallback initial state
+      }
+    };
+    loadSettings();
+  }, []);
 
   useEffect(() => {
     // Fetch real-time weather for Jakarta via Open-Meteo
@@ -665,8 +736,8 @@ export default function DraggableCanvas() {
               {/* Profile Photo */}
               <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none relative">
                 <Image
-                  src="/avatar.webp"
-                  alt="Sepsu Dev"
+                  src={landingSettings.profile.avatarUrl || "/avatar.webp"}
+                  alt={landingSettings.profile.name}
                   fill
                   sizes="48px"
                   draggable={false}
@@ -675,25 +746,23 @@ export default function DraggableCanvas() {
               </div>
 
               <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
-                Hello, I&apos;m Sepsu.
+                {landingSettings.profile.greeting}
               </h1>
 
               <div className="space-y-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
-                <p>
-                  Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.
-                </p>
+                <p>{landingSettings.profile.bioParagraph1}</p>
                 <p className="text-xs text-stone-600 dark:text-stone-300">
-                  Want to know more about my experience and journey? Check out the about page.
+                  {landingSettings.profile.bioParagraph2}
                 </p>
               </div>
 
               <div className="flex items-center gap-3 pt-5">
                 <a
-                  href="mailto:sepsu.dev@gmail.com"
+                  href={`mailto:${landingSettings.profile.ctaEmail || "sepsu.dev@gmail.com"}`}
                   onPointerDown={(e) => e.stopPropagation()}
                   className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
                 >
-                  Get in touch
+                  {landingSettings.profile.ctaText || "Get in touch"}
                 </a>
                 <Link
                   href="/about"
@@ -889,14 +958,22 @@ export default function DraggableCanvas() {
                 <div className="flex items-center gap-1.5 text-stone-700 dark:text-stone-300 text-xs font-normal">
                   <span
                     className="inline-flex items-center justify-center w-4 h-3 rounded-[2px] overflow-hidden border border-stone-200 dark:border-stone-700 shadow-2xs shrink-0"
-                    title="Indonesia"
+                    title={landingSettings.locationWidget.countryName}
                   >
                     <span className="w-full h-full flex flex-col">
-                      <span className="w-full h-1/2 bg-[#ff0000]" />
-                      <span className="w-full h-1/2 bg-white" />
+                      <span
+                        className="w-full h-1/2"
+                        style={{ backgroundColor: landingSettings.locationWidget.flagColors.top || "#ff0000" }}
+                      />
+                      <span
+                        className="w-full h-1/2"
+                        style={{ backgroundColor: landingSettings.locationWidget.flagColors.bottom || "#ffffff" }}
+                      />
                     </span>
                   </span>
-                  <span>Jakarta, ID</span>
+                  <span>
+                    {landingSettings.locationWidget.city}, {landingSettings.locationWidget.countryCode}
+                  </span>
                 </div>
 
                 {/* Real-time Weather & Day/Night Icon */}
@@ -926,7 +1003,7 @@ export default function DraggableCanvas() {
                   {currentTime || "00:00:00"}
                 </span>
                 <span className="text-[10px] font-mono text-stone-600 dark:text-stone-300">
-                  WIB · GMT+7
+                  {landingSettings.locationWidget.timeZoneLabel || "WIB · GMT+7"}
                 </span>
               </div>
             </div>
@@ -966,7 +1043,7 @@ export default function DraggableCanvas() {
                   <div className="w-5 h-5 shrink-0 flex items-center justify-center relative">
                     <Image
                       src="/mu-logo.webp"
-                      alt="Manchester United Crest"
+                      alt="Sports Club Crest"
                       width={20}
                       height={20}
                       className="object-contain drop-shadow-xs pointer-events-none"
@@ -974,23 +1051,25 @@ export default function DraggableCanvas() {
                     />
                   </div>
                   <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 tracking-tight">
-                    Next Match
+                    {landingSettings.sportsWidget.title || "Next Match"}
                   </span>
                 </div>
 
-                {/* Table Standings Badge: 12th • 5 pts */}
+                {/* Table Standings Badge */}
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-700 dark:text-stone-300">
-                  <span className="font-semibold text-stone-900 dark:text-stone-100">#12</span>
+                  <span className="font-semibold text-stone-900 dark:text-stone-100">
+                    {landingSettings.sportsWidget.badgeRank || "#12"}
+                  </span>
                   <span className="text-stone-500 dark:text-stone-400">•</span>
-                  <span>5 pts</span>
+                  <span>{landingSettings.sportsWidget.badgePoints || "5 pts"}</span>
                 </div>
               </div>
 
-              {/* Matchup Banner: Man United vs Spurs (Home) */}
+              {/* Matchup Banner */}
               <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-100/80 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 pointer-events-none">
                 <div className="flex flex-col">
                   <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
-                    Man United
+                    {landingSettings.sportsWidget.teamName || "Man United"}
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Home</span>
                 </div>
@@ -999,7 +1078,7 @@ export default function DraggableCanvas() {
                 </span>
                 <div className="flex flex-col items-end">
                   <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                    Spurs
+                    {landingSettings.sportsWidget.opponentName || "Spurs"}
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Away</span>
                 </div>
@@ -1007,10 +1086,12 @@ export default function DraggableCanvas() {
 
               {/* Footer Info: Venue & League */}
               <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 dark:text-stone-400 px-0.5 pointer-events-none">
-                <span className="truncate">Old Trafford</span>
+                <span className="truncate">{landingSettings.sportsWidget.venue || "Old Trafford"}</span>
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
-                  <span className="text-[#DA291C] dark:text-red-400 font-medium">10 Oct · 23.30</span>
+                  <span className="text-[#DA291C] dark:text-red-400 font-medium">
+                    {landingSettings.sportsWidget.matchDate || "10 Oct · 23.30"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -1118,119 +1199,31 @@ export default function DraggableCanvas() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5 pt-1 pointer-events-none">
-                {/* --- Frontend & Styling --- */}
-                {/* TypeScript */}
-                <span title="TypeScript" className="flex items-center justify-center">
-                  <TypeScript size={19} />
-                </span>
-
-                {/* React */}
-                <span title="React" className="flex items-center justify-center">
-                  <ReactIcon size={19} />
-                </span>
-
-                {/* Next.js */}
-                <span title="Next.js" className="flex items-center justify-center text-stone-900 dark:text-stone-100">
-                  <NextJs size={19} />
-                </span>
-
-                {/* Vue.js */}
-                <span title="Vue.js" className="flex items-center justify-center">
-                  <VueJs size={19} />
-                </span>
-
-                {/* Tailwind CSS */}
-                <span title="Tailwind CSS" className="flex items-center justify-center">
-                  <TailwindCSS size={19} />
-                </span>
-
-                {/* Bootstrap */}
-                <span title="Bootstrap" className="flex items-center justify-center">
-                  <Bootstrap5 size={19} />
-                </span>
-
-                {/* --- Backend & Runtimes --- */}
-                {/* Node.js */}
-                <span title="Node.js" className="flex items-center justify-center">
-                  <NodeJs size={19} />
-                </span>
-
-                {/* Express.js */}
-                <span title="Express.js" className="flex items-center justify-center">
-                  <span className="dark:hidden flex items-center justify-center">
-                    <ExpressJsDark size={19} />
-                  </span>
-                  <span className="hidden dark:flex items-center justify-center">
-                    <ExpressJsLight size={19} />
-                  </span>
-                </span>
-
-                {/* NestJS */}
-                <span title="NestJS" className="flex items-center justify-center">
-                  <NestJS size={19} />
-                </span>
-
-                {/* Go */}
-                <span title="Go" className="flex items-center justify-center">
-                  <Go size={19} />
-                </span>
-
-                {/* Java Spring */}
-                <span title="Java Spring" className="flex items-center justify-center">
-                  <Spring size={19} />
-                </span>
-
-                {/* PHP Native */}
-                <span title="PHP Native" className="flex items-center justify-center">
-                  <PHP size={19} />
-                </span>
-
-                {/* Laravel */}
-                <span title="Laravel" className="flex items-center justify-center">
-                  <Laravel size={19} />
-                </span>
-
-                {/* CodeIgniter */}
-                <span title="CodeIgniter" className="flex items-center justify-center">
-                  <CodeIgniter size={19} />
-                </span>
-
-                {/* --- Databases & Search --- */}
-                {/* PostgreSQL */}
-                <span title="PostgreSQL" className="flex items-center justify-center">
-                  <PostgreSQL size={19} />
-                </span>
-
-                {/* MySQL */}
-                <span title="MySQL" className="flex items-center justify-center">
-                  <MySQL size={19} />
-                </span>
-
-                {/* SQL Server */}
-                <span title="SQL Server" className="flex items-center justify-center">
-                  <MicrosoftSQLServer size={19} />
-                </span>
-
-                {/* MongoDB */}
-                <span title="MongoDB" className="flex items-center justify-center">
-                  <MongoDB size={19} />
-                </span>
-
-                {/* Redis */}
-                <span title="Redis" className="flex items-center justify-center">
-                  <Redis size={19} />
-                </span>
-
-                {/* Elasticsearch */}
-                <span title="Elasticsearch" className="flex items-center justify-center">
-                  <Elastic size={19} />
-                </span>
-
-                {/* --- DevOps & Cloud --- */}
-                {/* Docker */}
-                <span title="Docker" className="flex items-center justify-center">
-                  <Docker size={19} />
-                </span>
+                {(landingSettings.techStack || [
+                  "TypeScript",
+                  "React",
+                  "Next.js",
+                  "Vue.js",
+                  "Tailwind CSS",
+                  "Bootstrap",
+                  "Node.js",
+                  "Express.js",
+                  "NestJS",
+                  "Go",
+                  "Java Spring",
+                  "PHP Native",
+                  "Laravel",
+                  "CodeIgniter",
+                  "PostgreSQL",
+                  "MySQL",
+                  "SQL Server",
+                  "MongoDB",
+                  "Redis",
+                  "Elasticsearch",
+                  "Docker",
+                ]).map((tech) => (
+                  <TechIcon key={tech} name={tech} size={19} />
+                ))}
               </div>
             </div>
           </motion.div>

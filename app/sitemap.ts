@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { DUMMY_PROJECTS as PROJECTS } from "@/app/(backend)/api/projects/route";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sepsu.dev";
@@ -31,10 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const projectSlugs = ["cryptix", "novera", "pitlane"];
-
-  const projectPages: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${baseUrl}/project/${slug}`,
+  const projectPages: MetadataRoute.Sitemap = PROJECTS.map((p) => ({
+    url: `${baseUrl}/project/${p.slug}`,
     lastModified,
     changeFrequency: "monthly",
     priority: 0.8,

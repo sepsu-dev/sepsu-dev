@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import ProjectsList from "./ProjectsList";
 
@@ -23,5 +24,9 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  return <ProjectsList />;
+  return (
+    <Suspense fallback={<div className="w-full min-h-screen bg-[#fafafa] dark:bg-[#121212]" />}>
+      <ProjectsList />
+    </Suspense>
+  );
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, Mail, MapPin, ArrowUpRight, Copy, Check } from "lucide-react";
 
-export default function ContactPage() {
+export default function ContactContent() {
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = (e: React.MouseEvent) => {
@@ -138,4 +138,3 @@ export default function ContactPage() {
     </main>
   );
 }
-

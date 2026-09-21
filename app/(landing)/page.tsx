@@ -25,7 +25,6 @@ export default function HomePage() {
     url: "https://sepsu.dev",
     sameAs: [
       "https://github.com/sepsu-dev",
-      "https://twitter.com/",
       "https://instagram.com",
     ],
     address: {

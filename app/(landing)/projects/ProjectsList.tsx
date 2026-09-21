@@ -1,65 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 
-interface ProjectItem {
-  slug: string;
-  title: string;
-  category: string;
-  tagline: string;
-  description: string;
-  mainImage: string;
-  tags: string[];
-}
-
-const PROJECTS: ProjectItem[] = [
-  {
-    slug: "cryptix",
-    title: "Cryptix",
-    category: "End-to-End Product",
-    tagline: "End-to-End Product",
-    description:
-      "A next-generation crypto exchange app built around trust and speed. From onboarding through to complex multi-asset trades, Cryptix makes digital asset management feel intuitive and calm.",
-    mainImage: "/projects/cryptix-main.webp",
-    tags: ["Product Design", "Design System", "Mobile App", "Fintech"],
-  },
-  {
-    slug: "novera",
-    title: "Novera",
-    category: "SaaS Platform",
-    tagline: "SaaS Platform",
-    description:
-      "An AI-assisted contract workspace that speeds legal teams up without asking them to trust a black box. Reusable templates, auditable review, and live collaboration in one platform.",
-    mainImage: "/projects/novera-main.webp",
-    tags: ["SaaS", "Dashboard", "AI Workspace", "LegalTech"],
-  },
-  {
-    slug: "pitlane",
-    title: "Pitlane",
-    category: "Web App",
-    tagline: "Web App",
-    description:
-      "High-throughput motorsport telemetry and event stream visualization. Translating millions of data points per second into readable, glanceable insights for race engineers.",
-    mainImage: "/projects/pitlane-main.webp",
-    tags: ["Web App", "Telemetry", "Data Visualization", "Realtime"],
-  },
-];
+import { DUMMY_PROJECTS as PROJECTS } from "@/app/(backend)/api/projects/route";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function ProjectsList() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const totalPages = Math.ceil(PROJECTS.length / ITEMS_PER_PAGE);
+
+  // Parse page from query param "?page=X", fallback to 1 if missing or invalid
+  const rawPage = searchParams.get("page");
+  const parsedPage = rawPage ? parseInt(rawPage, 10) : 1;
+  const currentPage = !isNaN(parsedPage) && parsedPage >= 1 && parsedPage <= totalPages ? parsedPage : 1;
+
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentProjects = PROJECTS.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    if (page === 1) {
+      router.push("/projects");
+    } else {
+      router.push(`/projects?page=${page}`);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
