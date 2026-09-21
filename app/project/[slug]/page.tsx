@@ -250,7 +250,7 @@ export default async function ProjectPage({ params }: Props) {
           </div>
 
           {/* Objectives & KPI */}
-          <div className="p-8 rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-sm space-y-6">
+          <div className="p-8 rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-sm space-y-6">
             <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100">
               Objectives
             </h2>
@@ -277,7 +277,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.secondaryImages.map((imgUrl, idx) => (
             <div
               key={idx}
-              className="rounded-3xl overflow-hidden border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-md relative aspect-[16/10]"
+              className="rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] shadow-md relative aspect-[16/10]"
             >
               <Image
                 src={imgUrl}

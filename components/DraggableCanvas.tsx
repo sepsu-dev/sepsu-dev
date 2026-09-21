@@ -38,6 +38,15 @@ import {
   MongoDB,
   MySQL,
   VueJs,
+  Bootstrap5,
+  ExpressJsDark,
+  ExpressJsLight,
+  MicrosoftSQLServer,
+  PHP,
+  Spring,
+  Go,
+  Elastic,
+  CodeIgniter,
 } from "developer-icons";
 
 interface ItemState {
@@ -653,48 +662,48 @@ export default function DraggableCanvas() {
             </div>
 
             <div className="w-full p-7 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)]">
-            {/* Profile Photo */}
-            <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none relative">
-              <Image
-                src="/avatar.webp"
-                alt="Sepsu Dev"
-                fill
-                sizes="48px"
-                draggable={false}
-                className="object-cover pointer-events-none"
-              />
-            </div>
+              {/* Profile Photo */}
+              <div className="w-12 h-12 rounded-lg overflow-hidden mb-5 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 pointer-events-none relative">
+                <Image
+                  src="/avatar.webp"
+                  alt="Sepsu Dev"
+                  fill
+                  sizes="48px"
+                  draggable={false}
+                  className="object-cover pointer-events-none"
+                />
+              </div>
 
-            <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
-              Hello, I&apos;m Sepsu.
-            </h1>
+              <h1 className="text-3xl font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-tight mb-3 pointer-events-none">
+                Hello, I&apos;m Sepsu.
+              </h1>
 
-            <div className="space-y-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
-              <p>
-                Welcome to my interactive workspace. Here you&apos;ll find selected projects, experiments, and technical highlights — feel free to explore and rearrange things.
-              </p>
-              <p className="text-xs text-stone-600 dark:text-stone-300">
-                Looking for details on my background and experience? Check out the about page.
-              </p>
-            </div>
+              <div className="space-y-3 text-sm text-stone-600 dark:text-stone-300 leading-relaxed pointer-events-none">
+                <p>
+                  Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.
+                </p>
+                <p className="text-xs text-stone-600 dark:text-stone-300">
+                  Want to know more about my experience and journey? Check out the about page.
+                </p>
+              </div>
 
-            <div className="flex items-center gap-3 pt-5">
-              <a
-                href="mailto:sepsu.dev@gmail.com"
-                onPointerDown={(e) => e.stopPropagation()}
-                className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
-              >
-                Get in touch
-              </a>
-              <Link
-                href="/about"
-                onPointerDown={(e) => e.stopPropagation()}
-                className="px-5 py-2.5 rounded-full bg-[#fafafa] dark:bg-[#252525] hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors border border-stone-200 dark:border-stone-700 cursor-pointer relative z-10"
-              >
-                About me
-              </Link>
+              <div className="flex items-center gap-3 pt-5">
+                <a
+                  href="mailto:sepsu.dev@gmail.com"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
+                >
+                  Get in touch
+                </a>
+                <Link
+                  href="/about"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  className="px-5 py-2.5 rounded-full bg-[#fafafa] dark:bg-[#252525] hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors border border-stone-200 dark:border-stone-700 cursor-pointer relative z-10"
+                >
+                  About me
+                </Link>
+              </div>
             </div>
-          </div>
           </motion.div>
         </div>
 
@@ -946,11 +955,10 @@ export default function DraggableCanvas() {
             transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "graph"
-                  ? ""
-                  : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
-              }`}
+              className={`w-full p-3.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_12px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] space-y-2.5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "graph"
+                ? ""
+                : "group-hover:scale-[1.04] group-hover:rotate-2 group-hover:-translate-y-2"
+                }`}
             >
               {/* Header: MU Crest + Next Match + Standings Badge */}
               <div className="flex items-center justify-between pointer-events-none">
@@ -970,19 +978,19 @@ export default function DraggableCanvas() {
                   </span>
                 </div>
 
-                {/* Table Standings Badge: 13th • 4 pts */}
+                {/* Table Standings Badge: 12th • 5 pts */}
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-700 dark:text-stone-300">
-                  <span className="font-semibold text-stone-900 dark:text-stone-100">#13</span>
+                  <span className="font-semibold text-stone-900 dark:text-stone-100">#12</span>
                   <span className="text-stone-500 dark:text-stone-400">•</span>
-                  <span>4 pts</span>
+                  <span>5 pts</span>
                 </div>
               </div>
 
-              {/* Matchup Banner: Fulham vs Man United (Away) */}
+              {/* Matchup Banner: Man United vs Spurs (Home) */}
               <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-100/80 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 pointer-events-none">
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                    Fulham
+                  <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
+                    Man United
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Home</span>
                 </div>
@@ -990,8 +998,8 @@ export default function DraggableCanvas() {
                   vs
                 </span>
                 <div className="flex flex-col items-end">
-                  <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
-                    Man United
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                    Spurs
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Away</span>
                 </div>
@@ -999,10 +1007,10 @@ export default function DraggableCanvas() {
 
               {/* Footer Info: Venue & League */}
               <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 dark:text-stone-400 px-0.5 pointer-events-none">
-                <span className="truncate">Craven Cottage</span>
+                <span className="truncate">Old Trafford</span>
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
-                  <span className="text-[#DA291C] dark:text-red-400 font-medium">EPL Away</span>
+                  <span className="text-[#DA291C] dark:text-red-400 font-medium">10 Oct · 23.30</span>
                 </div>
               </div>
             </div>
@@ -1090,7 +1098,7 @@ export default function DraggableCanvas() {
             zIndex: generator.zIndex,
             cursor: activeDragId === "generator" ? "grabbing" : "grab",
           }}
-          className="absolute top-0 left-0 w-[250px] pointer-events-auto touch-none group hover:z-30"
+          className="absolute top-0 left-0 w-[260px] pointer-events-auto touch-none group hover:z-30"
         >
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -1110,6 +1118,7 @@ export default function DraggableCanvas() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5 pt-1 pointer-events-none">
+                {/* --- Frontend & Styling --- */}
                 {/* TypeScript */}
                 <span title="TypeScript" className="flex items-center justify-center">
                   <TypeScript size={19} />
@@ -1135,9 +1144,25 @@ export default function DraggableCanvas() {
                   <TailwindCSS size={19} />
                 </span>
 
+                {/* Bootstrap */}
+                <span title="Bootstrap" className="flex items-center justify-center">
+                  <Bootstrap5 size={19} />
+                </span>
+
+                {/* --- Backend & Runtimes --- */}
                 {/* Node.js */}
                 <span title="Node.js" className="flex items-center justify-center">
                   <NodeJs size={19} />
+                </span>
+
+                {/* Express.js */}
+                <span title="Express.js" className="flex items-center justify-center">
+                  <span className="dark:hidden flex items-center justify-center">
+                    <ExpressJsDark size={19} />
+                  </span>
+                  <span className="hidden dark:flex items-center justify-center">
+                    <ExpressJsLight size={19} />
+                  </span>
                 </span>
 
                 {/* NestJS */}
@@ -1145,16 +1170,32 @@ export default function DraggableCanvas() {
                   <NestJS size={19} />
                 </span>
 
+                {/* Go */}
+                <span title="Go" className="flex items-center justify-center">
+                  <Go size={19} />
+                </span>
+
+                {/* Java Spring */}
+                <span title="Java Spring" className="flex items-center justify-center">
+                  <Spring size={19} />
+                </span>
+
+                {/* PHP Native */}
+                <span title="PHP Native" className="flex items-center justify-center">
+                  <PHP size={19} />
+                </span>
+
                 {/* Laravel */}
                 <span title="Laravel" className="flex items-center justify-center">
                   <Laravel size={19} />
                 </span>
 
-                {/* Docker */}
-                <span title="Docker" className="flex items-center justify-center">
-                  <Docker size={19} />
+                {/* CodeIgniter */}
+                <span title="CodeIgniter" className="flex items-center justify-center">
+                  <CodeIgniter size={19} />
                 </span>
 
+                {/* --- Databases & Search --- */}
                 {/* PostgreSQL */}
                 <span title="PostgreSQL" className="flex items-center justify-center">
                   <PostgreSQL size={19} />
@@ -1165,6 +1206,11 @@ export default function DraggableCanvas() {
                   <MySQL size={19} />
                 </span>
 
+                {/* SQL Server */}
+                <span title="SQL Server" className="flex items-center justify-center">
+                  <MicrosoftSQLServer size={19} />
+                </span>
+
                 {/* MongoDB */}
                 <span title="MongoDB" className="flex items-center justify-center">
                   <MongoDB size={19} />
@@ -1173,6 +1219,17 @@ export default function DraggableCanvas() {
                 {/* Redis */}
                 <span title="Redis" className="flex items-center justify-center">
                   <Redis size={19} />
+                </span>
+
+                {/* Elasticsearch */}
+                <span title="Elasticsearch" className="flex items-center justify-center">
+                  <Elastic size={19} />
+                </span>
+
+                {/* --- DevOps & Cloud --- */}
+                {/* Docker */}
+                <span title="Docker" className="flex items-center justify-center">
+                  <Docker size={19} />
                 </span>
               </div>
             </div>

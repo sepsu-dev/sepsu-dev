@@ -40,7 +40,16 @@ export const metadata: Metadata = {
     "Tailwind CSS",
     "Laravel",
     "Nest.js",
+    "Go",
+    "Golang",
+    "Java Spring",
+    "Express.js",
     "PostgreSQL",
+    "MySQL",
+    "SQL Server",
+    "Elasticsearch",
+    "Redis",
+    "Docker",
     "Portfolio",
   ],
   authors: [{ name: "Sepsu Dev", url: "https://sepsu.dev" }],
@@ -86,8 +95,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/mu-logo.webp",
-    apple: "/mu-logo.webp",
+    icon: "/avatar.webp",
+    apple: "/avatar.webp",
   },
 };
 

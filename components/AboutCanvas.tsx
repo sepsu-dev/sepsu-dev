@@ -617,12 +617,12 @@ export default function AboutCanvas() {
             }`}
           >
             <a
-              href="https://open.spotify.com/track/0gSLaX91J2Cs9cWXqsRc4X"
+              href="https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe"
               target="_blank"
               rel="noopener noreferrer"
               onPointerDown={(e) => e.stopPropagation()}
               className="block p-3.5 group/spotify cursor-pointer"
-              aria-label="Listen to track on Spotify"
+              aria-label="Listen to Die With A Smile by Lady Gaga & Bruno Mars on Spotify"
             >
               <div className="flex items-center justify-between gap-3 pointer-events-none">
                 <div className="flex items-center gap-3 min-w-0">
@@ -645,10 +645,10 @@ export default function AboutCanvas() {
                   {/* Track Info */}
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold text-white truncate tracking-tight group-hover/spotify:text-[#1db954] transition-colors">
-                      Favorite Track
+                      Die With A Smile
                     </p>
                     <p className="text-[11px] text-stone-400 truncate mt-0.5">
-                      Listen on Spotify
+                      Lady Gaga, Bruno Mars
                     </p>
                   </div>
                 </div>
