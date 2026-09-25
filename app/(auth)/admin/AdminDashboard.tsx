@@ -16,158 +16,81 @@ import {
   Code2,
 } from "lucide-react";
 import TechIcon, { AVAILABLE_TECH_ICONS } from "@/components/TechIcon";
-import { LandingSettings } from "@/types/settings";
+import { useSettingsStore, useProjectsStore, useProfileStore } from "@/stores";
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"projects" | "brand" | "widgets" | "stack" | "contact">("projects");
   const [savedStatus, setSavedStatus] = useState<string | null>(null);
 
-  // Editable Landing Settings (Profile, Flag/Location, Sports Widget, Tech Stack)
-  const [landingSettings, setLandingSettings] = useState<LandingSettings>({
-    profile: {
-      avatarUrl: "/avatar.webp",
-      greeting: "Hello, I'm Sepsu.",
-      name: "Sepsu Dev",
-      bioParagraph1:
-        "Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.",
-      bioParagraph2:
-        "Want to know more about my experience and journey? Check out the about page.",
-      ctaEmail: "sepsu.dev@gmail.com",
-      ctaText: "Get in touch",
-    },
-    locationWidget: {
-      city: "Jakarta",
-      countryCode: "ID",
-      countryName: "Indonesia",
-      flagColors: {
-        top: "#ff0000",
-        bottom: "#ffffff",
-      },
-      timeZoneLabel: "WIB · GMT+7",
-    },
-    sportsWidget: {
-      show: true,
-      title: "Next Match",
-      teamName: "Man United",
-      opponentName: "Spurs",
-      badgeRank: "#12",
-      badgePoints: "5 pts",
-      venue: "Old Trafford",
-      matchDate: "10 Oct · 23.30",
-    },
-    techStack: [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Vue.js",
-      "Tailwind CSS",
-      "Bootstrap",
-      "Node.js",
-      "Express.js",
-      "NestJS",
-      "Go",
-      "Java Spring",
-      "PHP Native",
-      "Laravel",
-      "CodeIgniter",
-      "PostgreSQL",
-      "MySQL",
-      "SQL Server",
-      "MongoDB",
-      "Redis",
-      "Elasticsearch",
-      "Docker",
-    ],
-  });
+  // Zustand Stores
+  const {
+    settings: landingSettings,
+    fetchSettings,
+    updateSettings,
+    setSettingsLocally: setLandingSettings,
+  } = useSettingsStore();
+
+  const {
+    projects: projectsList,
+    fetchProjects,
+    addProject,
+    updateProject,
+    deleteProject,
+  } = useProjectsStore();
+
+  const {
+    profile,
+    fetchProfile,
+    updateProfileLocally,
+  } = useProfileStore();
 
   useEffect(() => {
-    // Load current landing settings from API
-    fetch("/api/settings")
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.data) {
-          setLandingSettings(json.data);
-        }
-      })
-      .catch(() => { });
-  }, []);
+    fetchSettings();
+    fetchProjects();
+    fetchProfile();
+  }, [fetchSettings, fetchProjects, fetchProfile]);
 
   const saveLandingSettings = async (customMsg?: string) => {
-    try {
-      const res = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(landingSettings),
-      });
-      if (res.ok) {
-        triggerSaveNotification(customMsg || "Pengaturan landing page berhasil disimpan!");
-      }
-    } catch {
+    const success = await updateSettings(landingSettings);
+    if (success) {
+      triggerSaveNotification(customMsg || "Pengaturan landing page berhasil disimpan!");
+    } else {
       triggerSaveNotification("Gagal menyimpan pengaturan");
     }
   };
 
   // Editable Brand / Profile State
-  const [brand, setBrand] = useState({
-    name: "Sepsu Dev",
-    tagline: "Software Engineer",
-    bio: "Software Engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services.",
-    location: "Jakarta, Indonesia",
-    statusText: "Available for new opportunities",
-  });
+  const brand = {
+    name: profile.name,
+    tagline: profile.title,
+    bio: profile.bio,
+    location: profile.location,
+    statusText: profile.status,
+  };
+
+  const setBrand = (newBrand: Partial<typeof brand>) => {
+    updateProfileLocally({
+      ...(newBrand.name ? { name: newBrand.name } : {}),
+      ...(newBrand.tagline ? { title: newBrand.tagline } : {}),
+      ...(newBrand.bio ? { bio: newBrand.bio } : {}),
+      ...(newBrand.location ? { location: newBrand.location } : {}),
+      ...(newBrand.statusText ? { status: newBrand.statusText } : {}),
+    });
+  };
 
   // Editable Contact Info
-  const [contact, setContact] = useState({
-    email: "sepsu.dev@gmail.com",
-    github: "https://github.com/sepsu-dev",
-  });
+  const contact = {
+    email: profile.email,
+    github: profile.github,
+  };
 
-  // Editable Project List
-  const [projectsList, setProjectsList] = useState([
-    {
-      slug: "cryptix",
-      title: "Cryptix",
-      category: "Crypto Exchange",
-      year: "2024",
-      liveUrl: "https://jotter.framer.website/work/cryptix",
-    },
-    {
-      slug: "novera",
-      title: "Novera",
-      category: "AI LegalTech",
-      year: "2024",
-      liveUrl: "https://jotter.framer.website/work/novera",
-    },
-    {
-      slug: "pitlane",
-      title: "Pitlane",
-      category: "Motorsport Telemetry",
-      year: "2023",
-      liveUrl: "https://jotter.framer.website/work/pitlane",
-    },
-    {
-      slug: "zenith",
-      title: "Zenith",
-      category: "Team Workspace",
-      year: "2024",
-      liveUrl: "https://jotter.framer.website/work/zenith",
-    },
-    {
-      slug: "pulse",
-      title: "Pulse",
-      category: "Developer Tooling",
-      year: "2023",
-      liveUrl: "https://jotter.framer.website/work/pulse",
-    },
-    {
-      slug: "kube",
-      title: "Kube",
-      category: "Cloud Console",
-      year: "2024",
-      liveUrl: "https://jotter.framer.website/work/kube",
-    },
-  ]);
+  const setContact = (newContact: Partial<typeof contact>) => {
+    updateProfileLocally({
+      ...(newContact.email ? { email: newContact.email } : {}),
+      ...(newContact.github ? { github: newContact.github } : {}),
+    });
+  };
 
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [editProjectData, setEditProjectData] = useState<{
@@ -199,22 +122,40 @@ export default function AdminDashboard() {
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProject.slug || !newProject.title) return;
-    setProjectsList([...projectsList, { ...newProject }]);
+    addProject({
+      ...newProject,
+      tagline: newProject.category,
+      role: "Software Engineer",
+      stack: ["React", "TypeScript"],
+      description: `${newProject.title} project.`,
+      mainImage: "/projects/cryptix-main.webp",
+      problemStatement: "",
+      outcome: "",
+      objectives: [],
+      kpiLabel: "Result",
+      kpiValue: "Complete",
+      secondaryImages: [],
+      tags: [newProject.category],
+    });
     setNewProject({ slug: "", title: "", category: "", year: "2024", liveUrl: "https://" });
     triggerSaveNotification("Project added successfully!");
   };
 
   const startEditProject = (p: typeof projectsList[0]) => {
     setEditingSlug(p.slug);
-    setEditProjectData({ ...p });
+    setEditProjectData({
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      year: p.year,
+      liveUrl: p.liveUrl,
+    });
   };
 
   const handleSaveEdit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editProjectData) return;
-    setProjectsList(
-      projectsList.map((p) => (p.slug === editingSlug ? { ...editProjectData } : p))
-    );
+    if (!editProjectData || !editingSlug) return;
+    updateProject(editingSlug, editProjectData);
     setEditingSlug(null);
     setEditProjectData(null);
     triggerSaveNotification("Project berhasil diperbarui!");
@@ -229,7 +170,7 @@ export default function AdminDashboard() {
     if (editingSlug === slug) {
       handleCancelEdit();
     }
-    setProjectsList(projectsList.filter((p) => p.slug !== slug));
+    deleteProject(slug);
     triggerSaveNotification("Project deleted");
   };
 

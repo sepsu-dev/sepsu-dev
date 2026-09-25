@@ -1,38 +1,30 @@
-import { NextResponse } from "next/server";
+import { createContactMessage, getContactMessages } from "./query";
+import { ContactMessageInput } from "./schema";
+import { successResponse, errorResponse } from "@/lib/response";
+
+export async function GET() {
+  const messages = await getContactMessages();
+  return successResponse(messages);
+}
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, subject, message } = body;
+    const body: ContactMessageInput = await request.json();
+    const { email, message } = body;
 
     if (!email || !message) {
-      return NextResponse.json(
-        {
-          status: "error",
-          message: "Email and message are required fields.",
-        },
-        { status: 400 }
-      );
+      return errorResponse("Email and message are required fields.", {
+        status: 400,
+      });
     }
 
-    // Future hook: Send email via Resend, Sendgrid, or save to database
-    return NextResponse.json({
-      status: "success",
+    const savedMessage = await createContactMessage(body);
+
+    return successResponse(savedMessage, {
       message: "Message received successfully. We will get back to you soon!",
-      data: {
-        name: name || "Anonymous",
-        email,
-        subject: subject || "No Subject",
-        receivedAt: new Date().toISOString(),
-      },
+      status: 200,
     });
-  } catch (err) {
-    return NextResponse.json(
-      {
-        status: "error",
-        message: "Invalid request body.",
-      },
-      { status: 400 }
-    );
+  } catch {
+    return errorResponse("Invalid request body.", { status: 400 });
   }
 }

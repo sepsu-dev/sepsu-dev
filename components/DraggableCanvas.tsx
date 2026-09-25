@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import TechIcon from "@/components/TechIcon";
-import { LandingSettings } from "@/types/settings";
+import { useSettingsStore } from "@/stores";
 
 interface ItemState {
   x: number;
@@ -75,98 +75,12 @@ export default function DraggableCanvas() {
     weatherCode: 1,
   });
 
-  // Dynamic Landing Settings (from /api/settings or fallback)
-  const [landingSettings, setLandingSettings] = useState<LandingSettings>({
-    profile: {
-      avatarUrl: "/avatar.webp",
-      greeting: "Hello, I'm Sepsu.",
-      name: "Sepsu Dev",
-      bioParagraph1:
-        "Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.",
-      bioParagraph2:
-        "Want to know more about my experience and journey? Check out the about page.",
-      ctaEmail: "sepsu.dev@gmail.com",
-      ctaText: "Get in touch",
-    },
-    locationWidget: {
-      city: "Jakarta",
-      countryCode: "ID",
-      countryName: "Indonesia",
-      flagColors: {
-        top: "#ff0000",
-        bottom: "#ffffff",
-      },
-      timeZoneLabel: "WIB · GMT+7",
-    },
-    sportsWidget: {
-      show: true,
-      title: "Next Match",
-      teamName: "Man United",
-      opponentName: "Spurs",
-      badgeRank: "#12",
-      badgePoints: "5 pts",
-      venue: "Old Trafford",
-      matchDate: "10 Oct · 23.30",
-    },
-    techStack: [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Vue.js",
-      "Tailwind CSS",
-      "Bootstrap",
-      "Node.js",
-      "Express.js",
-      "NestJS",
-      "Go",
-      "Java Spring",
-      "PHP Native",
-      "Laravel",
-      "CodeIgniter",
-      "PostgreSQL",
-      "MySQL",
-      "SQL Server",
-      "MongoDB",
-      "Redis",
-      "Elasticsearch",
-      "Docker",
-    ],
-  });
+  // Dynamic Landing Settings from Zustand store
+  const { settings: landingSettings, fetchSettings } = useSettingsStore();
 
   useEffect(() => {
-    // Fetch dynamic landing settings from backend API
-    const loadSettings = async () => {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const json = await res.json();
-          if (json.data) {
-            setLandingSettings((prev) => ({
-              ...prev,
-              ...json.data,
-              profile: { ...prev.profile, ...(json.data.profile || {}) },
-              locationWidget: {
-                ...prev.locationWidget,
-                ...(json.data.locationWidget || {}),
-                flagColors: {
-                  ...prev.locationWidget.flagColors,
-                  ...(json.data.locationWidget?.flagColors || {}),
-                },
-              },
-              sportsWidget: {
-                ...prev.sportsWidget,
-                ...(json.data.sportsWidget || {}),
-              },
-              techStack: json.data.techStack || prev.techStack,
-            }));
-          }
-        }
-      } catch {
-        // use fallback initial state
-      }
-    };
-    loadSettings();
-  }, []);
+    fetchSettings();
+  }, [fetchSettings]);
 
   useEffect(() => {
     // Fetch real-time weather for Jakarta via Open-Meteo

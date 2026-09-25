@@ -1,19 +1,15 @@
-import { NextResponse } from "next/server";
+import { verifyUserCredentials } from "./query";
+import { LoginCredentials } from "./schema";
+import { successResponse, errorResponse } from "@/lib/response";
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const body: LoginCredentials = await request.json();
+    const user = await verifyUserCredentials(body);
 
-    // Demo admin credentials for CMS / Management portal
-    if (email === "admin@sepsu.dev" && password === "admin123") {
-      const response = NextResponse.json({
-        status: "success",
+    if (user) {
+      const response = successResponse(user, {
         message: "Authentication successful",
-        user: {
-          name: "Sepsu Dev",
-          email: "admin@sepsu.dev",
-          role: "Administrator",
-        },
       });
 
       // Set cookie session for admin dashboard access
@@ -28,28 +24,15 @@ export async function POST(request: Request) {
       return response;
     }
 
-    return NextResponse.json(
-      {
-        status: "error",
-        message: "Email atau password salah.",
-      },
-      { status: 401 }
-    );
+    return errorResponse("Email atau password salah.", { status: 401 });
   } catch {
-    return NextResponse.json(
-      {
-        status: "error",
-        message: "Invalid request payload",
-      },
-      { status: 400 }
-    );
+    return errorResponse("Invalid request payload", { status: 400 });
   }
 }
 
 export async function DELETE() {
   // Logout endpoint
-  const response = NextResponse.json({
-    status: "success",
+  const response = successResponse(null, {
     message: "Logged out successfully",
   });
 

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { DUMMY_PROJECTS } from "@/types/projects";
+import { getProjectBySlug } from "../query";
+import { successResponse, errorResponse } from "@/lib/response";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -7,20 +7,11 @@ interface Props {
 
 export async function GET(request: Request, { params }: Props) {
   const { slug } = await params;
-  const project = DUMMY_PROJECTS.find((p) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
-    return NextResponse.json(
-      {
-        status: "error",
-        message: "Project not found",
-      },
-      { status: 404 }
-    );
+    return errorResponse("Project not found", { status: 404 });
   }
 
-  return NextResponse.json({
-    status: "success",
-    data: project,
-  });
+  return successResponse(project);
 }

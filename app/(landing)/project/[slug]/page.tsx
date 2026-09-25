@@ -6,6 +6,7 @@ import ProjectImageGallery from "./ProjectImageGallery";
 import TechIcon from "@/components/TechIcon";
 
 import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
+import { getProjectBySlug } from "@/app/(backend)/api/projects/query";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -19,17 +20,17 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return {};
 
   return {
-    title: `${project.title} - Case Study`,
+    title: `${project.title}`,
     description: project.description,
     alternates: {
       canonical: `/project/${project.slug}`,
     },
     openGraph: {
-      title: `${project.title} - Sepsu Dev Case Study`,
+      title: `${project.title}`,
       description: project.description,
       url: `https://sepsu.dev/project/${project.slug}`,
       type: "article",
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} - Sepsu Dev Case Study`,
+      title: `${project.title}`,
       description: project.description,
       images: [project.mainImage],
     },
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();

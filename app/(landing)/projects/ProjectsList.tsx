@@ -6,13 +6,14 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 
-import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
+import { useProjectsStore } from "@/stores";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function ProjectsList() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { projects: PROJECTS } = useProjectsStore();
 
   const totalPages = Math.ceil(PROJECTS.length / ITEMS_PER_PAGE);
 

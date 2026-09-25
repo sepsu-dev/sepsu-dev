@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Mail, MapPin, ArrowUpRight, Copy, Check } from "lucide-react";
+import { ChevronLeft, Mail, MapPin, ArrowUpRight, Copy, Check, Loader2 } from "lucide-react";
+import { useContactStore } from "@/stores";
 
 export default function ContactContent() {
   const [copied, setCopied] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const { isSubmitting, submitResult, sendMessage } = useContactStore();
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -13,6 +18,22 @@ export default function ContactContent() {
     navigator.clipboard.writeText("sepsu.dev@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+
+    const success = await sendMessage({
+      email: "visitor@sepsu.dev",
+      subject: subject.trim() || "Portfolio Contact",
+      message: message.trim(),
+    });
+
+    if (success) {
+      setSubject("");
+      setMessage("");
+    }
   };
 
   return (
@@ -85,12 +106,8 @@ export default function ContactContent() {
             </div>
           </div>
 
-          {/* Clean Message Form */}
-          <form
-            action="mailto:sepsu.dev@gmail.com"
-            method="GET"
-            className="space-y-3.5"
-          >
+          {/* Clean Message Form connected via Zustand store */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div className="space-y-1">
               <label htmlFor="subject" className="text-[11px] font-mono text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                 Subject
@@ -99,6 +116,8 @@ export default function ContactContent() {
                 id="subject"
                 name="subject"
                 type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
                 placeholder="Project inquiry, collaboration, etc."
                 className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/40 text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors"
               />
@@ -106,16 +125,31 @@ export default function ContactContent() {
 
             <div className="space-y-1">
               <label htmlFor="body" className="text-[11px] font-mono text-stone-500 dark:text-stone-400 uppercase tracking-wider">
-                Message
+                Message <span className="text-red-500">*</span>
               </label>
               <textarea
                 id="body"
                 name="body"
                 rows={4}
+                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your message here..."
                 className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/40 text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors resize-none"
               />
             </div>
+
+            {submitResult && (
+              <div
+                className={`p-3 rounded-xl text-xs ${
+                  submitResult.type === "success"
+                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                    : "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
+                }`}
+              >
+                {submitResult.text}
+              </div>
+            )}
 
             <div className="flex items-center justify-between pt-1">
               {/* Location Badge */}
@@ -126,10 +160,20 @@ export default function ContactContent() {
 
               <button
                 type="submit"
-                className="group/submit inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                disabled={isSubmitting}
+                className="group/submit inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <span>Send Message</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/submit:translate-x-0.5 group-hover/submit:-translate-y-0.5" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/submit:translate-x-0.5 group-hover/submit:-translate-y-0.5" />
+                  </>
+                )}
               </button>
             </div>
           </form>

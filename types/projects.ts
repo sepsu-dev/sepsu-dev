@@ -1,22 +1,9 @@
-export interface ProjectItem {
-  slug: string;
-  title: string;
-  category: string;
-  tagline: string;
-  year: string;
-  role: string;
-  stack: string[];
-  description: string;
-  mainImage: string;
-  problemStatement: string;
-  outcome: string;
-  objectives: string[];
-  kpiLabel: string;
-  kpiValue: string;
-  liveUrl: string;
-  secondaryImages: string[];
-  tags: string[];
-}
+export type {
+  ProjectItem,
+  PaginationParams,
+  PaginatedResult,
+} from "@/app/(backend)/api/projects/schema";
+import type { ProjectItem } from "@/app/(backend)/api/projects/schema";
 
 export const DUMMY_PROJECTS: ProjectItem[] = [
   {
