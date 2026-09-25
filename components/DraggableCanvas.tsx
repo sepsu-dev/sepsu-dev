@@ -760,14 +760,14 @@ export default function DraggableCanvas() {
                 <a
                   href={`mailto:${landingSettings.profile.ctaEmail || "sepsu.dev@gmail.com"}`}
                   onPointerDown={(e) => e.stopPropagation()}
-                  className="px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-[#ededed] dark:text-[#121212] text-xs font-semibold hover:bg-stone-800 transition-colors shadow-xs cursor-pointer relative z-10"
+                  className="group/btn relative inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer overflow-hidden z-10"
                 >
-                  {landingSettings.profile.ctaText || "Get in touch"}
+                  <span className="relative z-10">{landingSettings.profile.ctaText || "Get in touch"}</span>
                 </a>
                 <Link
                   href="/about"
                   onPointerDown={(e) => e.stopPropagation()}
-                  className="px-5 py-2.5 rounded-full bg-[#fafafa] dark:bg-[#252525] hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-colors border border-stone-200 dark:border-stone-700 cursor-pointer relative z-10"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-stone-100/80 dark:bg-stone-800/80 hover:bg-stone-200/90 dark:hover:bg-stone-700/90 text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-white text-xs font-semibold border border-stone-200 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 shadow-2xs hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer relative z-10"
                 >
                   About me
                 </Link>

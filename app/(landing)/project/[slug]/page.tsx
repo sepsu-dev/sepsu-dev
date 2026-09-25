@@ -86,9 +86,9 @@ export default async function ProjectPage({ params }: Props) {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 shadow-xs transition-colors group"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200/90 dark:border-stone-800 bg-white/90 dark:bg-[#1c1c1c]/90 text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs hover:shadow-xs hover:-translate-x-0.5 active:translate-x-0 transition-all duration-200 group"
             >
-              <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+              <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
               <span>Back to home</span>
             </Link>
 
@@ -124,10 +124,10 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 self-start rounded-full bg-stone-900 text-white dark:bg-white dark:text-stone-900 text-xs font-medium hover:opacity-90 transition-opacity shadow-xs"
+                className="group/btn inline-flex items-center gap-1.5 px-4 py-2 self-start rounded-full bg-stone-900 text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-medium shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200"
               >
                 <span>Visit website</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
               </a>
             </div>
 

@@ -21,9 +21,9 @@ export default function ContactContent() {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 shadow-xs transition-colors group"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200/90 dark:border-stone-800 bg-white/90 dark:bg-[#1c1c1c]/90 text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs hover:shadow-xs hover:-translate-x-0.5 active:translate-x-0 transition-all duration-200 group"
         >
-          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
           <span>Back to home</span>
         </Link>
 
@@ -59,12 +59,12 @@ export default function ContactContent() {
               <button
                 onClick={handleCopyEmail}
                 type="button"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-[11px] font-medium text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors cursor-pointer shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-[11px] font-medium text-stone-700 dark:text-stone-200 hover:text-stone-950 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 shadow-2xs hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-150 cursor-pointer"
                 title="Copy email to clipboard"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3 h-3 text-emerald-500" />
+                    <Check className="w-3 h-3 text-emerald-500 animate-in zoom-in-50 duration-150" />
                     <span className="text-emerald-600 dark:text-emerald-400 font-medium">Copied!</span>
                   </>
                 ) : (
@@ -77,10 +77,10 @@ export default function ContactContent() {
 
               <a
                 href="mailto:sepsu.dev@gmail.com"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#121212] text-white dark:bg-white dark:text-[#121212] text-[11px] font-semibold hover:opacity-90 transition-opacity shadow-2xs cursor-pointer"
+                className="group/mail inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-[11px] font-semibold shadow-2xs hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-150 cursor-pointer"
               >
                 <span>Email</span>
-                <ArrowUpRight className="w-3 h-3" />
+                <ArrowUpRight className="w-3 h-3 transition-transform group-hover/mail:translate-x-0.5 group-hover/mail:-translate-y-0.5" />
               </a>
             </div>
           </div>
@@ -126,10 +126,10 @@ export default function ContactContent() {
 
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#121212] text-white dark:bg-white dark:text-[#121212] text-xs font-semibold hover:opacity-90 transition-opacity cursor-pointer shadow-xs"
+                className="group/submit inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer"
               >
                 <span>Send Message</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/submit:translate-x-0.5 group-hover/submit:-translate-y-0.5" />
               </button>
             </div>
           </form>

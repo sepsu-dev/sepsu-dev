@@ -39,9 +39,9 @@ export default function ProjectsList() {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1c1c] text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 shadow-xs transition-colors group"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-200/90 dark:border-stone-800 bg-white/90 dark:bg-[#1c1c1c]/90 text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:border-stone-300 dark:hover:border-stone-700 shadow-2xs hover:shadow-xs hover:-translate-x-0.5 active:translate-x-0 transition-all duration-200 group"
         >
-          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
           <span>Back to home</span>
         </Link>
 
@@ -125,7 +125,7 @@ export default function ProjectsList() {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-700 dark:text-stone-300 disabled:opacity-40 disabled:cursor-not-allowed hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-700 dark:text-stone-300 disabled:opacity-40 disabled:cursor-not-allowed hover:not-disabled:text-stone-950 dark:hover:not-disabled:text-white hover:not-disabled:border-stone-300 dark:hover:not-disabled:border-stone-700 hover:not-disabled:shadow-2xs hover:not-disabled:-translate-y-0.5 active:not-disabled:translate-y-0 active:not-disabled:scale-95 transition-all duration-150 cursor-pointer disabled:pointer-events-none"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
               <span>Prev</span>
@@ -136,10 +136,10 @@ export default function ProjectsList() {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`w-7 h-7 rounded-md text-xs font-mono transition-all ${
+                  className={`w-7 h-7 rounded-md text-xs font-mono transition-all duration-150 cursor-pointer ${
                     currentPage === page
-                      ? "bg-stone-900 text-white dark:bg-white dark:text-stone-900 font-semibold"
-                      : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+                      ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-semibold shadow-xs scale-105"
+                      : "text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800/80 hover:-translate-y-0.5 active:scale-95"
                   }`}
                 >
                   {page}
@@ -150,7 +150,7 @@ export default function ProjectsList() {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || totalPages === 0}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-600 dark:text-stone-400 disabled:opacity-40 disabled:cursor-not-allowed hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#181818] text-xs font-mono text-stone-600 dark:text-stone-400 disabled:opacity-40 disabled:cursor-not-allowed hover:not-disabled:text-stone-950 dark:hover:not-disabled:text-white hover:not-disabled:border-stone-300 dark:hover:not-disabled:border-stone-700 hover:not-disabled:shadow-2xs hover:not-disabled:-translate-y-0.5 active:not-disabled:translate-y-0 active:not-disabled:scale-95 transition-all duration-150 cursor-pointer disabled:pointer-events-none"
             >
               <span>Next</span>
               <ChevronRight className="w-3.5 h-3.5" />

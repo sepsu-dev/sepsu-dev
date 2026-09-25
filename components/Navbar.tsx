@@ -53,10 +53,10 @@ export default function Navbar() {
               href={item.href}
               aria-label={item.label}
               title={item.label}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
                 isActive
-                  ? "bg-white/20 text-white"
-                  : "text-white/70 hover:text-white hover:bg-white/10"
+                  ? "bg-white/20 text-white shadow-xs scale-105"
+                  : "text-white/70 hover:text-white hover:bg-white/10 hover:scale-110 hover:-translate-y-0.5 active:scale-95"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -71,7 +71,7 @@ export default function Navbar() {
           rel="noopener noreferrer"
           aria-label="GitHub"
           title="GitHub"
-          className="w-9 h-9 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+          className="w-9 h-9 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
         >
           <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path
