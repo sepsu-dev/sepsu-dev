@@ -221,8 +221,8 @@ export default function DraggableCanvas() {
           rotate: -2.5,
           zIndex: 3,
         },
-        // 4. Cryptix: mid-left, to the left of center card
-        cryptix: {
+        // 4. Project 1 (PDF Signer Editor): mid-left, to the left of center card
+        "pdf-signer-editor": {
           x: cx - 580,
           y: cy - 110,
           rotate: -2,
@@ -235,27 +235,20 @@ export default function DraggableCanvas() {
           rotate: 0,
           zIndex: 7,
         },
-        // 6. Novera: top-right, tilted, right of center card
-        novera: {
+        // 6. Project 2 (GetBMI): right side, tilted, right of center card
+        getbmi: {
           x: cx + 270,
-          y: cy - 240,
+          y: cy - 180,
           rotate: 2,
           zIndex: 5,
         },
 
-        // 8. Ask Contract Generator (Tech stack): mid-right, below cursor
+        // 7. Tech Stack & Tools: mid-right, below cursor
         generator: {
           x: cx + 360,
-          y: cy + 80,
+          y: cy + 120,
           rotate: 0,
           zIndex: 8,
-        },
-        // 9. Pitlane: bottom-right, peeking lower down from bottom right corner
-        pitlane: {
-          x: cx + 230,
-          y: cy + 340,
-          rotate: 2.5,
-          zIndex: 6,
         },
       });
 
@@ -572,7 +565,7 @@ export default function DraggableCanvas() {
       }
 
       // If user merely clicked without dragging, navigate to project detail
-      if (!moved && (itemId === "cryptix" || itemId === "novera" || itemId === "pitlane")) {
+      if (!moved && (itemId === "pdf-signer-editor" || itemId === "getbmi")) {
         router.push(`/project/${itemId}`);
       }
     }
@@ -588,9 +581,8 @@ export default function DraggableCanvas() {
   }
 
   const centerCard = items["center-card"];
-  const cryptix = items["cryptix"];
-  const novera = items["novera"];/*  */
-  const pitlane = items["pitlane"];
+  const pdfSigner = items["pdf-signer-editor"];
+  const getbmi = items["getbmi"];
   const clause = items["clause"];
   const graph = items["graph"];
   const signflow = items["signflow"];
@@ -691,154 +683,108 @@ export default function DraggableCanvas() {
         </div>
 
         {/* ======================================================== */}
-        {/* 2. CRYPTIX PROJECT CARD (Individually Draggable Project) */}
+        {/* 2. PDF SIGNER EDITOR PROJECT CARD                        */}
         {/* ======================================================== */}
-        <div
-          role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "cryptix")}
-          onPointerMove={(e) => handleItemPointerMove(e, "cryptix")}
-          onPointerUp={(e) => handleItemPointerUp(e, "cryptix")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "cryptix")}
-          style={{
-            transform: `translate3d(${cryptix.x}px, ${cryptix.y}px, 0) rotate(${cryptix.rotate}deg)`,
-            zIndex: cryptix.zIndex,
-            cursor: activeDragId === "cryptix" ? "grabbing" : "grab",
-          }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+        {pdfSigner && (
+          <div
+            role="presentation"
+            onPointerDown={(e) => handleItemPointerDown(e, "pdf-signer-editor")}
+            onPointerMove={(e) => handleItemPointerMove(e, "pdf-signer-editor")}
+            onPointerUp={(e) => handleItemPointerUp(e, "pdf-signer-editor")}
+            onPointerCancel={(e) => handleItemPointerUp(e, "pdf-signer-editor")}
+            style={{
+              transform: `translate3d(${pdfSigner.x}px, ${pdfSigner.y}px, 0) rotate(${pdfSigner.rotate}deg)`,
+              zIndex: pdfSigner.zIndex,
+              cursor: activeDragId === "pdf-signer-editor" ? "grabbing" : "grab",
+            }}
+            className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
           >
-            <div
-              onClick={(e) => handleProjectCardClick(e, "/project/cryptix")}
-              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "cryptix"
-                ? ""
-                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-                }`}
+            <motion.div
+              initial={{ opacity: 0, y: 18, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
-                <Image
-                  src="/projects/cryptix-main.webp"
-                  alt="Cryptix"
-                  fill
-                  sizes="270px"
-                  draggable={false}
-                  className="object-cover pointer-events-none"
-                />
+              <div
+                onClick={(e) => handleProjectCardClick(e, "/project/pdf-signer-editor")}
+                className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pdf-signer-editor"
+                  ? ""
+                  : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
+                  }`}
+              >
+                <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
+                  <Image
+                    src="/projects/pdf-signer-editor.webp"
+                    alt="PDF Signer Editor"
+                    fill
+                    sizes="270px"
+                    draggable={false}
+                    className="object-cover pointer-events-none"
+                  />
+                </div>
+                <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
+                  <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+                    PDF Signer Editor
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
+                    Document Tooling
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
-                <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
-                  Cryptix
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  End-to-End Product
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        )}
 
         {/* ======================================================== */}
-        {/* 3. NOVERA PROJECT CARD (Individually Draggable Project)  */}
+        {/* 3. GETBMI PROJECT CARD                                   */}
         {/* ======================================================== */}
-        <div
-          role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "novera")}
-          onPointerMove={(e) => handleItemPointerMove(e, "novera")}
-          onPointerUp={(e) => handleItemPointerUp(e, "novera")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "novera")}
-          style={{
-            transform: `translate3d(${novera.x}px, ${novera.y}px, 0) rotate(${novera.rotate}deg)`,
-            zIndex: novera.zIndex,
-            cursor: activeDragId === "novera" ? "grabbing" : "grab",
-          }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        {getbmi && (
+          <div
+            role="presentation"
+            onPointerDown={(e) => handleItemPointerDown(e, "getbmi")}
+            onPointerMove={(e) => handleItemPointerMove(e, "getbmi")}
+            onPointerUp={(e) => handleItemPointerUp(e, "getbmi")}
+            onPointerCancel={(e) => handleItemPointerUp(e, "getbmi")}
+            style={{
+              transform: `translate3d(${getbmi.x}px, ${getbmi.y}px, 0) rotate(${getbmi.rotate}deg)`,
+              zIndex: getbmi.zIndex,
+              cursor: activeDragId === "getbmi" ? "grabbing" : "grab",
+            }}
+            className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
           >
-            <div
-              onClick={(e) => handleProjectCardClick(e, "/project/novera")}
-              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "novera"
-                ? ""
-                : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
-                }`}
+            <motion.div
+              initial={{ opacity: 0, y: 18, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
-                <Image
-                  src="/projects/novera-main.webp"
-                  alt="Novera"
-                  fill
-                  sizes="270px"
-                  draggable={false}
-                  className="object-cover pointer-events-none"
-                />
+              <div
+                onClick={(e) => handleProjectCardClick(e, "/project/getbmi")}
+                className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "getbmi"
+                  ? ""
+                  : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
+                  }`}
+              >
+                <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
+                  <Image
+                    src="/projects/get-bmi.webp"
+                    alt="GetBMI"
+                    fill
+                    sizes="270px"
+                    draggable={false}
+                    className="object-cover pointer-events-none"
+                  />
+                </div>
+                <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
+                  <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+                    GetBMI
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
+                    Health & Fitness
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
-                <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
-                  Novera
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  SaaS Platform
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* ======================================================== */}
-        {/* 4. PITLANE PROJECT CARD (Individually Draggable Project) */}
-        {/* ======================================================== */}
-        <div
-          role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "pitlane")}
-          onPointerMove={(e) => handleItemPointerMove(e, "pitlane")}
-          onPointerUp={(e) => handleItemPointerUp(e, "pitlane")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "pitlane")}
-          style={{
-            transform: `translate3d(${pitlane.x}px, ${pitlane.y}px, 0) rotate(${pitlane.rotate}deg)`,
-            zIndex: pitlane.zIndex,
-            cursor: activeDragId === "pitlane" ? "grabbing" : "grab",
-          }}
-          className="absolute top-0 left-0 w-[270px] group select-none pointer-events-auto touch-none hover:z-30"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div
-              onClick={(e) => handleProjectCardClick(e, "/project/pitlane")}
-              className={`block cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pitlane"
-                ? ""
-                : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-                }`}
-            >
-              <div className="aspect-[16/11] rounded-2xl overflow-hidden bg-white dark:bg-[#1f1f1f] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none relative">
-                <Image
-                  src="/projects/pitlane-main.webp"
-                  alt="Pitlane"
-                  fill
-                  sizes="270px"
-                  draggable={false}
-                  className="object-cover pointer-events-none"
-                />
-              </div>
-              <div className="flex items-center gap-2 mt-2.5 px-1 pointer-events-none">
-                <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
-                  Pitlane
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[11px] text-stone-600 dark:text-stone-400 font-medium border border-stone-200/70 dark:border-stone-700/60">
-                  Web App
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        )}
 
         {/* ======================================================== */}
         {/* 5. LOCATION & LOCAL TIME (Individually Draggable)        */}

@@ -68,7 +68,7 @@ export const metadata: Metadata = {
       "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
     images: [
       {
-        url: "/projects/cryptix-main.webp",
+        url: "/projects/kritqr.webp",
         width: 1200,
         height: 630,
         alt: "Sepsu Dev",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     title: "Sepsu Dev",
     description:
       "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications.",
-    images: ["/projects/cryptix-main.webp"],
+    images: ["/projects/kritqr.webp"],
     creator: "@sepsudev",
   },
   robots: {
