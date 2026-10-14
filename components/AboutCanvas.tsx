@@ -529,7 +529,7 @@ export default function AboutCanvas() {
             {/* Action Buttons */}
             <div className="flex items-center gap-3 pt-6">
               <a
-                href="mailto:sepsu.dev@gmail.com"
+                href="mailto:hello@sepsu.dev"
                 onPointerDown={(e) => e.stopPropagation()}
                 className="group/btn relative inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer overflow-hidden z-10"
               >

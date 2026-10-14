@@ -15,7 +15,7 @@ export default function ContactContent() {
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText("sepsu.dev@gmail.com");
+    navigator.clipboard.writeText("hello@sepsu.dev");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -72,7 +72,7 @@ export default function ContactContent() {
                 <Mail className="w-4 h-4 text-[#0099ff]" />
               </div>
               <span className="text-xs sm:text-sm font-mono font-medium text-stone-900 dark:text-stone-100 truncate">
-                sepsu.dev@gmail.com
+                hello@sepsu.dev
               </span>
             </div>
 
@@ -97,7 +97,7 @@ export default function ContactContent() {
               </button>
 
               <a
-                href="mailto:sepsu.dev@gmail.com"
+                href="mailto:hello@sepsu.dev"
                 className="group/mail inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#121212] text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-[11px] font-semibold shadow-2xs hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-150 cursor-pointer"
               >
                 <span>Email</span>

@@ -9,7 +9,7 @@ export const INITIAL_LANDING_SETTINGS: LandingSettings = {
       "Welcome to my interactive workbench. Here you can explore selected projects, engineering experiments, and tech stack — feel free to drag cards and rearrange things.",
     bioParagraph2:
       "Want to know more about my experience and journey? Check out the about page.",
-    ctaEmail: "sepsu.dev@gmail.com",
+    ctaEmail: "hello@sepsu.dev",
     ctaText: "Get in touch",
   },
   locationWidget: {

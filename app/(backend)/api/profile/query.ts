@@ -6,7 +6,7 @@ export const DUMMY_PROFILE: ProfileData = {
   location: "Jakarta, Indonesia",
   bio: "Software Engineer with 3+ years of experience building reliable backends, modern web applications, and scalable services.",
   status: "Available for new opportunities",
-  email: "sepsu.dev@gmail.com",
+  email: "hello@sepsu.dev",
   github: "https://github.com/sepsu-dev",
   skills: [
     { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
