@@ -218,30 +218,3 @@ export default function TechIcon({
     </span>
   );
 }
-
-/**
- * Predefined master catalog of all available tech icons
- */
-export const AVAILABLE_TECH_ICONS: TechIconName[] = [
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Vue.js",
-  "Tailwind CSS",
-  "Bootstrap",
-  "Node.js",
-  "Express.js",
-  "NestJS",
-  "Go",
-  "Java Spring",
-  "PHP Native",
-  "Laravel",
-  "CodeIgniter",
-  "PostgreSQL",
-  "MySQL",
-  "SQL Server",
-  "MongoDB",
-  "Redis",
-  "Elasticsearch",
-  "Docker",
-];

@@ -1,20 +1,15 @@
-import { LoginCredentials, AuthUser } from "./schema";
-
-// Dummy admin credentials
-export const DUMMY_ADMIN_USER: AuthUser = {
-  name: "Sepsu Dev",
-  email: "admin@sepsu.dev",
-  role: "Administrator",
-};
+import type { LoginCredentials, AuthUser } from "./schema";
+import { authConfigured, verifyPassword } from "@/lib/auth";
 
 export async function verifyUserCredentials(
   credentials: LoginCredentials
 ): Promise<AuthUser | null> {
   if (
-    credentials.email === "admin@sepsu.dev" &&
-    credentials.password === "admin123"
+    authConfigured() &&
+    credentials.email === process.env.ADMIN_EMAIL &&
+    verifyPassword(credentials.password)
   ) {
-    return DUMMY_ADMIN_USER;
+    return { name: "Sepsu Dev", email: credentials.email, role: "Administrator" };
   }
   return null;
 }

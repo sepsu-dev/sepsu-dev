@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
+import PROJECTS from "@/data/projects.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sepsu.dev";
@@ -41,4 +41,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticPages, ...projectPages];
 }
-

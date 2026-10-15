@@ -141,11 +141,10 @@ export default function ContactContent() {
 
             {submitResult && (
               <div
-                className={`p-3 rounded-xl text-xs ${
-                  submitResult.type === "success"
+                className={`p-3 rounded-xl text-xs ${submitResult.type === "success"
                     ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                     : "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
-                }`}
+                  }`}
               >
                 {submitResult.text}
               </div>

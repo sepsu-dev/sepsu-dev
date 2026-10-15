@@ -1,3 +1,61 @@
+## Local development
+
+Requires Node.js 20.9+ and Bun. Bun is used by the Docker build.
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+```
+
+## Admin configuration
+
+Copy `.env.example` to `.env`. Login stays disabled until all admin variables are set.
+Generate a password hash without putting the password in shell history:
+
+```sh
+bun -e 'const {randomBytes,scryptSync}=require("node:crypto"); const password=prompt("Admin password (visible input):"); if(!password || password.length<16) throw new Error("Use at least 16 characters"); const salt=randomBytes(16).toString("hex"); console.log("ADMIN_PASSWORD_HASH="+salt+":"+scryptSync(password,salt,64).toString("hex")); console.log("ADMIN_SESSION_SECRET="+randomBytes(32).toString("hex"));'
+```
+
+Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, and `ADMIN_SESSION_SECRET` in `.env`.
+Never commit secrets. Production requires HTTPS because session cookies are secure.
+Sessions expire after 24 hours; rotate the session secret to invalidate all sessions.
+Logout clears the browser cookie; individual stolen sessions cannot be revoked before expiry.
+Login and contact limits are process-wide (10 and 20 requests per minute). Use trusted
+ingress rate limiting for distributed deployment and per-client limits.
+
+## Validation
+
+```sh
+bun run typecheck
+bun run build
+bun run check
+```
+
+`check` starts the production server on port 3197 with temporary test credentials.
+
+## Static portfolio content
+
+Edit `data/projects.json`, `data/profile.json`, and `data/settings.json`, then rebuild
+and redeploy. Public APIs, server-rendered pages, and client defaults use these same
+JSON files. Project pagination and slug lookup remain available. Portfolio APIs are
+read-only; the admin page no longer contains content editors.
+
+Contact messages remain in process memory and disappear on restart; replicas do not
+share them. Do not rely on the contact form for real deliveries yet.
+Container secrets must be supplied at runtime, not copied into the image.
+
+## Code layout
+
+- `app/`: routes, page-specific components, and API handlers/queries.
+- `components/`: shared UI; both canvases share zoom controls, but keep drag state local.
+- `data/`: static JSON for projects, profile, and settings; safe to import on the client.
+- `types/`: shared TypeScript contracts; no runtime data.
+- `stores/`: client state and API calls; no imports from server query modules.
+- `lib/`: server authentication, rate limiting, and response helpers.
+- `scripts/check.ts`: assert-based static JSON, authentication, and API checks.
+
+Type checking also rejects unused imports, locals, and parameters.
+
 <!-- Title -->
 <h3 align="center">
         <samp>&gt; Hey There!, I am

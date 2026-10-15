@@ -7,14 +7,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check": "bun scripts/check.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "developer-icons": "^7.1.0",
-    "lucide-react": "^1.48.0",
-    "motion": "^13.4.4",
-    "next": "^15.5.26",
+    "lucide-react": "^1.57.0",
+    "motion": "^13.5.1",
+    "next": "^15.5.28",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.7.0",
@@ -26,7 +27,7 @@
     "@types/node": "^20.19.43",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.30",
     "typescript": "^5.9.3"
   }
 }

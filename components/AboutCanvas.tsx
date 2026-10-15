@@ -1,17 +1,13 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import CanvasZoomControls from "@/components/CanvasZoomControls";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
-import { ZoomIn, ZoomOut, RotateCcw, Play, ExternalLink } from "lucide-react";
+import { motion } from "motion/react";
+import { Play, ExternalLink } from "lucide-react";
 
-interface ItemState {
-  x: number;
-  y: number;
-  rotate: number;
-  zIndex: number;
-}
+import type { CanvasItemState } from "@/types/canvas";
 
 export default function AboutCanvas() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +31,7 @@ export default function AboutCanvas() {
   }, [pan]);
 
   // Items positions on the desk canvas
-  const [items, setItems] = useState<Record<string, ItemState>>({});
+  const [items, setItems] = useState<Record<string, CanvasItemState>>({});
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [maxZIndex, setMaxZIndex] = useState<number>(25);
 
@@ -54,7 +50,7 @@ export default function AboutCanvas() {
     hasMoved: false,
   });
 
-  // Ref for individual item drag tracking (Charizard, MacBook, iPhone, Polaroid, Photo, Type Specimen)
+  // Ref for individual item drag tracking (stadium, laptop, Linux stickers, photos, pineapple)
   const itemDragRef = useRef<{
     id: string | null;
     startClientX: number;
@@ -92,7 +88,7 @@ export default function AboutCanvas() {
           zIndex: 10,
         },
         // 2. Old Trafford Card (Individually Draggable) - Top Left
-        charizard: {
+        stadium: {
           x: cx - 510,
           y: cy - 330,
           rotate: -5,
@@ -106,14 +102,14 @@ export default function AboutCanvas() {
           zIndex: 3,
         },
         // 5. ThinkPad Laptop (Individually Draggable) - Mid Right
-        macbook: {
+        laptop: {
           x: cx + 300,
           y: cy - 140,
           rotate: -7,
           zIndex: 5,
         },
         // 6. Debian Card (Individually Draggable) - Mid Left
-        iphone: {
+        debian: {
           x: cx - 490,
           y: cy - 100,
           rotate: 4,
@@ -134,7 +130,7 @@ export default function AboutCanvas() {
           zIndex: 8,
         },
         // 7. Senne Lammens - MU Goalkeeper (Individually Draggable) - Bottom Left
-        profilePhoto: {
+        goalkeeper: {
           x: cx - 380,
           y: cy + 130,
           rotate: -3,
@@ -442,13 +438,6 @@ export default function AboutCanvas() {
     }
   };
 
-  const handleLinkClick = (e: React.MouseEvent) => {
-    if (canvasPanRef.current.hasMoved) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
-
   if (!mounted || !items["about-card"]) {
     return (
       <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#fafafa] dark:bg-[#121212] jotter-dot-grid" />
@@ -456,13 +445,13 @@ export default function AboutCanvas() {
   }
 
   const aboutCard = items["about-card"];
-  const charizard = items["charizard"];
+  const stadium = items["stadium"];
   const spotify = items["spotify"];
-  const macbook = items["macbook"];
-  const iphone = items["iphone"];
+  const laptop = items["laptop"];
+  const debian = items["debian"];
   const gnome = items["gnome"] || { x: 0, y: 0, rotate: 0, zIndex: 7 };
   const ubuntu = items["ubuntu"] || { x: 0, y: 0, rotate: 0, zIndex: 8 };
-  const profilePhoto = items["profilePhoto"];
+  const goalkeeper = items["goalkeeper"];
   const pineapple = items["pineapple"] || { x: 0, y: 0, rotate: 0, zIndex: 7 };
 
   return (
@@ -551,14 +540,14 @@ export default function AboutCanvas() {
         {/* ======================================================== */}
         <div
           role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "charizard")}
-          onPointerMove={(e) => handleItemPointerMove(e, "charizard")}
-          onPointerUp={(e) => handleItemPointerUp(e, "charizard")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "charizard")}
+          onPointerDown={(e) => handleItemPointerDown(e, "stadium")}
+          onPointerMove={(e) => handleItemPointerMove(e, "stadium")}
+          onPointerUp={(e) => handleItemPointerUp(e, "stadium")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "stadium")}
           style={{
-            transform: `translate3d(${charizard.x}px, ${charizard.y}px, 0) rotate(${charizard.rotate}deg)`,
-            zIndex: charizard.zIndex,
-            cursor: activeDragId === "charizard" ? "grabbing" : "grab",
+            transform: `translate3d(${stadium.x}px, ${stadium.y}px, 0) rotate(${stadium.rotate}deg)`,
+            zIndex: stadium.zIndex,
+            cursor: activeDragId === "stadium" ? "grabbing" : "grab",
           }}
           className="absolute top-0 left-0 w-[260px] select-none pointer-events-auto touch-none group hover:z-30"
         >
@@ -568,11 +557,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`rounded-2xl overflow-hidden bg-white dark:bg-[#1c1c1c] shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/90 dark:border-stone-800 p-2.5 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "charizard"
+              className={`rounded-2xl overflow-hidden bg-white dark:bg-[#1c1c1c] shadow-[0_16px_36px_rgba(0,0,0,0.14)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] border border-stone-200/90 dark:border-stone-800 p-2.5 pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "stadium"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               {/* Old Trafford Stadium Photo (Clean, no text) */}
               <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
@@ -610,11 +598,10 @@ export default function AboutCanvas() {
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.75, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full rounded-2xl overflow-hidden bg-[#282828] shadow-[0_16px_36px_rgba(0,0,0,0.22)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.50)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              activeDragId === "spotify"
+            className={`w-full rounded-2xl overflow-hidden bg-[#282828] shadow-[0_16px_36px_rgba(0,0,0,0.22)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.50)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "spotify"
                 ? ""
                 : "group-hover:scale-[1.03] group-hover:-rotate-2 group-hover:-translate-y-1"
-            }`}
+              }`}
           >
             <a
               href="https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe"
@@ -689,14 +676,14 @@ export default function AboutCanvas() {
         {/* ======================================================== */}
         <div
           role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "macbook")}
-          onPointerMove={(e) => handleItemPointerMove(e, "macbook")}
-          onPointerUp={(e) => handleItemPointerUp(e, "macbook")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "macbook")}
+          onPointerDown={(e) => handleItemPointerDown(e, "laptop")}
+          onPointerMove={(e) => handleItemPointerMove(e, "laptop")}
+          onPointerUp={(e) => handleItemPointerUp(e, "laptop")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "laptop")}
           style={{
-            transform: `translate3d(${macbook.x}px, ${macbook.y}px, 0) rotate(${macbook.rotate}deg)`,
-            zIndex: macbook.zIndex,
-            cursor: activeDragId === "macbook" ? "grabbing" : "grab",
+            transform: `translate3d(${laptop.x}px, ${laptop.y}px, 0) rotate(${laptop.rotate}deg)`,
+            zIndex: laptop.zIndex,
+            cursor: activeDragId === "laptop" ? "grabbing" : "grab",
           }}
           className="absolute top-0 left-0 w-[230px] select-none pointer-events-auto touch-none group hover:z-30"
         >
@@ -706,11 +693,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.20, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "macbook"
+              className={`p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "laptop"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-[3/2] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
                 <Image
@@ -731,14 +717,14 @@ export default function AboutCanvas() {
         {/* ======================================================== */}
         <div
           role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "iphone")}
-          onPointerMove={(e) => handleItemPointerMove(e, "iphone")}
-          onPointerUp={(e) => handleItemPointerUp(e, "iphone")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "iphone")}
+          onPointerDown={(e) => handleItemPointerDown(e, "debian")}
+          onPointerMove={(e) => handleItemPointerMove(e, "debian")}
+          onPointerUp={(e) => handleItemPointerUp(e, "debian")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "debian")}
           style={{
-            transform: `translate3d(${iphone.x}px, ${iphone.y}px, 0) rotate(${iphone.rotate}deg)`,
-            zIndex: iphone.zIndex,
-            cursor: activeDragId === "iphone" ? "grabbing" : "grab",
+            transform: `translate3d(${debian.x}px, ${debian.y}px, 0) rotate(${debian.rotate}deg)`,
+            zIndex: debian.zIndex,
+            cursor: activeDragId === "debian" ? "grabbing" : "grab",
           }}
           className="absolute top-0 left-0 w-[100px] select-none pointer-events-auto touch-none group hover:z-30"
         >
@@ -748,11 +734,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "iphone"
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "debian"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-square w-full rounded-xl bg-stone-50 dark:bg-[#111113] border border-stone-200/60 dark:border-stone-800/80 flex items-center justify-center p-3 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -789,11 +774,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "gnome"
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "gnome"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-square w-full rounded-xl bg-[#4a86cf]/10 dark:bg-[#4a86cf]/20 border border-[#4a86cf]/20 flex items-center justify-center p-3 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -830,11 +814,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "ubuntu"
+              className={`p-2 rounded-2xl bg-white dark:bg-[#18181b] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "ubuntu"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-4 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-square w-full rounded-xl bg-[#E95420]/10 dark:bg-[#E95420]/20 border border-[#E95420]/20 flex items-center justify-center p-3 pointer-events-none">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -854,14 +837,14 @@ export default function AboutCanvas() {
         {/* ======================================================== */}
         <div
           role="presentation"
-          onPointerDown={(e) => handleItemPointerDown(e, "profilePhoto")}
-          onPointerMove={(e) => handleItemPointerMove(e, "profilePhoto")}
-          onPointerUp={(e) => handleItemPointerUp(e, "profilePhoto")}
-          onPointerCancel={(e) => handleItemPointerUp(e, "profilePhoto")}
+          onPointerDown={(e) => handleItemPointerDown(e, "goalkeeper")}
+          onPointerMove={(e) => handleItemPointerMove(e, "goalkeeper")}
+          onPointerUp={(e) => handleItemPointerUp(e, "goalkeeper")}
+          onPointerCancel={(e) => handleItemPointerUp(e, "goalkeeper")}
           style={{
-            transform: `translate3d(${profilePhoto.x}px, ${profilePhoto.y}px, 0) rotate(${profilePhoto.rotate}deg)`,
-            zIndex: profilePhoto.zIndex,
-            cursor: activeDragId === "profilePhoto" ? "grabbing" : "grab",
+            transform: `translate3d(${goalkeeper.x}px, ${goalkeeper.y}px, 0) rotate(${goalkeeper.rotate}deg)`,
+            zIndex: goalkeeper.zIndex,
+            cursor: activeDragId === "goalkeeper" ? "grabbing" : "grab",
           }}
           className="absolute top-0 left-0 w-[275px] select-none pointer-events-auto touch-none group hover:z-30"
         >
@@ -871,11 +854,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "profilePhoto"
+              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] space-y-2 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "goalkeeper"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:-rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-950 pointer-events-none relative">
                 <Image
@@ -914,11 +896,10 @@ export default function AboutCanvas() {
             transition={{ duration: 0.75, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                activeDragId === "pineapple"
+              className={`w-full p-2.5 rounded-2xl bg-white dark:bg-[#1a1a1a] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_36px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.45)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeDragId === "pineapple"
                   ? ""
                   : "group-hover:scale-[1.04] group-hover:rotate-3 group-hover:-translate-y-2"
-              }`}
+                }`}
             >
               <div className="aspect-square w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
                 <Image
@@ -935,61 +916,12 @@ export default function AboutCanvas() {
         </div>
       </div>
 
-      {/* Zoom Indicator HUD: only appears on desktop during/after Ctrl+Scroll activity, auto-fades */}
-      <AnimatePresence>
-        {showZoomHud && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="hidden md:flex fixed bottom-6 right-6 z-40 items-center gap-1 p-1 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 rounded-full shadow-xl pointer-events-auto text-xs font-mono text-stone-600 dark:text-stone-300"
-          >
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                const next = Math.max(0.4, Number((scale - 0.1).toFixed(2)));
-                setScale(next);
-              }}
-              aria-label="Zoom Out"
-              title="Zoom Out"
-              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setScale(1);
-                setPan({ x: 0, y: 0 });
-              }}
-              aria-label="Reset Zoom and Pan"
-              title="Reset View (100%)"
-              className="px-2 py-0.5 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors flex items-center gap-1 font-sans text-[11px]"
-            >
-              <span>{Math.round(scale * 100)}%</span>
-              {scale !== 1 && <RotateCcw className="w-2.5 h-2.5 opacity-60" />}
-            </button>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                const next = Math.min(2.0, Number((scale + 0.1).toFixed(2)));
-                setScale(next);
-              }}
-              aria-label="Zoom In"
-              title="Zoom In"
-              className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CanvasZoomControls
+        scale={scale}
+        showZoomHud={showZoomHud}
+        onScaleChange={setScale}
+        onResetPan={() => setPan({ x: 0, y: 0 })}
+      />
     </div>
   );
 }

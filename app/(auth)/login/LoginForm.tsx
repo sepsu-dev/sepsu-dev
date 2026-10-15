@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Lock, Mail, ArrowRight, ShieldCheck } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -63,8 +63,10 @@ export default function LoginForm() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-xs text-stone-500">Email</label>
+            <label htmlFor="admin-email" className="text-xs text-stone-500">Email</label>
             <input
+              id="admin-email"
+              autoComplete="username"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -75,8 +77,10 @@ export default function LoginForm() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs text-stone-500">Password</label>
+            <label htmlFor="admin-password" className="text-xs text-stone-500">Password</label>
             <input
+              id="admin-password"
+              autoComplete="current-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

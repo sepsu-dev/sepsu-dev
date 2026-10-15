@@ -1,4 +1,5 @@
-import { ContactMessageInput, ContactMessageRecord } from "./schema";
+import type { ContactMessageInput, ContactMessageRecord } from "@/types/contact";
+import { randomUUID } from "node:crypto";
 
 // In-memory dummy data store for received messages
 export const DUMMY_CONTACT_MESSAGES: ContactMessageRecord[] = [];
@@ -7,7 +8,7 @@ export async function createContactMessage(
   input: ContactMessageInput
 ): Promise<ContactMessageRecord> {
   const newRecord: ContactMessageRecord = {
-    id: `msg_${Date.now()}`,
+    id: `msg_${randomUUID()}`,
     name: input.name || "Anonymous",
     email: input.email,
     subject: input.subject || "No Subject",

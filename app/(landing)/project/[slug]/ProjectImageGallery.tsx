@@ -58,11 +58,10 @@ export default function ProjectImageGallery({ title, images }: ProjectImageGalle
                 key={idx}
                 type="button"
                 onClick={() => setSelectedIdx(idx)}
-                className={`relative aspect-[16/10] sm:aspect-auto sm:flex-1 rounded-xl overflow-hidden border transition-all duration-200 cursor-pointer ${
-                  isActive
+                className={`relative aspect-[16/10] sm:aspect-auto sm:flex-1 rounded-xl overflow-hidden border transition-all duration-200 cursor-pointer ${isActive
                     ? "border-[#0099ff] ring-2 ring-[#0099ff]/30 opacity-100 shadow-xs"
                     : "border-stone-200/80 dark:border-stone-800 opacity-60 hover:opacity-90"
-                }`}
+                  }`}
                 title={`Preview image ${idx + 1}`}
               >
                 <Image

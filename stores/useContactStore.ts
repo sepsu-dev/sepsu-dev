@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ContactMessageInput, ContactMessageRecord } from "@/app/(backend)/api/contact/schema";
+import type { ContactMessageInput, ContactMessageRecord } from "@/types/contact";
 
 interface ContactState {
   messages: ContactMessageRecord[];

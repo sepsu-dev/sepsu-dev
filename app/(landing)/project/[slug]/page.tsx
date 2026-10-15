@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, ArrowUpRight, CheckCircle2, Layers, Sparkles, Cpu } from "lucide-react";
+import { ChevronLeft, ArrowUpRight, CheckCircle2, Layers, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import ProjectImageGallery from "./ProjectImageGallery";
 import TechIcon from "@/components/TechIcon";
 
-import { DUMMY_PROJECTS as PROJECTS } from "@/types/projects";
+import PROJECTS from "@/data/projects.json";
 import { getProjectBySlug } from "@/app/(backend)/api/projects/query";
 
 interface Props {

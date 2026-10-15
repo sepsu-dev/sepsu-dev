@@ -6,14 +6,13 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 
-import { useProjectsStore } from "@/stores";
+import PROJECTS from "@/data/projects.json";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function ProjectsList() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { projects: PROJECTS } = useProjectsStore();
 
   const totalPages = Math.ceil(PROJECTS.length / ITEMS_PER_PAGE);
 
@@ -137,11 +136,10 @@ export default function ProjectsList() {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`w-7 h-7 rounded-md text-xs font-mono transition-all duration-150 cursor-pointer ${
-                    currentPage === page
+                  className={`w-7 h-7 rounded-md text-xs font-mono transition-all duration-150 cursor-pointer ${currentPage === page
                       ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-semibold shadow-xs scale-105"
                       : "text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800/80 hover:-translate-y-0.5 active:scale-95"
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>
@@ -162,4 +160,3 @@ export default function ProjectsList() {
     </main>
   );
 }
-
