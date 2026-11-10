@@ -132,39 +132,5 @@
       "Micro App",
       "Calculator"
     ]
-  },
-  {
-    "slug": "heemt",
-    "title": "Heemt",
-    "category": "Personal Finance",
-    "tagline": "Smart Expense & Cashflow Tracker",
-    "year": "2024",
-    "role": "Fullstack Engineer",
-    "stack": [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Zustand",
-      "Radix UI"
-    ],
-    "description": "A modern personal finance and expense tracking web app designed to help users monitor cash flow, limit category budgets, and save money effortlessly.",
-    "mainImage": "/projects/heemt.webp",
-    "problemStatement": "Tracking daily income and expenses manually is often tedious and overwhelming, causing individuals to lose visibility over their budget limits.",
-    "outcome": "Created an intuitive, lightweight financial dashboard with rapid transaction logging, interactive cash flow charts, and customizable budget limits.",
-    "objectives": [
-      "Rapid transaction entry for daily income and expenses",
-      "Dynamic category budget limits to prevent overspending",
-      "Real-time visual cashflow analytics and saldo tracking"
-    ],
-    "kpiLabel": "Simplicity & Free Access",
-    "kpiValue": "100% free forever · Fast transaction tracking",
-    "liveUrl": "https://heemt.vercel.app/",
-    "secondaryImages": [],
-    "tags": [
-      "Fintech",
-      "Expense Tracker",
-      "Personal Finance",
-      "Next.js"
-    ]
   }
 ]
