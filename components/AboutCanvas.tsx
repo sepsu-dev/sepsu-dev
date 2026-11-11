@@ -492,11 +492,11 @@ export default function AboutCanvas() {
             transition={{ duration: 0.8, delay: 0.04, ease: [0.16, 1, 0.3, 1] }}
             className="w-full p-8 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-stone-200/90 dark:border-stone-800 shadow-[0_16px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)]"
           >
-            {/* Available for work */}
+            {/* Available for new opportunities */}
             <div className="flex items-center gap-2 mb-4 pointer-events-none">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-mono text-stone-600 dark:text-stone-400">
-                Available for work
+                Available for new opportunities
               </span>
             </div>
 
@@ -648,7 +648,7 @@ export default function AboutCanvas() {
                     className="w-3.5 h-3.5"
                     aria-hidden="true"
                   >
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.216.354-.675.467-1.03.25-2.822-1.724-6.374-2.114-10.558-1.159-.404.093-.812-.162-.904-.566-.093-.404.162-.812.566-.904 4.582-1.048 8.513-.604 11.676 1.332.355.217.468.676.25 1.03zm1.47-3.268c-.272.443-.853.583-1.296.311-3.23-1.986-8.155-2.56-11.977-1.4-497.151-1.026-.137-1.177-.634-.151-.497.137-1.026.634-1.177 4.372-1.328 9.805-.688 13.505 1.587.443.272.583.853.311 1.296zm.126-3.41c-3.874-2.3-10.263-2.512-13.978-1.384-.593.18-1.223-.153-1.404-.746-.18-.593.153-1.223.746-1.404 4.269-1.296 11.328-1.047 15.793 1.604.533.316.708 1.008.392 1.541-.316.533-1.008.708-1.541.392z" />
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.216.354-.675.467-1.03.25-2.822-1.724-6.374-2.114-10.558-1.159-.404.093-.812-.162-.904-.566-.093-.404.162-.812.566-.904 4.582-1.048 8.513-.604 11.676 1.332.355.217.468.676.25 1.03zm1.47-3.268c-.272.443-.853.583-1.296.311-3.23-1.986-8.155-2.56-11.977-1.4-.497.151-1.026-.137-1.177-.634-.151-.497.137-1.026.634-1.177 4.372-1.328 9.805-.688 13.505 1.587.443.272.583.853.311 1.296zm.126-3.41c-3.874-2.3-10.263-2.512-13.978-1.384-.593.18-1.223-.153-1.404-.746-.18-.593.153-1.223.746-1.404 4.269-1.296 11.328-1.047 15.793 1.604.533.316.708 1.008.392 1.541-.316.533-1.008.708-1.541.392z" />
                   </svg>
                 </div>
               </div>
@@ -701,7 +701,7 @@ export default function AboutCanvas() {
               <div className="aspect-[3/2] w-full rounded-xl overflow-hidden bg-stone-900 pointer-events-none relative">
                 <Image
                   src="/cat.webp"
-                  alt="Tiger"
+                  alt="Cat"
                   fill
                   sizes="230px"
                   draggable={false}

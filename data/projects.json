@@ -14,7 +14,7 @@
     ],
     "description": "A fast, lightweight, and clutter-free online QR code generator. Generate customizable QR codes from text or links instantly without registration.",
     "mainImage": "/projects/kritqr.webp",
-    "problemStatement": "Most existing QR generator websites are bloated with intrusive ads, paid paywalls for basic features, and unnecessary multi-step signups.",
+    "problemStatement": "Most existing QR generator websites are bloated with intrusive ads, paywalls for basic features, and unnecessary multi-step signups.",
     "outcome": "Engineered an instant, client-first QR generation tool with real-time rendering, seamless SVG/PNG export, and zero signup barriers.",
     "objectives": [
       "Instant client-side QR generation with real-time previews",

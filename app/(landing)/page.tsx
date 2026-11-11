@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import DraggableCanvas from "@/components/DraggableCanvas";
 
 export const metadata: Metadata = {
-  title: "Sepsu Dev",
+  title: "Home",
   description:
     "Interactive desk portfolio of Sepsu Dev. Explore selected projects, technical stack, live widgets, and case studies.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Sepsu Dev",
+    title: "Home - Sepsu Dev",
     description:
       "Interactive desk portfolio of Sepsu Dev. Explore selected projects, technical stack, live widgets, and case studies.",
     url: "https://sepsu.dev",
@@ -25,7 +25,6 @@ export default function HomePage() {
     url: "https://sepsu.dev",
     sameAs: [
       "https://github.com/sepsu-dev",
-      "https://instagram.com",
     ],
     address: {
       "@type": "PostalAddress",

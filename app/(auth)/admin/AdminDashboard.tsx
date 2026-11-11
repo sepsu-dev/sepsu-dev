@@ -16,7 +16,7 @@ export default function AdminDashboard() {
       if (!response.ok) throw new Error("Logout failed");
       router.replace("/login");
     } catch {
-      setError("Logout gagal. Coba lagi.");
+      setError("Logout failed. Please try again.");
       setIsLoggingOut(false);
     }
   };
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
         </button>
       </div>
       {error && <p role="status" className="text-sm text-red-600">{error}</p>}
-      <p className="text-sm">Konten portfolio menggunakan JSON statis. Edit file berikut lalu build dan deploy ulang:</p>
+      <p className="text-sm">Portfolio content uses static JSON. Edit these files, then rebuild and redeploy:</p>
       <ul className="list-disc pl-5 text-sm font-mono space-y-2">
         <li>data/projects.json</li>
         <li>data/profile.json</li>

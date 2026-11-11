@@ -45,13 +45,13 @@ export default function LoginForm() {
           className="inline-flex items-center gap-1 text-xs font-mono text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
-          <span>Kembali</span>
+          <span>Back to home</span>
         </Link>
 
         <div className="space-y-1">
-          <h1 className="text-lg font-semibold tracking-tight">Login Admin</h1>
+          <h1 className="text-lg font-semibold tracking-tight">Admin Login</h1>
           <p className="text-xs text-stone-500 dark:text-stone-400">
-            Masuk untuk mengelola konten dan proyek.
+            Sign in to manage content and projects.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="nama@email.com"
+              placeholder="name@email.com"
               className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-800 bg-transparent text-sm focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
             />
           </div>
@@ -95,7 +95,7 @@ export default function LoginForm() {
             disabled={loading}
             className="w-full py-2 px-4 rounded-lg bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 text-xs font-medium hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
           >
-            {loading ? "Memproses..." : "Masuk"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
       </div>

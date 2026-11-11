@@ -1,6 +1,6 @@
 <!-- Title -->
 <h3 align="center">
-        <samp>&gt; Hey There!, I am
+        <samp>&gt; Hey there! I am
                 <b><a target="_blank" href="https://sepsu.dev">Sepsu Dev</a></b>
         </samp>
 </h3>

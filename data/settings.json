@@ -22,11 +22,11 @@
     "show": true,
     "title": "Next Match",
     "teamName": "Man United",
-    "opponentName": "Spurs",
-    "badgeRank": "#12",
-    "badgePoints": "5 pts",
-    "venue": "Old Trafford",
-    "matchDate": "10 Oct · 23.30"
+    "opponentName": "Liverpool",
+    "badgeRank": "#18",
+    "badgePoints": "8 pts",
+    "venue": "Anfield",
+    "matchDate": "22 Nov · 23.30"
   },
   "techStack": [
     "TypeScript",

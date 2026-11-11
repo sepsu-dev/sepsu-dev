@@ -27,7 +27,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sepsu.dev"),
-  title: "Sepsu Dev",
+  title: {
+    default: "Home - Sepsu Dev",
+    template: "%s - Sepsu Dev",
+  },
   description:
     "Software Engineer with 3+ years of experience building reliable backends, cloud-native services, and fluid web applications. Based in Jakarta, Indonesia.",
   keywords: [

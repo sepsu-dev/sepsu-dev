@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { SESSION_COOKIE, verifySession } from "@/lib/auth";
 
 export const metadata: Metadata = {
-  title: "Admin - Static Portfolio",
+  title: "Admin",
   description: "Static portfolio content configuration.",
   robots: {
     index: false,

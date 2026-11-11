@@ -896,18 +896,18 @@ export default function DraggableCanvas() {
                 {/* Table Standings Badge */}
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-[10px] font-mono text-stone-700 dark:text-stone-300">
                   <span className="font-semibold text-stone-900 dark:text-stone-100">
-                    {landingSettings.sportsWidget.badgeRank || "#12"}
+                    {landingSettings.sportsWidget.badgeRank || "#18"}
                   </span>
                   <span className="text-stone-500 dark:text-stone-400">•</span>
-                  <span>{landingSettings.sportsWidget.badgePoints || "5 pts"}</span>
+                  <span>{landingSettings.sportsWidget.badgePoints || "8 pts"}</span>
                 </div>
               </div>
 
               {/* Matchup Banner */}
               <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-stone-100/80 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 pointer-events-none">
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
-                    {landingSettings.sportsWidget.teamName || "Man United"}
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                    {landingSettings.sportsWidget.opponentName || "Liverpool"}
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Home</span>
                 </div>
@@ -915,8 +915,8 @@ export default function DraggableCanvas() {
                   vs
                 </span>
                 <div className="flex flex-col items-end">
-                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
-                    {landingSettings.sportsWidget.opponentName || "Spurs"}
+                  <span className="text-xs font-bold text-[#b91c1c] dark:text-[#f87171]">
+                    {landingSettings.sportsWidget.teamName || "Man United"}
                   </span>
                   <span className="text-[10px] font-mono font-medium text-stone-600 dark:text-stone-400">Away</span>
                 </div>
@@ -924,11 +924,11 @@ export default function DraggableCanvas() {
 
               {/* Footer Info: Venue & League */}
               <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 dark:text-stone-400 px-0.5 pointer-events-none">
-                <span className="truncate">{landingSettings.sportsWidget.venue || "Old Trafford"}</span>
+                <span className="truncate">{landingSettings.sportsWidget.venue || "Anfield"}</span>
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DA291C] animate-pulse" />
                   <span className="text-[#DA291C] dark:text-red-400 font-medium">
-                    {landingSettings.sportsWidget.matchDate || "10 Oct · 23.30"}
+                    {landingSettings.sportsWidget.matchDate || "22 Nov · 23.30"}
                   </span>
                 </div>
               </div>
